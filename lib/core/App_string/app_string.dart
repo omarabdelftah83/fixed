@@ -9,6 +9,7 @@ class AppStrings {
   static const String signInWithGoogle = 'Sign In With Google';
   static const String signInWithFacebook = 'Sign In With Facebook';
   static const String ofCourse = 'تاكيد';
+  static const String review = 'تقييم ';
 
 
 

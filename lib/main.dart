@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:webbing_fixed/features_user/home/screen/review_page.dart';
 import 'core/route/routes.dart';
-import 'features/auth/login_in/login_page.dart';
 
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       title: 'Flutter Demo',
-      home:  const SingInPage(),
+      home:  const ReviewPage(),
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         useMaterial3: false,
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      initialRoute: Routes.signInBody,
+      initialRoute: Routes.ratePage,
       onGenerateRoute: RouteGenarator.getRoute,
     );
   }
