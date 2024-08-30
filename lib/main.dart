@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:webbing_fixed/features_user/home/screen/review_page.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up.dart';
 import 'core/route/routes.dart';
 
 
@@ -11,12 +11,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
       title: 'Flutter Demo',
-      home:  const ReviewPage(),
+      home:  const SingUpAdminPage(),
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         useMaterial3: false,
@@ -34,7 +33,7 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      initialRoute: Routes.ratePage,
+      initialRoute: Routes.singUpAdminPage,
       onGenerateRoute: RouteGenarator.getRoute,
     );
   }

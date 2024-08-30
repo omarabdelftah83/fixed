@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up.dart';
 import 'package:webbing_fixed/features_user/auth/forget_passwored/forget_passwored_page.dart';
 import 'package:webbing_fixed/features_user/auth/login_in/login_page.dart';
 import 'package:webbing_fixed/features_user/auth/new_passwored/new_passwored_page.dart';
@@ -23,6 +24,7 @@ class Routes {
   static const String signInBody = '/SingInpBody';
   static const String ratePage = '/ratePage';
   static const String splashPage = '/SplashPage';
+  static const String singUpAdminPage = '/SingUpAdminPage';
 
 
 
@@ -35,6 +37,8 @@ class Routes {
 class RouteGenarator {
   static Route<dynamic> getRoute(RouteSettings sitting) {
     switch (sitting.name) {
+      case Routes.singUpAdminPage:
+        return MaterialPageRoute(builder: (_) => const SingUpAdminPage());
       case Routes.splashPage:
         return MaterialPageRoute(builder: (_) => const SplashPage());
       case Routes.signInBody:
