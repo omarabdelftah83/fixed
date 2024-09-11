@@ -41,21 +41,25 @@ class _OrdersPageState extends State<OrdersPage>
             ),
           ),
           TabBar(
+            unselectedLabelColor: Colors.black,
+            labelColor: Colors.blue,
             labelStyle:const TextStyle(fontSize:20 ) ,
             controller: _tabController,
             tabs: const [
-              Tab(text: 'القادم',),
+
+              Tab(text: 'ملغية',),
               Tab(text: 'مكتملة'),
-              Tab(text: 'ملغية'),
+              Tab(text: 'القادم'),
+
             ],
           ),
           Expanded(
             child: TabBarView(
               controller: _tabController,
               children: const [
-                OrdersTab(orderStatus: 'القادم'),
-                OrdersTab(orderStatus: 'مكتملة'),
                 OrdersTab(orderStatus: 'ملغية'),
+                OrdersTab(orderStatus: 'مكتملة'),
+                OrdersTab(orderStatus: 'القادم'),
               ],
             ),
           ),

@@ -4,7 +4,7 @@ import 'package:webbing_fixed/core/resource/assets_manager.dart';
 import 'package:webbing_fixed/features_user/home/screen/home_page.dart';
 import 'package:webbing_fixed/features_user/main_layout/presentaion/main_layout_state.dart';
 import 'package:webbing_fixed/features_user/order/order_pag.dart';
-import 'package:webbing_fixed/features_user/sitting/setting_page.dart';
+import 'package:webbing_fixed/features_user/sitting/sitting_page.dart';
 
 class MainScreenCubit extends Cubit<MainScreenState> {
   MainScreenCubit() : super(MainScreenState(0));

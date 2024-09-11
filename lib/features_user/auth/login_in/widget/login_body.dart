@@ -26,7 +26,7 @@ class LoginBody extends StatelessWidget {
                 height: 700,
                 margin: const EdgeInsets.only(top: 40),
                 decoration: const BoxDecoration(
-                  color: Color(0xFFB9C0C9),
+                  color: Color(0xFF3EBBDD),
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
               ),
@@ -92,7 +92,7 @@ class LoginBody extends StatelessWidget {
                             child: const Align(
                               alignment: Alignment.topRight,
                               child: CustomText(
-                                textColor: Color(0xFFB9C0C9),
+                                textColor: Color(0xFF3EBBDD),
                                 text: AppStrings.forgetPass,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w400,
@@ -124,7 +124,7 @@ class LoginBody extends StatelessWidget {
                                     text: AppStrings.createAccount,
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: Color(0xFFB9C0C9),
+                                      color: Color(0xFF3EBBDD),
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),

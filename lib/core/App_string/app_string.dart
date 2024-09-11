@@ -10,8 +10,17 @@ class AppStrings {
   static const String signInWithFacebook = 'Sign In With Facebook';
   static const String ofCourse = 'تاكيد';
   static const String review = 'تقييم ';
-
-
+  static const String welcome = '! مرحباً بك';
+  static const String description = 'سواء كنت تبحث عن مقدمي خدمات\n موثوقين أو ترغب في تقديم خدماتك \n لعملائنا،انضم إلينا اليوم لبدء رحلتك معنا';
+  static const String serviceRecipient = 'متلقي الخدمه';
+  static const String serviceProvider = 'مقدم الخدمة';
+  static const String appbareSetingString = 'الاعدادات';
+  static const String appbareOrderString = 'الطلبات';
+  static const String hintTextState = 'الدوله';
+  static const String hintTextlanglanguage = 'اللغه';
+  static const String titleDescription1 ='مرحبًا بكم في تطبيق In Home نحن هنا\n لتسهيل التواصل بين العملاء ومقدمي \nالخدمات بكل سهولة وأمان';
+  static const String description2 =' يرجى ملاحظة أن دورنا هو الوساطة فقط، ولا نتحمل مسؤولية \nأي تعاملات أو سلوكيات بين الأطراف';
+  static const String titleDescription2 ='استمتع بخدمات التصليح والصيانة بسهولة وسرعة فائقة عبر \n In Home ';
 
   static const String or = '_OR_';
   static const String continues = 'continue -->';

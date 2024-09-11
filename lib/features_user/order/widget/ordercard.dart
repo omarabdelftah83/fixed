@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
+import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
+import 'package:webbing_fixed/core/route/routes.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OrderCard extends StatelessWidget {
   final String name;
@@ -21,45 +24,67 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.white,
-      margin: const EdgeInsets.all(10),
+      margin: EdgeInsets.all(10.w),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.all(10.w),
         child: Row(
           children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(imagePath),
-              radius: 30,
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              width: 1,
-              height: 90,
-              color: Colors.grey.shade400,
-            ),
+            if (status == 'القادم')
+              GestureDetector(
+                onTap: () {
+                  _showAlertDialog(context);
+                },
+                child: CustomText(
+                  text: '(الغاء)',
+                  fontSize: 15.sp,
+                  textColor: Colors.red,
+                ),
+              ),
+            if (status == 'مكتملة' || status == 'ملغية')
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.reviewPage);
+                },
+                child: CustomText(
+                  text: '(قيم الفني)',
+                  fontSize: 15.sp,
+                  textColor: Colors.blue,
+                ),
+              ),
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text('الاسم: $name',
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold)),
+                      style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold)),
                   Text('الخدمة: $service',
-                      style: const TextStyle(fontSize: 14, color: Colors.grey)),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey,
+                      )),
                   Text(date,
-                      style: const TextStyle(fontSize: 14, color: Colors.grey)),
-                  if (status == 'ملغية')
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey,
+                      )),
+                  if (status == 'القادم')
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.call,
                               color: Colors.blue,
+                              size: 20.w,
                             ),
                             onPressed: () {}),
                         IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.mail_outline,
                               color: Colors.blue,
+                              size: 20.w,
                             ),
                             onPressed: () {}),
                       ],
@@ -67,17 +92,16 @@ class OrderCard extends StatelessWidget {
                 ],
               ),
             ),
-            if (status == 'ملغية')
-              GestureDetector(
-                onTap: () {
-                  _showAlertDialog(context);
-                },
-                child: const CustomText(
-                  text: '(الغاء)',
-                  fontSize: 15,
-                  textColor: Colors.red,
-                ),
-              )
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10.w),
+              width: 1.w,
+              height: 90.h,
+              color: Colors.grey.shade400,
+            ),
+            CircleAvatar(
+              backgroundImage: AssetImage(imagePath),
+              radius: 30.w,
+            ),
           ],
         ),
       ),
@@ -89,17 +113,35 @@ class OrderCard extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const CustomText(
-            text: 'الغاء',
-            fontSize: 30,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32.0.r),
+            side: const BorderSide(width: 0),
           ),
-          content: contentText(),
+          title: Center(
+            child: CustomText(
+              text: 'الغاء',
+              fontSize: 30.sp,
+            ),
+          ),
+          content: Container(
+            width: 400.w,
+            height: 120.h,
+            padding: EdgeInsets.all(10.w),
+            child: contentText(),
+          ),
           actions: <Widget>[
-            TextButton(
-              child:const CustomText(text: 'الغاء',textColor: Colors.red,fontSize: 25,),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            Center(
+              child: CustomButton(
+                height: 30.h,
+                width: 160.w,
+                borderColor: Colors.red,
+                textColor: Colors.red,
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                text: 'الغاء',
+              ),
             ),
           ],
         );
@@ -108,8 +150,7 @@ class OrderCard extends StatelessWidget {
   }
 
   Widget contentText() {
-    return const SizedBox(
-      height: 100,
+    return const SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -118,7 +159,8 @@ class OrderCard extends StatelessWidget {
             fontSize: 25,
           ),
           CustomText(
-            text: 'اذا حذفت الموعد قبلها ب ساعه سيتم\n تطبيق غرامة قدرها 50 جنيه مصري ',
+            text:
+            'اذا حذفت الموعد قبلها ب ساعه سيتم\n تطبيق غرامة قدرها 50 جنيه مصري ',
             fontSize: 15,
             textColor: Colors.grey,
           ),

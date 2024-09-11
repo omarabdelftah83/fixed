@@ -54,7 +54,7 @@ class _ConditionFixedState extends State<ConditionFixed> {
               ),
               const SizedBox(height: 10),
               DropDownCustomTextfailed(
-                prefixIcon: Icon(Icons.arrow_drop_down),
+                prefixIcon: const Icon(Icons.arrow_drop_down),
                 hintText: 'اختر الخدمة',
                 dropdownItems: [' نقل او تركيب مكيف', ' تعبئة غاز وتنظيف مكيف','تصليح مكيف','اخرى'],
                 onDropdownChanged: (selectedItem) {
@@ -72,7 +72,7 @@ class _ConditionFixedState extends State<ConditionFixed> {
               ),
               const SizedBox(height: 10),
               DropDownCustomTextfailed(
-                prefixIcon: Icon(Icons.arrow_drop_down),
+                prefixIcon: const Icon(Icons.arrow_drop_down),
                 hintText: 'اختر الوقت المناسب للتنفيذ',
                 dropdownItems: ['في اقرب وقت', ' اليوم','غدا','خلال اسبوع','الاسبوع القادم'],
                 onDropdownChanged: (selectedItem) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
 import 'package:webbing_fixed/core/route/routes.dart';
@@ -7,8 +8,6 @@ import 'package:webbing_fixed/core/text_failed/custom_text_failed.dart';
 class ForgetPassWoredBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
 
     return SingleChildScrollView(
       child: Column(
@@ -23,10 +22,10 @@ class ForgetPassWoredBody extends StatelessWidget {
           Stack(
             children: [
               Container(
-                height: 580,
+                height: 580.h,
                 margin: const EdgeInsets.only(top: 40),
                 decoration: const BoxDecoration(
-                  color: Color(0xFFB9C0C9),
+                  color: Color(0xFF3EBBDD),
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
               ),
@@ -37,7 +36,7 @@ class ForgetPassWoredBody extends StatelessWidget {
                 right: 0.0,
                 bottom: 10,
                 child: Container(
-                  height: 350,
+                  height: 350.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(40),
@@ -78,7 +77,7 @@ class ForgetPassWoredBody extends StatelessWidget {
                         const Center(
                           child: CustomText(
                             text: 'رجوع ',
-                            textColor: Color(0xFFB9C0C9),
+                            textColor: Color(0xFF3EBBDD),
                           ),
                         ),
 

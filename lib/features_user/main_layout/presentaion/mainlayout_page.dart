@@ -26,7 +26,7 @@ class MainLayoutPage extends StatelessWidget {
                 child: BottomAppBar(
                   color: Colors.white70,
                   elevation: 10,
-                  child: CustomBottomAppBar(),
+                  child: CustomBottomAppBarUser(),
                 ),
               ),
             ),

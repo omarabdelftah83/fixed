@@ -5,8 +5,8 @@ import 'package:webbing_fixed/core/app_text/AppText.dart';
 import '../main_layout_cubit.dart';
 import '../main_layout_state.dart';
 
-class CustomBottomAppBar extends StatelessWidget {
-  CustomBottomAppBar({
+class CustomBottomAppBarUser extends StatelessWidget {
+  CustomBottomAppBarUser({
     Key? key,
   }) : super(key: key);
 
@@ -29,7 +29,7 @@ class CustomBottomAppBar extends StatelessWidget {
                     SvgIconWidget(
                       iconPath: cubit.icons[index],
                       color: state.selectedIndex == index
-                          ? Colors.grey
+                          ? Colors.blue
                           : Colors.black,
                     ),
                     const SizedBox(width: 8),
@@ -38,7 +38,7 @@ class CustomBottomAppBar extends StatelessWidget {
                       fontSize: 13,
                       fontWeight: FontWeight.w400,
                       textColor: state.selectedIndex == index
-                          ? Colors.grey
+                          ? Colors.blue
                           : Colors.black,
                     ),
                   ],

@@ -6,17 +6,21 @@ class DropDownCustomTextfailed extends StatefulWidget {
     this.hintText,
     this.keyboardType,
     this.prefixIcon,
+    this.suffixIcon, // Added suffixIcon property
     this.dropdownItems,
     this.onDropdownChanged,
     this.dropdownValue,
+    this.onTap // Added onTap property
   }) : super(key: key);
 
   final String? hintText;
   final TextInputType? keyboardType;
   final Icon? prefixIcon;
+  final Icon? suffixIcon; // Added suffixIcon property
   final List<String>? dropdownItems;
   final ValueChanged<String?>? onDropdownChanged;
   final String? dropdownValue;
+  final VoidCallback? onTap; // Added onTap property
 
   @override
   State<DropDownCustomTextfailed> createState() => _DropDownCustomTextfailedState();
@@ -44,14 +48,20 @@ class _DropDownCustomTextfailedState extends State<DropDownCustomTextfailed> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
-          onTap: _toggleDropdown,
+          onTap: () {
+            _toggleDropdown(); // Toggle the dropdown state
+            if (widget.onTap != null) {
+              widget.onTap!(); // Call the onTap callback if provided
+            }
+          },
           child: AbsorbPointer(
             child: TextField(
               textAlign: TextAlign.right, // Align text to the right
               decoration: InputDecoration(
                 hintText: _selectedDropdownItem ?? widget.hintText,
                 hintStyle: const TextStyle(color: Colors.grey),
-                prefixIcon: widget.prefixIcon,
+                prefixIcon: widget.prefixIcon, // Use prefixIcon
+                suffixIcon: widget.suffixIcon, // Use suffixIcon
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
@@ -60,7 +70,7 @@ class _DropDownCustomTextfailedState extends State<DropDownCustomTextfailed> {
             ),
           ),
         ),
-        if (_isDropdownOpen)
+        if (_isDropdownOpen && widget.dropdownItems != null)
           Container(
             width: MediaQuery.of(context).size.width, // Make the container span the full width of the screen
             margin: const EdgeInsets.only(top: 8.0),
@@ -80,19 +90,17 @@ class _DropDownCustomTextfailedState extends State<DropDownCustomTextfailed> {
                       });
                     },
                     child: Container(
-                      width: 400,
+                      width: double.infinity, // Make the container span the full width of the dropdown
                       padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0), // Same padding as TextField
                       decoration: BoxDecoration(
-                        color: isSelected ?Colors.blue[100] : Colors.white,
-
+                        color: isSelected ? Colors.blue[100] : Colors.white,
                         borderRadius: BorderRadius.circular(30),
-                        border: Border.all(  color: Colors.grey.shade300),
+                        border: Border.all(color: Colors.grey.shade300),
                       ),
                       child: Text(
                         textAlign: TextAlign.right, // Align text to the right
                         item,
-                        style: const TextStyle(fontSize: 12.0,fontWeight: FontWeight.w400),
-
+                        style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),

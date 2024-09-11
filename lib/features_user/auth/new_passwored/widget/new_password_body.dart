@@ -1,4 +1,5 @@
  import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webbing_fixed/core/App_string/app_string.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
@@ -10,8 +11,6 @@ import 'package:webbing_fixed/core/text_failed/custom_text_failed.dart';
 
    @override
    Widget build(BuildContext context) {
-     final screenHeight = MediaQuery.of(context).size.height;
-     final screenWidth = MediaQuery.of(context).size.width;
 
      return SingleChildScrollView(
        child: Column(
@@ -27,10 +26,10 @@ import 'package:webbing_fixed/core/text_failed/custom_text_failed.dart';
              children: [
                // Container 1 (Gray)
                Container(
-                 height: 600,
+                 height: 600.h,
                  margin: const EdgeInsets.only(top: 40),
                  decoration: const BoxDecoration(
-                   color: Color(0xFFB9C0C9),
+                   color: Color(0xFF3EBBDD),
                    borderRadius: BorderRadius.all(Radius.circular(30)),
                  ),
                ),
@@ -41,7 +40,7 @@ import 'package:webbing_fixed/core/text_failed/custom_text_failed.dart';
                  right: 0.0,
                  bottom: 10,
                  child: Container(
-                   height: 350,
+                   height: 350.h,
                    decoration: BoxDecoration(
                      color: Colors.white,
                      borderRadius: BorderRadius.circular(40),
@@ -101,7 +100,7 @@ import 'package:webbing_fixed/core/text_failed/custom_text_failed.dart';
                          const Center(
                            child: CustomText(
                              text: 'رجوع ',
-                             textColor: Color(0xFFB9C0C9),
+                             textColor: Color(0xFF3EBBDD),
                            ),
                          ),
                        ],

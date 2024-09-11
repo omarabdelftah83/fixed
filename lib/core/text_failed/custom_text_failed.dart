@@ -15,6 +15,7 @@ class CustomTextField extends StatefulWidget {
     this.suffixIcon,
     this.minLines = 1, // Minimum lines
     this.maxLines = 5, // Maximum lines
+    this.height = 50.0, // Default height for the TextField
   }) : super(key: key);
 
   final bool isPassword;
@@ -29,6 +30,7 @@ class CustomTextField extends StatefulWidget {
   final Widget? suffixIcon;
   final int minLines;
   final int maxLines;
+  final double height; // New height property
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -45,39 +47,43 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: widget.controller,
-      keyboardType: widget.keyboardType,
-      obscureText: widget.isPassword ? _obscureText : widget.obscureText,
-      onChanged: widget.onChanged,
-      maxLines: widget.isPassword ? 1 : widget.maxLines,
-      minLines: widget.isPassword ? 1 : widget.minLines,
-      decoration: InputDecoration(
-        prefixIcon: widget.isPassword
-            ? IconButton(
-          icon: Icon(
-            _obscureText ? Icons.visibility_off : Icons.visibility,
+    return SizedBox(
+      height: widget.height, // Set the height of the TextField
+      child: TextField(
+        controller: widget.controller,
+        keyboardType: widget.keyboardType,
+        obscureText: widget.isPassword ? _obscureText : widget.obscureText,
+        onChanged: widget.onChanged,
+        maxLines: widget.isPassword ? 1 : widget.maxLines,
+        minLines: widget.isPassword ? 1 : widget.minLines,
+        decoration: InputDecoration(
+          prefixIcon: widget.isPassword
+              ? IconButton(
+            icon: Icon(
+              _obscureText ? Icons.visibility_off : Icons.visibility,
+            ),
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            },
+          )
+              : widget.prefixIcon,
+          suffixIcon: widget.suffixIcon,
+          errorText: widget.errorText == null || widget.errorText!.isEmpty
+              ? null
+              : widget.errorText,
+          hintText: widget.hintText,
+          hintStyle: const TextStyle(color: Colors.grey),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
           ),
-          onPressed: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
-        )
-            : widget.prefixIcon,
-        suffixIcon: widget.suffixIcon,
-        errorText: widget.errorText == null || widget.errorText!.isEmpty
-            ? null
-            : widget.errorText,
-        hintText: widget.hintText,
-        hintStyle: const TextStyle(color: Colors.grey),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          contentPadding: const EdgeInsets.symmetric(
+              vertical: 15.0, horizontal: 20.0), // Adjust padding
+          alignLabelWithHint: true,
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-        alignLabelWithHint: true,
+        textAlign: TextAlign.right, // Align text and hint text to the right
       ),
-      textAlign: TextAlign.right, // Align text and hint text to the right
     );
   }
 }

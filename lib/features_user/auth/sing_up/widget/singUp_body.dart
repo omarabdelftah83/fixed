@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webbing_fixed/core/App_string/app_string.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
@@ -11,16 +11,13 @@ class SingUpBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return SingleChildScrollView(
       child: Column(
         children: [
           const Center(
             child: CustomText(
               text: 'انشاء حساب',
-              fontSize: 24,
+              fontSize: 24, // Font size does not use .h/.w
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -28,38 +25,38 @@ class SingUpBody extends StatelessWidget {
             children: [
               // Container 1 (Gray)
               Container(
-                height: 1000,
-                margin: const EdgeInsets.only(top: 40),
+                height: 1110.h,
+                margin: EdgeInsets.only(top: 40.h), // Use .h for top margin
                 decoration: const BoxDecoration(
-                  color: Color(0xFFB9C0C9),
+                  color: Color(0xFF3EBBDD),
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
               ),
               // Container 2 (White)
               Positioned(
-                top: 80,
+                top: 80.h, // Use .h for positioning
                 left: 0.0,
                 right: 0.0,
-                bottom: 10,
+                bottom: 10.h, // Use .h for bottom position
                 child: Container(
-                  height: 350,
+                  height: 500.h, // Use .h for height
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(40),
+                    borderRadius: BorderRadius.circular(40.w), // Use .w for circular radius
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
+                        spreadRadius: 5.w, // Use .w for shadow spread
+                        blurRadius: 7.w, // Use .w for shadow blur
+                        offset: Offset(0, 3.h), // Use .h for offset
                       ),
                     ],
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.w), // Use .w for padding
                     child: Column(
                       children: [
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h), // Use .h for spacing
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -68,13 +65,12 @@ class SingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const CustomTextField(
                           hintText: 'مستخدم',
                           keyboardType: TextInputType.emailAddress,
                         ),
-
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -83,12 +79,12 @@ class SingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const CustomTextField(
-                      hintText: '123456789',
+                          hintText: '123456789',
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -97,13 +93,12 @@ class SingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const CustomTextField(
                           hintText: 'om@gmail.com',
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -112,13 +107,13 @@ class SingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const CustomTextField(
                           isPassword: true,
                           obscureText: true,
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -127,13 +122,13 @@ class SingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const CustomTextField(
                           isPassword: true,
                           obscureText: true,
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -142,18 +137,56 @@ class SingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-
-
-
-
-                        const SizedBox(height: 30),
+                        SizedBox(height: 10.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const CustomText(
+                              text: 'حدد موقعك',
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.location_on,
+                                  color: Colors.blue),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Expanded(
+                              child: CustomText(
+                                text:
+                                'التطبيق مجرد وسيط بين مقدم الخدمة ومتلقي \nالخدمة وليس له علاقة بكلا الطرفين ولا يوجد\n عليه اي مسألة قانونية',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                            Transform.translate(
+                              offset: Offset(0, -5.h), // Use .h for translation
+                              child: Checkbox(
+                                value: false,
+                                onChanged: (bool? value) {},
+                                materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                                side: const BorderSide(width: 0.0),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 30.h),
                         CustomButton(
                           onPressed: () {
                             Navigator.pushNamed(context, Routes.mainLayoutPage);
                           },
                           text: AppStrings.signUp,
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: 30.h),
                         RichText(
                           textAlign: TextAlign.center,
                           text: const TextSpan(
@@ -161,13 +194,14 @@ class SingUpBody extends StatelessWidget {
                             children: <TextSpan>[
                               TextSpan(
                                 text: 'ليس لديك حساب ؟  ',
-                                style: TextStyle(color: Colors.black, fontSize: 16),
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
                               ),
                               TextSpan(
                                 text: 'انشئ حساب هنا',
                                 style: TextStyle(
                                   fontSize: 16,
-                                  color: Color(0xFFB9C0C9),
+                                  color: Color(0xFF3EBBDD),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -179,14 +213,14 @@ class SingUpBody extends StatelessWidget {
                           children: [
                             Image.asset(
                               'assets/icon_google.png',
-                              width: 50,
-                              height: 100,
+                              width: 50.w, // Use .w for image size
+                              height: 50.h,
                             ),
-                            const SizedBox(width: 16),
+                            SizedBox(width: 16.w), // Use .w for spacing
                             Image.asset(
                               'assets/icon_face.png',
-                              width: 50,
-                              height: 100,
+                              width: 50.w, // Use .w for image size
+                              height: 50.h,
                             ),
                           ],
                         ),
@@ -201,5 +235,4 @@ class SingUpBody extends StatelessWidget {
       ),
     );
   }
-
 }

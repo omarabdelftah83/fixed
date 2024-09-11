@@ -89,7 +89,7 @@ class CustomCard extends StatelessWidget {
             width: 120.0,
             height: 40.0,
             decoration: const BoxDecoration(
-              color: Color(0xFF8D8383),
+              color: Colors.blue,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20.0),
                 bottomRight: Radius.circular(20.0),

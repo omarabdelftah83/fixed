@@ -39,6 +39,9 @@ dependencies:
   flutter_bloc: ^8.1.5
   flutter_svg: ^2.0.10+1
   flutter_rating_bar:
+  image_picker: ^1.0.7
+  flutter_screenutil: ^5.9.3
+  speech_to_text: ^7.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

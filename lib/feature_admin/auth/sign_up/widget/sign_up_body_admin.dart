@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webbing_fixed/core/App_string/app_string.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
@@ -11,8 +12,7 @@ class CustomSingUpBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
+    ScreenUtil.init(context);
 
     return SingleChildScrollView(
       child: Column(
@@ -28,24 +28,24 @@ class CustomSingUpBody extends StatelessWidget {
             children: [
               // Container 1 (Gray)
               Container(
-                height: 1170,
-                margin: const EdgeInsets.only(top: 40),
+                height: 1150.h,
+                margin: EdgeInsets.only(top: 40.h),
                 decoration: const BoxDecoration(
-                  color: Color(0xFFB9C0C9),
+                  color: Color(0xFF3EBBDD),
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
               ),
               // Container 2 (White)
               Positioned(
-                top: 80,
+                top: 80.h,
                 left: 0.0,
                 right: 0.0,
-                bottom: 10,
+                bottom: 10.h,
                 child: Container(
-                  height: 500,
+                  height: 500.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(40),
+                    borderRadius: BorderRadius.circular(40.r),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
@@ -56,10 +56,10 @@ class CustomSingUpBody extends StatelessWidget {
                     ],
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.w),
                     child: Column(
                       children: [
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -68,12 +68,12 @@ class CustomSingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const CustomTextField(
                           hintText: 'مستخدم',
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -82,12 +82,12 @@ class CustomSingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const CustomTextField(
                           hintText: '123456789',
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -96,12 +96,12 @@ class CustomSingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const CustomTextField(
                           hintText: 'om@gmail.com',
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -110,13 +110,13 @@ class CustomSingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const CustomTextField(
                           isPassword: true,
                           obscureText: true,
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -125,13 +125,13 @@ class CustomSingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const CustomTextField(
                           isPassword: true,
                           obscureText: true,
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         const Align(
                           alignment: Alignment.topRight,
                           child: CustomText(
@@ -140,7 +140,7 @@ class CustomSingUpBody extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -156,7 +156,7 @@ class CustomSingUpBody extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,25 +164,25 @@ class CustomSingUpBody extends StatelessWidget {
                             const Expanded(
                               child: CustomText(
                                 text:
-                                    'التطبيق مجرد وسيط بين مقدم الخدمة ومتلقي \nالخدمة وليس له علاقة بكلا الطرفين ولا يوجد\n عليه اي مسألة قانونية',
+                                'التطبيق مجرد وسيط بين مقدم الخدمة ومتلقي \nالخدمة وليس له علاقة بكلا الطرفين ولا يوجد\n عليه اي مسألة قانونية',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 textAlign: TextAlign.right,
                               ),
                             ),
                             Transform.translate(
-                              offset: const Offset(0, -5),
+                              offset: Offset(0, -5.h),
                               child: Checkbox(
                                 value: false,
                                 onChanged: (bool? value) {},
                                 materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
+                                MaterialTapTargetSize.shrinkWrap,
                                 side: const BorderSide(width: 0.0),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,11 +204,11 @@ class CustomSingUpBody extends StatelessWidget {
                                         color: Colors.red,
                                         decoration: TextDecoration.underline,
                                         fontFamily:
-                                            'Cairo',
+                                        'Cairo',
                                       ),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          print('تم النقر على الشروط والاحكام');
+                                        Navigator.pushNamed(context, Routes.conditionsPage);
                                         },
                                     ),
                                     const TextSpan(
@@ -218,27 +218,26 @@ class CustomSingUpBody extends StatelessWidget {
                               ),
                             ),
                             Transform.translate(
-                              offset: const Offset(0, -9),
+                              offset: Offset(0, -9.h),
                               child: Checkbox(
                                 materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
+                                MaterialTapTargetSize.shrinkWrap,
                                 side: const BorderSide(width: 0.0),
                                 value: false,
                                 onChanged: (bool? value) {
-                                  // تنفيذ هنا لتغيير حالة الـ Checkbox
                                 },
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: 30.h),
                         CustomButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, Routes.mainLayoutPage);
+                            Navigator.pushNamed(context, Routes.signUpService);
                           },
-                          text: AppStrings.signUp,
+                          text: 'متابعه',
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: 30.h),
                         RichText(
                           textAlign: TextAlign.center,
                           text: const TextSpan(
@@ -253,7 +252,7 @@ class CustomSingUpBody extends StatelessWidget {
                                 text: 'انشئ حساب هنا',
                                 style: TextStyle(
                                   fontSize: 16,
-                                  color: Color(0xFFB9C0C9),
+                                  color: Color(0xFF3EBBDD),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -265,14 +264,14 @@ class CustomSingUpBody extends StatelessWidget {
                           children: [
                             Image.asset(
                               'assets/icon_google.png',
-                              width: 50,
-                              height: 100,
+                              width: 50.w,
+                              height: 100.h,
                             ),
-                            const SizedBox(width: 16),
+                            SizedBox(width: 16.w),
                             Image.asset(
                               'assets/icon_face.png',
-                              width: 50,
-                              height: 100,
+                              width: 50.w,
+                              height: 100.h,
                             ),
                           ],
                         ),

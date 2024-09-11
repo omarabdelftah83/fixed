@@ -33,6 +33,7 @@ class ReviewPage extends StatelessWidget {
                 backgroundColor: const Color(0xFFD9D9D9),
                 radius: screenWidth * 0.15, // CircleAvatar size responsive
               ),
+              const CustomText(text: 'omar mohamed ',fontSize: 16,fontWeight: FontWeight.w400,),
               SizedBox(height: screenHeight * 0.05),
               RatingBar.builder(
                 initialRating: 0,
@@ -70,7 +71,7 @@ class ReviewPage extends StatelessWidget {
               SizedBox(height: screenHeight * 0.07),
               CustomButton(
                 onPressed: () {
-                   Navigator.pushNamed(context, Routes.splashPage);
+                 //  Navigator.pushNamed(context, Routes.splashPage);
                 },
                 text: AppStrings.review,
               ),

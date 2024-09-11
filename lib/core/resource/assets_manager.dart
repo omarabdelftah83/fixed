@@ -11,6 +11,10 @@ class AssetsManager {
   static const String iconWallet = '$_iconPath/ph_wallet.svg';
   static const String iconAvatar = '$_iconPath/icon_avatar.svg';
   static const String iconStart = '$_iconPath/icon_start.svg';
+  static const String notification = '$_iconPath/notification.svg';
+  static const String iconDelete = '$_iconPath/garbage.svg';
+  static const String happy = '$_iconPath/Happy.svg';
+
 
 
 
