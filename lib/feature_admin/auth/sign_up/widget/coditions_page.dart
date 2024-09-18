@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/controll/sign_up_cubit.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_up/controll/sign_up_state.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_up/model/api_service.dart';
 
 class ConditionsPage extends StatelessWidget {
   const ConditionsPage({Key? key}) : super(key: key);
@@ -8,7 +10,7 @@ class ConditionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignUpCubit(),
+      create: (context) => SignUpCubit(ApiService()),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('الشروط والأحكام'),

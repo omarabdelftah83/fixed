@@ -48,7 +48,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: widget.height, // Set the height of the TextField
+      height: widget.height + (widget.errorText != null ? 30 : 0), // Adjust height based on errorText presence
       child: TextField(
         controller: widget.controller,
         keyboardType: widget.keyboardType,
@@ -81,6 +81,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           contentPadding: const EdgeInsets.symmetric(
               vertical: 15.0, horizontal: 20.0), // Adjust padding
           alignLabelWithHint: true,
+          errorMaxLines: 3, // Add this to handle error text height
         ),
         textAlign: TextAlign.right, // Align text and hint text to the right
       ),
