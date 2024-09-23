@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:webbing_fixed/feature_admin/auth/sign_in/sign_in_export.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:webbing_fixed/core/App_string/app_string.dart';
+import 'package:webbing_fixed/core/app_text/AppText.dart';
+import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
+import 'package:webbing_fixed/core/route/routes.dart';
+import 'package:webbing_fixed/core/text_failed/custom_text_failed.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_in/controll/sign_in_cubit.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_in/controll/sign_in_state.dart';
+import 'package:webbing_fixed/network/api_service.dart';
 
 class SignInBodyAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SignInCubit(ApiService()),
-      child: SingleChildScrollView(
-        child: BlocBuilder<SignInCubit, SignInState>(
-          builder: (context, state) {
-            final cubit=BlocProvider.of<SignInCubit>(context);
-            return Column(
+      child: BlocBuilder<SignInCubit, SignInState>(
+        builder: (context, state) {
+          final cubit=BlocProvider.of<SignInCubit>(context);
+          return
+            state is SingInLoading
+            ? const Center(child: CircularProgressIndicator())
+        :    SingleChildScrollView(
+          child: Column(
               children: [
                 const Center(
                   child: CustomText(
@@ -21,7 +32,7 @@ class SignInBodyAdmin extends StatelessWidget {
                 ),
                 Stack(
                   children: [
-                    // Container 1 (Gray)
+                    // Container 1 (Gray) //
                     Container(
                       height: 700,
                       margin: const EdgeInsets.only(top: 40),
@@ -30,7 +41,7 @@ class SignInBodyAdmin extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                       ),
                     ),
-                    // Container 2 (White)
+                    // Container 2 (White)//
                     Positioned(
                       top: 80,
                       left: 0.0,
@@ -53,7 +64,6 @@ class SignInBodyAdmin extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: SingleChildScrollView(
-                            // Add SingleChildScrollView here
                             child: Column(
                               children: [
                                 const SizedBox(height: 10),
@@ -167,9 +177,9 @@ class SignInBodyAdmin extends StatelessWidget {
                   ],
                 ),
               ],
-            );
-          },
-        ),
+            ),
+        );
+        },
       ),
     );
   }

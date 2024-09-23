@@ -2,11 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:webbing_fixed/core/resource/app_string.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_in/sign_in_page.dart';
-import 'package:webbing_fixed/network/api_service.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/model/sign_up_model.dart';
-import 'sign_up_state.dart';
+import 'package:webbing_fixed/features_user/auth/sing_up/controll/sign_up_user_state.dart';
+import 'package:webbing_fixed/network/api_service.dart';
 
-class SignUpCubit extends Cubit<SignUpState> {
+class SignUpUserCubit extends Cubit<SignUpUserState> {
   final ApiService apiService;
 
   // Controllers
@@ -32,10 +32,9 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   // Flags
   bool providesServices = false;
-  bool acceptsTermsAndConditions = false;
   bool passwordVisibility = true;
 
-  SignUpCubit(this.apiService) : super(SignUpInitial());
+  SignUpUserCubit(this.apiService) : super(SignUpInitial());
 
   Future<void> buttonSignUp(BuildContext context) async {
     emit(SingUpLoading());
@@ -47,17 +46,11 @@ class SignUpCubit extends Cubit<SignUpState> {
       return;
     }
 
-    if (!acceptsTermsAndConditions) {
-      emit(ValidationErrorState(emailError, passError, nameError,
-          confirmPasswordError, phoneNumberError));
-      _showSnackbar(context, 'يجب قبول الشروط والأحكام', Colors.red);
-      return;
-    }
 
     if (!providesServices) {
       emit(ValidationErrorState(emailError, passError, nameError,
           confirmPasswordError, phoneNumberError));
-      _showSnackbar(context, 'يجب تحديد إذا كنت تقدم خدمات', Colors.red);
+      _showSnackbar(context, 'يجب تاكيد إذا كنت تستقبل خدمات', Colors.red);
       return;
     }
 
@@ -74,8 +67,8 @@ class SignUpCubit extends Cubit<SignUpState> {
       passwordController.text,
       confirmPasswordController.text,
       phoneController.text,
-      providesServices,
       false,
+      providesServices,
     );
 
     print('Register Request: ${registerRequest.toMap()}');
@@ -97,10 +90,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     );
   }
 
-  void onTermsAndConditionsChanged(bool? value) {
-    acceptsTermsAndConditions = value ?? false;
-    emit(FieldChangedState());
-  }
+
 
   void onServiceChanged(bool? value) {
     providesServices = value ?? false;

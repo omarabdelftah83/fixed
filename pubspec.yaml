@@ -42,6 +42,8 @@ dependencies:
   image_picker: ^1.0.7
   flutter_screenutil: ^5.9.3
   speech_to_text: ^7.0.0
+  shared_preferences: ^2.2.3
+  easy_localization:
   dio:
   dartz:
   get_it:
@@ -74,6 +76,8 @@ flutter:
      - assets/icon_face.png
      - assets/icons/
      - assets/image/
+     - assets/translation/en-US.json
+     - assets/translation/ar-SA.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

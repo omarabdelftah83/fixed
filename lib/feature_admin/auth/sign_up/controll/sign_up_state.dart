@@ -14,7 +14,7 @@ class LoginErrorState extends SignUpState {
   LoginErrorState(this.errorMessage);
 }
 
-class ChangePasswordVisabilityState extends SignUpState {}
+class ChangePasswordVisibilityState extends SignUpState {}
 
 class ValidationErrorState extends SignUpState {
   final String emailError;

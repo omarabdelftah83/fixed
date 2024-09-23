@@ -1,10 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:webbing_fixed/core/App_string/app_string.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
 import 'package:webbing_fixed/core/route/routes.dart';
 import 'package:webbing_fixed/core/text_failed/custom_text_failed.dart';
-
 
 class LoginBody extends StatelessWidget {
   @override
@@ -12,9 +11,9 @@ class LoginBody extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const Center(
+          Center(
             child: CustomText(
-              text: AppStrings.signIn,
+              text: 'signIn'.tr(),  // Use translation key
               fontSize: 24,
               fontWeight: FontWeight.w600,
             ),
@@ -52,30 +51,25 @@ class LoginBody extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: SingleChildScrollView(  // Add SingleChildScrollView here
+                    child: SingleChildScrollView(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 10),
-                          const Align(
-                            alignment: Alignment.topRight,
-                            child: CustomText(
-                              text: AppStrings.emailOrPhone,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                            ),
+                          CustomText(
+                            text: 'emailOrPhone'.tr(),  // Use translation key
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
                           ),
                           const SizedBox(height: 10),
                           const CustomTextField(
                             keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(height: 30),
-                          const Align(
-                            alignment: Alignment.topRight,
-                            child: CustomText(
-                              text: AppStrings.password,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                            ),
+                          CustomText(
+                            text: 'password'.tr(),  // Use translation key
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
                           ),
                           const SizedBox(height: 10),
                           const CustomTextField(
@@ -89,14 +83,11 @@ class LoginBody extends StatelessWidget {
                             onTap: () {
                               Navigator.pushNamed(context, Routes.ForgetPasswordPage);
                             },
-                            child: const Align(
-                              alignment: Alignment.topRight,
-                              child: CustomText(
-                                textColor: Color(0xFF3EBBDD),
-                                text: AppStrings.forgetPass,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                              ),
+                            child: CustomText(
+                              textColor: Color(0xFF3EBBDD),
+                              text: 'forgetPass'.tr(),  // Use translation key
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                           const SizedBox(height: 30),
@@ -104,7 +95,7 @@ class LoginBody extends StatelessWidget {
                             onPressed: () {
                               Navigator.pushNamed(context, Routes.mainLayoutPage);
                             },
-                            text: AppStrings.signIn,
+                            text: 'signIn'.tr(),  // Use translation key
                           ),
                           const SizedBox(height: 30),
                           InkWell(
@@ -113,15 +104,15 @@ class LoginBody extends StatelessWidget {
                             },
                             child: RichText(
                               textAlign: TextAlign.center,
-                              text: const TextSpan(
+                              text: TextSpan(
                                 style: TextStyle(color: Colors.black),
                                 children: <TextSpan>[
                                   TextSpan(
-                                    text: AppStrings.noAccount + ' ',
+                                    text: 'noAccount'.tr() + ' ',  // Use translation key
                                     style: TextStyle(color: Colors.black, fontSize: 16),
                                   ),
                                   TextSpan(
-                                    text: AppStrings.createAccount,
+                                    text: 'createAccount'.tr(),  // Use translation key
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Color(0xFF3EBBDD),
@@ -138,13 +129,13 @@ class LoginBody extends StatelessWidget {
                               Image.asset(
                                 'assets/icon_google.png',
                                 width: 50,
-                                height: 100,
+                                height: 50,  // Adjusted to match image aspect ratio
                               ),
                               const SizedBox(width: 16),
                               Image.asset(
                                 'assets/icon_face.png',
                                 width: 50,
-                                height: 100,
+                                height: 50,  // Adjusted to match image aspect ratio
                               ),
                             ],
                           ),
@@ -161,4 +152,3 @@ class LoginBody extends StatelessWidget {
     );
   }
 }
-

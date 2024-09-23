@@ -1,40 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:webbing_fixed/core/App_string/app_string.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
+import 'package:webbing_fixed/core/route/routes.dart';
 import 'package:webbing_fixed/core/services/service_locator.dart';
 import 'package:webbing_fixed/core/text_failed/custom_text_failed.dart';
-import 'package:webbing_fixed/features_user/auth/forget_passwored/controll/reset_password_cubit.dart';
-import 'package:webbing_fixed/features_user/auth/forget_passwored/controll/reset_password_state.dart';
+import 'package:webbing_fixed/features_user/auth/create_new_passwored/cotroll/create_new_password_cubit.dart';
 
-class ForgetPassWoredBody extends StatelessWidget {
+class NewPasswordBody extends StatelessWidget {
+  const NewPasswordBody({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => serLoc<ForgetPasswordCubit>(),
-      child: BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
-        builder: (context, state) {
-          final cubit = BlocProvider.of<ForgetPasswordCubit>(context);
-
-          return
-            state is ForgetPasswordLoading
-            ? const Center(child: CircularProgressIndicator())
-           : SingleChildScrollView(
-
-             child: Column(
+    return SingleChildScrollView(
+      child: BlocProvider(
+        create: (context) => serLoc<CreateNewPasswordCubit>(),
+        child: BlocBuilder<CreateNewPasswordCubit, CreateNewPasswordState>(
+          builder: (context, state) {
+            final cubit = BlocProvider.of<CreateNewPasswordCubit>(context);
+            return
+              state is CreateNewPasswordLoading ?
+                  ? const Center(child: CircularProgressIndicator())
+             : Column(
               children: [
                 const Center(
                   child: CustomText(
-                    text: 'نسيت كلمة المرور ؟',
+                    text: 'انشاء كلمة مرور جديدة',
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 Stack(
                   children: [
+                    // Container 1 (Gray)
                     Container(
-                      height: 580.h,
+                      height: 600.h,
                       margin: const EdgeInsets.only(top: 40),
                       decoration: const BoxDecoration(
                         color: Color(0xFF3EBBDD),
@@ -69,41 +71,60 @@ class ForgetPassWoredBody extends StatelessWidget {
                               const Align(
                                 alignment: Alignment.topRight,
                                 child: CustomText(
-                                  text: 'البريد الاكتروني او رقم الهاتف',
+                                  text: 'كلمة مرور جديدة ',
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                               const SizedBox(height: 10),
                                CustomTextField(
-                                errorText: cubit.emailError,
-                                controller:cubit. emailAddressController,
-                                hintText: 'Example@gmail.com',
-                                keyboardType: TextInputType.emailAddress,
+                                errorText:cubit.passError ,
+                                controller:cubit. passwordController,
+                                hintText: '********',
                                 onChanged: (value) {
-                                  cubit.onChangeEmail(value);
+                                  cubit.onChangePass(value);
                                 },
+                                keyboardType: TextInputType.visiblePassword,
+                                maxLines: 1,
+                                isPassword: true,
+                                obscureText: true,
+                              ),
+                              const SizedBox(height: 30),
+                              const Align(
+                                alignment: Alignment.topRight,
+                                child: CustomText(
+                                  text: 'تأكيد كلمة المرور',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                               CustomTextField(
+                                errorText: cubit.confirmPasswordError,
+                                controller:cubit. passwordConfirmController,
+                                hintText: '********',
+                                keyboardType: TextInputType.visiblePassword,
+                                onChanged: (value) {
+                                  cubit.onChangeConfirmPassword(value);
+                                },
+                                maxLines: 1,
+                                isPassword: true,
+                                obscureText: true,
                               ),
                               const SizedBox(height: 30),
                               CustomButton(
                                 onPressed: () {
-                                  cubit.buttonForgetPassword(context);
+                                cubit.buttonCreatePass(context);
                                 },
-                                text: 'تاكيد',
+                                text: AppStrings.ofCourse,
                               ),
                               const SizedBox(height: 30),
-                               Center(
-                                child: InkWell(
-                                  onTap: (){
-                                    Navigator.pop(context);
-                                  },
-                                  child: const CustomText(
-                                    text: 'رجوع ',
-                                    textColor: Color(0xFF3EBBDD),
-                                  ),
+                              const Center(
+                                child: CustomText(
+                                  text: 'رجوع ',
+                                  textColor: Color(0xFF3EBBDD),
                                 ),
                               ),
-
                             ],
                           ),
                         ),
@@ -112,9 +133,9 @@ class ForgetPassWoredBody extends StatelessWidget {
                   ],
                 ),
               ],
-                       ),
-           );
-        },
+            );
+          },
+        ),
       ),
     );
   }

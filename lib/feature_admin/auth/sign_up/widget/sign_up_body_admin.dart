@@ -1,14 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:webbing_fixed/core/app_text/AppText.dart';
-import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
-import 'package:webbing_fixed/core/route/routes.dart';
-import 'package:webbing_fixed/core/text_failed/custom_text_failed.dart';
-import 'package:webbing_fixed/feature_admin/auth/sign_up/controll/sign_up_cubit.dart';
-import 'package:webbing_fixed/feature_admin/auth/sign_up/controll/sign_up_state.dart';
-import 'package:webbing_fixed/feature_admin/auth/sign_up/model/api_service.dart';
+import 'package:webbing_fixed/core/services/service_locator.dart';
+import '../sign_up_export.dart';
 
 class CustomSingUpBody extends StatelessWidget {
   const CustomSingUpBody({super.key});
@@ -18,12 +11,15 @@ class CustomSingUpBody extends StatelessWidget {
     ScreenUtil.init(context);
 
     return BlocProvider(
-      create: (context) => SignUpCubit(ApiService()),
+      create: (context) => serLoc<SignUpCubit>(),
       child: BlocBuilder<SignUpCubit, SignUpState>(
         builder: (context, state) {
           final cubit = BlocProvider.of<SignUpCubit>(context);
 
-          return SingleChildScrollView(
+          return
+            state is SingUpLoading
+            ? const Center(child: CircularProgressIndicator())
+          :  SingleChildScrollView(
             child: Column(
               children: [
                 const Center(
@@ -201,8 +197,7 @@ class CustomSingUpBody extends StatelessWidget {
                                     child: Checkbox(
                                       value: cubit.providesServices,
                                       onChanged: (bool? value) {
-                                        cubit.providesServices = value ?? false;
-                                        cubit.emit(FieldChangedState());
+                                        cubit.onServiceChanged(value);
                                       },
                                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                       side: const BorderSide(width: 0.0),
@@ -252,11 +247,12 @@ class CustomSingUpBody extends StatelessWidget {
                                   Transform.translate(
                                     offset: Offset(0, -9.h),
                                     child: Checkbox(
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                       side: const BorderSide(width: 0.0),
-                                      value: false,
-                                      onChanged: (bool? value) {},
+                                      value: cubit.acceptsTermsAndConditions,
+                                      onChanged: (bool? value) {
+                                        cubit.onTermsAndConditionsChanged(value);
+                                      },
                                     ),
                                   ),
                                 ],
@@ -264,7 +260,7 @@ class CustomSingUpBody extends StatelessWidget {
                               SizedBox(height: 30.h),
                               CustomButton(
                                 onPressed: () {
-                                  cubit.buttonSingUp(context);
+                                  cubit.buttonSignUp(context);
                                 },
                                 text: 'متابعه',
                               ),

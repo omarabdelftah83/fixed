@@ -1,21 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:webbing_fixed/core/text_failed/drop_down_custom_textfailed.dart';
-import 'on_boarding_export.dart';
-class CountryPage extends StatelessWidget {
+import 'on_boarding_export.dart'; // Ensure all necessary exports
+
+class CountryPage extends StatefulWidget {
+  @override
+  _CountryPageState createState() => _CountryPageState();
+}
+
+class _CountryPageState extends State<CountryPage> {
+  String _selectedLanguage = 'english'; // Default language
+
+  void _changeLanguage(String? selectedItem) {
+    if (selectedItem != null) {
+      setState(() {
+        _selectedLanguage = selectedItem;
+      });
+    }
+  }
+
+  void _applyLanguage() {
+    Locale locale;
+    switch (_selectedLanguage) {
+      case 'العربيه':
+        locale = Locale('ar', 'SA');
+        break;
+      case 'english':
+        locale = Locale('en', 'US');
+        break;
+      default:
+        locale = Locale('en', 'US');
+    }
+    EasyLocalization.of(context)?.setLocale(locale);
+    Navigator.pushNamed(context, Routes.inHomePage);  // Ensure this route is defined
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: 95.h,
-            ),
-            Image.asset(AppAssets.inHomeImage),
-            SizedBox(
-              height: 10.h,
-            ),
+            SizedBox(height: 95.h),
+            Image.asset(AppAssets.inHomeImage),  // Ensure the image asset exists
+            SizedBox(height: 10.h),
             Stack(
               children: [
                 Container(
@@ -63,10 +92,10 @@ class CountryPage extends StatelessWidget {
                             DropDownCustomTextfailed(
                               prefixIcon: const Icon(Icons.arrow_drop_down),
                               hintText: 'اختر الدوله',
-                              dropdownItems: ['الكويت','مصر'],
+                              dropdownItems: ['الكويت', 'مصر'],
                               onDropdownChanged: (selectedItem) {
+                                // Handle country selection if needed
                               },
-
                             ),
                             const SizedBox(height: 10),
                             const Align(
@@ -81,17 +110,19 @@ class CountryPage extends StatelessWidget {
                             DropDownCustomTextfailed(
                               prefixIcon: const Icon(Icons.arrow_drop_down),
                               hintText: 'اختر اللغه',
-                              dropdownItems: ['english','العربيه'],
+                              dropdownItems: ['english', 'العربيه'],
                               onDropdownChanged: (selectedItem) {
+                                if (selectedItem != null) {
+                                  _changeLanguage(selectedItem);
+                                }
                               },
-
                             ),
                             const SizedBox(height: 80),
                             CustomButton(
-                                width: 343.w,
-                                onPressed: (){
-                                  Navigator.pushNamed(context, Routes.inHomePage);
-                                }, text: 'حفظ')
+                              width: 343.w,
+                              onPressed: _applyLanguage,
+                              text: 'حفظ',
+                            ),
                           ],
                         ),
                       ),
