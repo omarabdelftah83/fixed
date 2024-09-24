@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';  // Import EasyLocali
 import 'package:webbing_fixed/core/services/service_locator.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up.dart';
 import 'core/route/routes.dart';
+import 'feature_admin/auth/sign_up/controll/sign_up_cubit.dart';
 import 'feature_admin/mainlayout/controll/mainlayoutadmin_cubit.dart';
 import 'features_user/main_layout/presentaion/main_layout_cubit.dart';
 import 'helpers/cache_helper.dart';
@@ -37,6 +38,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<SignUpCubit>(
+          create: (context) => serLoc<SignUpCubit>(),
+        ),
         BlocProvider<MainScreenCubit>(
           create: (context) => MainScreenCubit(),
         ),

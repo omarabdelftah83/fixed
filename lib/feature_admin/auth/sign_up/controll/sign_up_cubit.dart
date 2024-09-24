@@ -1,21 +1,14 @@
-import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:webbing_fixed/core/resource/app_string.dart';
-import 'package:webbing_fixed/feature_admin/auth/sign_in/sign_in_page.dart';
-import 'package:webbing_fixed/network/api_service.dart';
-import 'package:webbing_fixed/feature_admin/auth/sign_up/model/sign_up_model.dart';
-import 'sign_up_state.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up_export.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   final ApiService apiService;
-
+final GetAllService getAllService;
   // Controllers
   final TextEditingController emailAddressController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
   // Form Fields
   String name = '';
   String email = '';
@@ -34,8 +27,20 @@ class SignUpCubit extends Cubit<SignUpState> {
   bool providesServices = false;
   bool acceptsTermsAndConditions = false;
   bool passwordVisibility = true;
+  List<String> serviceItems = [];
 
-  SignUpCubit(this.apiService) : super(SignUpInitial());
+  SignUpCubit(this.apiService, this.getAllService) : super(SignUpInitial());
+  Future<void> fetchServices() async {
+    try {
+      emit(SingUpLoading());
+      final services = await getAllService.getAll(); // Adjust based on actual implementation
+      emit(ServicesLoaded(services));
+    } catch (e) {
+      print('Error in fetchServices: $e');
+      emit(LoginErrorState(e.toString()));
+    }
+  }
+
 
   Future<void> buttonSignUp(BuildContext context) async {
     emit(SingUpLoading());

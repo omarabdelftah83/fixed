@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:webbing_fixed/core/resource/app_string.dart';
 import 'package:webbing_fixed/helpers/cache_helper.dart';
 
 class NetworkHandler {

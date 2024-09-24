@@ -1,9 +1,15 @@
+import 'package:webbing_fixed/feature_admin/auth/sign_up/model/get_all_services_model.dart';
+
 abstract class SignUpState {}
 
 class SignUpInitial extends SignUpState {}
 
 class SingUpLoading extends SignUpState {}
+class ServicesLoaded extends SignUpState {
+  final List<GetAllServicesModel> services; // Adjust based on actual type
 
+  ServicesLoaded(this.services);
+}
 class SingUpLoaded extends SignUpState {}
 
 class FieldChangedState extends SignUpState {}

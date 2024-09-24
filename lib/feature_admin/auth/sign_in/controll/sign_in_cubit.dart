@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:webbing_fixed/core/resource/app_string.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_in/controll/sign_in_state.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_in/model/sign_in_model.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_up/widget/sign_up_services.dart';
 import 'package:webbing_fixed/feature_admin/mainlayout/main_layout_admin_page.dart';
 import 'package:webbing_fixed/network/api_service.dart';
 
@@ -40,7 +41,7 @@ class SignInCubit extends Cubit<SignInState> {
 
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) => const MainLayoutPageAdmin()),
+                builder: (context) =>  SignUpService()),
           );
         },
       );
