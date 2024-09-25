@@ -1,85 +1,37 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up_export.dart';
 
-class SignUpService extends StatefulWidget {
+class SignUpServiceBody extends StatefulWidget {
   @override
-  _SignUpServiceState createState() => _SignUpServiceState();
+  _SignUpServiceBodyState createState() => _SignUpServiceBodyState();
 }
 
-class _SignUpServiceState extends State<SignUpService> {
-  final ImagePicker _imagePicker = ImagePicker();
-  File? _frontImageFile;
-  File? _backImageFile;
-  File? _profileImageFile;
-  bool _isFrontImageUploading = false;
-  bool _isBackImageUploading = false;
-  bool _isProfileImageUploading = false;
-@override
+class _SignUpServiceBodyState extends State<SignUpServiceBody> {
+  @override
   void initState() {
     super.initState();
     final cubit = BlocProvider.of<SignUpCubit>(context);
     cubit.fetchServices();
   }
-  Future<void> _pickImageFromCamera(String imageType) async {
-    try {
-      final pickedFile = await _imagePicker.pickImage(source: ImageSource.camera);
-
-      if (pickedFile != null) {
-        setState(() {
-          if (imageType == 'front') {
-            _frontImageFile = File(pickedFile.path);
-            _isFrontImageUploading = true;
-          } else if (imageType == 'back') {
-            _backImageFile = File(pickedFile.path);
-            _isBackImageUploading = true;
-          } else if (imageType == 'profile') {
-            _profileImageFile = File(pickedFile.path);
-            _isProfileImageUploading = true;
-          }
-        });
-        await _uploadImage(pickedFile.path, imageType);
-      }
-    } catch (e) {
-      print('Error picking image from camera: $e');
-    }
-  }
-
-  Future<void> _uploadImage(String imagePath, String imageType) async {
-    await Future.delayed(Duration(seconds: 1));
-
-    setState(() {
-      if (imageType == 'front') {
-        _isFrontImageUploading = false;
-      } else if (imageType == 'back') {
-        _isBackImageUploading = false;
-      } else if (imageType == 'profile') {
-        _isProfileImageUploading = false;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    List<String> serviceItems = [];
-
     return Scaffold(
-      appBar: CustomAppBar(),
+   //   appBar: CustomAppBar(),
       body: BlocBuilder<SignUpCubit, SignUpState>(
         builder: (context, state) {
           final cubit = BlocProvider.of<SignUpCubit>(context);
-          if (state is ServicesLoaded) {
+          List<String> serviceItems = [];
 
-            serviceItems = state.services
-                .map((serviceItems) => serviceItems.name)
-                .toList();
+          if (state is ServicesLoaded) {
+            serviceItems =
+                state.services.map((service) => service.name).toList();
           }
 
           return SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(height: 60.h,),
                 const Center(
                   child: CustomText(
                     text: 'تسجيل الخدمة',
@@ -90,6 +42,7 @@ class _SignUpServiceState extends State<SignUpService> {
                 Stack(
                   children: [
                     Container(
+
                       height: 700,
                       margin: const EdgeInsets.only(top: 40),
                       decoration: const BoxDecoration(
@@ -136,7 +89,14 @@ class _SignUpServiceState extends State<SignUpService> {
                                   hintText: 'اختر الخدمة',
                                   dropdownItems: serviceItems,
                                   onDropdownChanged: (selectedItem) {
-                                    // Handle dropdown change
+                                    if (state is ServicesLoaded) {
+                                      final selectedService = state.services
+                                          .firstWhere((service) =>
+                                              service.name == selectedItem);
+                                      cubit.selectedServiceID = selectedService
+                                          .id
+                                          .toString(); // Convert int to String                                      cubit.onServiceChanged(selectedServiceID); // Pass the ID instead of the name
+                                    }
                                   },
                                 ),
                                 const SizedBox(height: 30),
@@ -149,36 +109,38 @@ class _SignUpServiceState extends State<SignUpService> {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () => _pickImageFromCamera('front'),
-                                        child: Container(
-                                          padding: const EdgeInsets.all(8.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: Colors.grey),
-                                            borderRadius: BorderRadius.circular(8.0),
-                                          ),
-                                          child: _isFrontImageUploading
-                                              ? const Center(child: CircularProgressIndicator())
-                                              : _frontImageFile == null
-                                              ? const Icon(Icons.camera_alt_outlined, size: 24)
-                                              : Image.file(_frontImageFile!),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(23.0),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => cubit.pickImageFromCamera('back'),
+                                        child: cubit.isBackImageUploading
+                                            ? const Center(child: CircularProgressIndicator())
+                                            : cubit.backImageFile == null
+                                            ? const Icon(Icons.camera_alt_outlined, size: 24)
+                                            : Image.file(
+                                          cubit.backImageFile!,
+                                          width: 50, // Set width
+                                          height: 50, // Set height
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    const Expanded(
-                                      child: CustomTextField(
-                                        prefixIcon: Icon(Icons.download),
-                                        hintText: 'تحميل',
-                                        keyboardType: TextInputType.emailAddress,
+                                      const SizedBox(width: 10), // Space between the camera and the text
+                                      const CustomText(
+                                        text: 'الرجاء تحميل صورة الاماميه',
+                                        textColor: Colors.grey,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 20),
                                 const Align(
                                   alignment: Alignment.topRight,
                                   child: CustomText(
@@ -188,36 +150,39 @@ class _SignUpServiceState extends State<SignUpService> {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () => _pickImageFromCamera('back'),
-                                        child: Container(
-                                          padding: const EdgeInsets.all(8.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: Colors.grey),
-                                            borderRadius: BorderRadius.circular(8.0),
-                                          ),
-                                          child: _isBackImageUploading
-                                              ? const Center(child: CircularProgressIndicator())
-                                              : _backImageFile == null
-                                              ? const Icon(Icons.camera_alt_outlined, size: 24)
-                                              : Image.file(_backImageFile!),
+
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(23.0),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => cubit.pickImageFromCamera('front'),
+                                        child: cubit.isFrontImageUploading
+                                            ? const Center(child: CircularProgressIndicator())
+                                            : cubit.frontImageFile == null
+                                            ? const Icon(Icons.camera_alt_outlined, size: 24)
+                                            : Image.file(
+                                          cubit.frontImageFile!,
+                                          width: 50, // Set width
+                                          height: 50, // Set height
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    const Expanded(
-                                      child: CustomTextField(
-                                        prefixIcon: Icon(Icons.download),
-                                        hintText: 'تحميل',
-                                        keyboardType: TextInputType.emailAddress,
+                                      const SizedBox(width: 10), // Space between the camera and the text
+                                      const CustomText(
+                                        textColor: Colors.grey,
+                                        fontSize: 12,
+                                        text: 'الرجاء تحميل صورة الخلفيه',
+                                        fontWeight: FontWeight.w400,
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                                const SizedBox(height: 30),
+                                const SizedBox(height: 20),
                                 const Align(
                                   alignment: Alignment.topRight,
                                   child: CustomText(
@@ -226,32 +191,57 @@ class _SignUpServiceState extends State<SignUpService> {
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
-                                const SizedBox(height: 30),
-                                GestureDetector(
-                                  onTap: () => _pickImageFromCamera('profile'),
-                                  child: Container(
-                                    width: 00,
-                                    padding: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    child: _isProfileImageUploading
-                                        ? const Center(child: CircularProgressIndicator())
-                                        : _profileImageFile == null
-                                        ? const Icon(Icons.camera_alt_outlined, size: 24)
-                                        : Image.file(_profileImageFile!),
+                                 SizedBox(height: 10.h),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15.0, vertical: 10.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(23.0),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => cubit
+                                            .pickImageFromCamera('profile'),
+                                        child: cubit.isProfileImageUploading
+                                            ? const Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : cubit.profileImageFile == null
+                                                ? const Icon(
+                                                    Icons.camera_alt_outlined,
+                                                    size: 24)
+                                                : Image.file(
+                                                    cubit.profileImageFile!,
+                                                    width: 50,
+                                                    // Set width
+                                                    height: 50,
+                                                  ), // Adjust the size as needed
+                                      ),
+                                      const SizedBox(width: 10),
+                                      // Space between the camera and the text
+                                      const CustomText(
+                                        textColor: Colors.grey,
+                                        fontSize: 12,
+                                        text: 'افتح الكاميرة لالتقاط صورة',
+
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(height: 30),
+                                 SizedBox(height: 30.h),
                                 CustomButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.mainLayoutPage);
+                                    cubit.postServices(
+                                        context); // Ensure this method is defined in your cubit
                                   },
                                   text: 'انشاء حساب',
                                 ),
-                                const SizedBox(height: 30),
+                                const SizedBox(height: 50),
                                 InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(
@@ -264,9 +254,7 @@ class _SignUpServiceState extends State<SignUpService> {
                                       children: <TextSpan>[
                                         TextSpan(
                                           text: AppStrings.noAccount + ' ',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16),
+                                          style: TextStyle(fontSize: 16),
                                         ),
                                         TextSpan(
                                           text: AppStrings.createAccount,

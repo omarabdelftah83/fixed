@@ -17,7 +17,7 @@ class CustomSingUpBody extends StatelessWidget {
           final cubit = BlocProvider.of<SignUpCubit>(context);
 
           return
-            state is SingUpLoading
+            state is SignUpLoading
             ? const Center(child: CircularProgressIndicator())
           :  SingleChildScrollView(
             child: Column(

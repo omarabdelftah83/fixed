@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:webbing_fixed/core/SvgIcon/custom_svg_icon.dart';
-import 'package:webbing_fixed/core/app_text/AppText.dart';
-import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
-import 'package:webbing_fixed/core/resource/assets_manager.dart';
-import 'package:webbing_fixed/core/widget/custom_app_padding.dart';
-import 'package:webbing_fixed/features_user/onboarding/screen/on_boarding_export.dart';
-import 'package:webbing_fixed/features_user/sitting/widget/custom_switch.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:webbing_fixed/feature_admin/home/controll/home_cubit.dart';
+import 'package:webbing_fixed/feature_admin/home/controll/home_state.dart';
+import 'package:webbing_fixed/feature_admin/home/home_export.dart';
 
-class HomePageAdmin extends StatelessWidget {
+class HomePageAdmin extends StatefulWidget {
   const HomePageAdmin({super.key});
 
+  @override
+  State<HomePageAdmin> createState() => _HomePageAdminState();
+}
+
+class _HomePageAdminState extends State<HomePageAdmin> {
+  @override
+  void initState() {
+    super.initState();
+    final cubit = BlocProvider.of<HomeCubit>(context);
+    cubit.getAllOrder();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +76,7 @@ class HomePageAdmin extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                       CustomText(
+                      CustomText(
                         text: 'رفض السعر من العميل  ', fontSize: 12.sp,),
 
                       IconButton(
@@ -100,56 +107,67 @@ class HomePageAdmin extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
               SizedBox(height: 20.h),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: EdgeInsets.symmetric(vertical: 10.h),
-                    // Use ScreenUtil for margin
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          15.r), // Use ScreenUtil for radius
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(16.w),
-                      // Use ScreenUtil for padding
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const CustomText(
-                            text: ': الاسم ',
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+              BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  if (state is HomeLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is HomeLoaded) {
+                    final services = state.services;
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: services.length,
+                      itemBuilder: (context, index) {
+                        final service = services[index];
+                        return Card(
+                          margin: EdgeInsets.symmetric(vertical: 10.h),
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.r),
                           ),
-                          SizedBox(height: 10.h),
-                          const CustomText(
-                            text: ': الخدمة ',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
+                          child: Padding(
+                            padding: EdgeInsets.all(16.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                CustomText(
+                                  text: 'الاسم : ${service.name}',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                SizedBox(height: 10.h),
+                                CustomText(
+                                  text: 'الخدمة : ${service.serviceName}',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                SizedBox(height: 10.h),
+                                CustomText(
+                                  textColor: Colors.blue,
+                                  text: 'اليوم - ${service.time}',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                SizedBox(height: 30.h),
+                                CustomButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, Routes.orderDetails);
+                                  },
+                                  text: 'المزيد',
+                                  width: 160.w,
+                                  height: 30.h,
+                                ),
+                              ],
+                            ),
                           ),
-                          SizedBox(height: 10.h),
-                          const CustomText(
-                            textColor: Colors.blue,
-                            text: ': اليوم - 6 مساء ',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          SizedBox(height: 30.h),
-                          CustomButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, Routes.orderDetails);
-                            },
-                            text: 'المزيد',
-                            width: 160.w, // Use ScreenUtil for button width
-                            height: 30.h, // Use ScreenUtil for button height
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                        );
+                      },
+                    );
+                  } else if (state is HomeErrorState) {
+                    return Center(child: Text(state.errorMessage));
+                  }
+                  return const SizedBox(); // Return empty widget for initial state
                 },
               ),
             ],

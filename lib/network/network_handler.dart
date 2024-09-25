@@ -6,8 +6,8 @@ class NetworkHandler {
   final Dio _dio = Dio();
 
   NetworkHandler() {
-    _dio.options.connectTimeout = const Duration(seconds: 60); // Increased connect timeout
-    _dio.options.receiveTimeout = const Duration(seconds: 60); // Increased receive timeout
+    _dio.options.connectTimeout = const Duration(seconds: 120); // Increased connect timeout
+    _dio.options.receiveTimeout = const Duration(seconds: 120); // Increased receive timeout
     _dio.options.headers = {
       'Content-Type': 'application/json',
     };
@@ -97,30 +97,31 @@ class NetworkHandler {
   Future<Response> postImage(String endpoint, FormData data) async {
     try {
       await _addTokenToHeaders();
-      Response response = await _dio.post(
+      print('Sending request to: $endpoint');
+      print('Sending FormData: ${data.fields}');
+      final response = await _dio.post(
         endpoint,
         data: data,
       );
-      if (response.statusCode == 200) {
+      print('Response status code: ${response.statusCode}');
+      print('Response data: ${response.data}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return response;
       } else {
-        // تسجيل معلومات إضافية حول الاستجابة إذا فشلت
-        print('Failed to post image: ${response.statusCode}');
-        print('Response data: ${response.data}');
-        throw Exception('Failed to post image: ${response.statusCode}');
+        throw Exception('Failed to post image: ${response.statusCode} - ${response.statusMessage}');
       }
     } on DioException catch (e) {
-      // تسجيل تفاصيل الاستثناء من Dio
       print('DioException: ${e.message}');
+      print('Request path: ${e.requestOptions.path}');
       print('Response data: ${e.response?.data}');
+      print('Request headers: ${e.requestOptions.headers}');
+      print('Request data: ${e.requestOptions.data}');
       throw Exception('Failed to post image: ${e.message}');
     } catch (e) {
-      // تسجيل أي استثناءات أخرى
       print('General Exception: $e');
       rethrow;
     }
   }
-
   Future<Response> put(String endpoint, Map<String, dynamic> data) async {
     try {
       await _addTokenToHeaders();
@@ -182,5 +183,12 @@ class NetworkHandler {
       print('General Exception: $e');
       rethrow;
     }
+  }
+  void _handleDioError(DioException e) {
+    print('DioException: ${e.message}');
+    print('Request path: ${e.requestOptions.path}');
+    print('Response data: ${e.response?.data}');
+    print('Request headers: ${e.requestOptions.headers}');
+    print('Request data: ${e.requestOptions.data}');
   }
 }

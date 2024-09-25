@@ -1,14 +1,25 @@
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_up/data/post_services.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_up/model/post_provide_model.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up_export.dart';
+import 'package:webbing_fixed/feature_admin/mainlayout/main_layout_admin_page.dart';
+import 'package:webbing_fixed/helpers/cache_helper.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   final ApiService apiService;
-final GetAllService getAllService;
+  final GetAllService getAllService;
+  final PostService postService;
+
   // Controllers
   final TextEditingController emailAddressController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
   // Form Fields
   String name = '';
   String email = '';
@@ -22,6 +33,7 @@ final GetAllService getAllService;
   String passError = '';
   String phoneNumberError = '';
   String confirmPasswordError = '';
+  String? selectedServiceID;
 
   // Flags
   bool providesServices = false;
@@ -29,11 +41,113 @@ final GetAllService getAllService;
   bool passwordVisibility = true;
   List<String> serviceItems = [];
 
-  SignUpCubit(this.apiService, this.getAllService) : super(SignUpInitial());
+  // Image Handling
+  File? frontImageFile;
+  File? backImageFile;
+  File? profileImageFile;
+  bool isFrontImageUploading = false;
+  bool isBackImageUploading = false;
+  bool isProfileImageUploading = false;
+  final ImagePicker _imagePicker = ImagePicker();
+
+  SignUpCubit(this.apiService, this.getAllService, this.postService)
+      : super(SignUpInitial());
+
+  Future<void> pickImageFromCamera(String imageType) async {
+    try {
+      final pickedFile =
+          await _imagePicker.pickImage(source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        switch (imageType) {
+          case 'front':
+            frontImageFile = File(pickedFile.path);
+            isFrontImageUploading = true;
+            break;
+          case 'back':
+            backImageFile = File(pickedFile.path);
+            isBackImageUploading = true;
+            break;
+          case 'profile':
+            profileImageFile = File(pickedFile.path);
+            isProfileImageUploading = true;
+            break;
+        }
+        emit(ImageUploadingState(imageType));
+        await _uploadImage(pickedFile.path, imageType);
+      }
+    } catch (e) {
+      print('Error picking image from camera: $e');
+    }
+  }
+
+  Future<void> _uploadImage(String imagePath, String imageType) async {
+    await Future.delayed(Duration(seconds: 1));
+
+    switch (imageType) {
+      case 'front':
+        isFrontImageUploading = false;
+        break;
+      case 'back':
+        isBackImageUploading = false;
+        break;
+      case 'profile':
+        isProfileImageUploading = false;
+        break;
+    }
+    emit(ImageUploadCompletedState(imageType));
+  }
+
+  Future<void> postServices(BuildContext context) async {
+    try {
+      emit(SignUpLoading());
+
+      String? token = CacheHelper.getUserId();
+      final int? userId = token != null ? int.tryParse(token) : null;
+      final int? serviceID =
+          selectedServiceID != null ? int.tryParse(selectedServiceID!) : null;
+
+      final servicesRequest = ServicesRequest(
+        userId: userId,
+        serviceID: serviceID,
+        pic_id: frontImageFile,
+        pic_id2: backImageFile,
+        personlity_pic: profileImageFile,
+      );
+
+      print("ServicesRequest: ${await servicesRequest.toMap()}");
+
+      final res = await postService.postServices(servicesRequest);
+
+      res.fold(
+        (failure) {
+          print('Error: ${failure.message}');
+          emit(LoginErrorState(AppString.invalidCredentialsError));
+        },
+        (success) {
+          print('Service posted successfully');
+          emit(SignUpLoaded());
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => const MainLayoutPageAdmin()),
+          );
+        },
+      );
+    } catch (e) {
+      if (e is DioException) {
+        print('DioException: ${e.message}');
+        print('DioException: ${e.response?.data}');
+      } else {
+        print('Error in postServices: $e');
+      }
+      emit(LoginErrorState(e.toString()));
+    }
+  }
+
   Future<void> fetchServices() async {
     try {
-      emit(SingUpLoading());
-      final services = await getAllService.getAll(); // Adjust based on actual implementation
+      emit(SignUpLoading());
+      final services = await getAllService.getAll();
       emit(ServicesLoaded(services));
     } catch (e) {
       print('Error in fetchServices: $e');
@@ -41,9 +155,8 @@ final GetAllService getAllService;
     }
   }
 
-
   Future<void> buttonSignUp(BuildContext context) async {
-    emit(SingUpLoading());
+    emit(SignUpLoading());
 
     if (!validateInput()) {
       emit(ValidationErrorState(emailError, passError, nameError,
@@ -87,14 +200,17 @@ final GetAllService getAllService;
 
     final res = await apiService.signUp(registerRequest);
     res.fold(
-          (failure) {
+      (failure) {
         print('Error: ${failure.message}');
         emit(LoginErrorState(AppString.invalidCredentialsError));
         _showSnackbar(context, AppString.invalidCredentialsError, Colors.red);
       },
-          (success) {
+      (success) async {
+        if (success.userId != null) {
+          await CacheHelper.saveUserId(success.userId.toString());
+        }
         print('Success: ${success.message}');
-        emit(SingUpLoaded());
+        emit(SignUpLoaded());
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => const SignInPageAdmin()),
         );
@@ -204,21 +320,11 @@ final GetAllService getAllService;
     phoneNumberError = '';
     emit(FieldChangedState());
   }
+
   final List<String> termsAndConditions = [
-    'مرحبًا بك في In Home، منصتك الرئيسية التي تربط مقدمي الخدمات المهرة في مختلف تخصصات الصيانة المنزلية مع عدد كبير من العملاء. تم تصميم In Home كوسيط سلس، حيث تعمل على تبسيط عملية مطابقة احتياجات العملاء مع خبرتك. سواء كنت بارعًا في حرفة ما أو كهربائيًا أو سباكًا، أو أي تخصص آخر في الخدمات المنزلية، يوفر لك تطبيقنا الفرصة لتوسيع قاعدة عملائك دون عناء. انضم إلينا اليوم لتعزيز دخلك والوصول إلى جمهور أوسع من العملاء المحتملين.',
-    'تحكم الشروط والأحكام التالية استخدامك لتقديم خدمات الصيانة المنزلية عن طريق تطبيق إن هوم. باستخدام تطبيقنا إن هوم فأنك توافق على الالتزام بالشروط والأحكام التالية:',
-    '1. *رسوم العمولة*: نتقاضى عمولة قدرها 10% من إجمالي قيمة الطلب مقابل الخدمات المقدمة عبر تطبيقنا.',
-    '2. *تكلفة المصنعية*: السعر المعروض للعميل يغطي تكلفة المصنعية فقط ولا تشمل تكلفة المواد التي سيتم تحديدها بشكل منفصل.',
-    '3. *تكلفة المواد*: سيتم تقييم تكلفة المواد اللازمة للخدمة وتقديمها للعميل بعد الفحص. يحق للعميل قبول أو رفض تكلفة المواد المقترحة.',
-    '4. *إلغاء الطلب*: إذا قمت بإلغاء طلب بعد تأكيده، فسوف تخضع لغرامة قدرها 10 جنيه مصري، والتي سيتم خصمها من أي أرباح مستقبلية.',
-    '5. *الشكاوى وإنهاء الحساب*: أي شكاوى مستلمة عنك قد تؤدي إلى إلغاء حسابك لضمان جودة الخدمة. إذا تم إلغاء حسابك، فلن تتمكن من إعادة التسجيل مرة أخرى.',
-    '6. *السلوك المهني*: يُتوقع منك الحفاظ على المظهر والسلوك المهني عند التفاعل مع العملاء. ويشمل ذلك الالتزام بالمواعيد، الأدب، والنظافة.',
-    '7. *التواصل*: وسيلة التواصل الأساسية مع إن هوم لأي مشكلة أو استفسار هي من خلال رقم خدمة عملاء إن هوم: 01220267627.',
-    '8. *التفاعل مع العملاء*: يجب على مقدمي الخدمة إثبات الكفاءة في التعامل مع مختلف أنواع العملاء بمهنية واحترام.',
-    '9. *مدفوعات العمولة*: بعد قيام العميل بالدفع، يجب دفع العمولة المستحقة على الفور. سيظهر مبلغ العمولة في محفظتك بالسالب ولديك 48 ساعة لسداد العمولة عبر فوري.',
-    '10. *التقييم والتعليقات*: في ختام كل طلب، يكون لديك خيار تقييم العميل وترك التعليقات بناءً على تجربة الخدمة.',
-    '11. *التسجيل والاستخدام*: يتطلب التسجيل إكمال جميع الحقول الإلزامية، بما في ذلك الاسم ورقم الهاتف وتحميل صورة البطاقة وفتح الكاميرا لالتقاط صورة تظهر وجهك.',
-    '12. *قبول الخدمة*: عند تلقي طلب خدمة من العميل، لديك خيار قبول العرض أو رفضه. في حالة قبول طلب الخدمة، حدد تكلفة الخدمة (باستثناء تكاليف المواد).',
-    'يرجى ملاحظة أن هذه الشروط قابلة للتغيير، وتقع على عاتقك مسؤولية مراجعتها بشكل دوري.'
+    'مرحبًا بك في In Home، منصتك الرئيسية التي تربط مقدمي الخدمات المهرة في مختلف تخصصات الصيانة المنزلية مع عدد كبير من العملاء. تم تصميم In Home كوسيط سلس، حيث تعمل على تبسيط عملية مطابقة احتياجات العملاء مع خبرات مقدمي الخدمة. لضمان تحقيق أفضل تجربة ممكنة، نطلب منك مراجعة الشروط والأحكام التالية بعناية.',
+    'قبول الشروط والأحكام: من خلال استخدام منصة In Home، فإنك توافق على الالتزام بجميع الشروط والأحكام المقررة. إذا كنت لا توافق على أي من الشروط، فيرجى عدم استخدام المنصة.',
+    'تقديم الخدمة: يجب أن تكون جميع الخدمات المقدمة عبر المنصة ذات جودة عالية وتتوافق مع المعايير المحددة من قبل In Home. نحن لا نتحمل أي مسؤولية عن جودة الخدمات المقدمة من قبل مقدمي الخدمة.',
+    'تعديلات الشروط: تحتفظ In Home بالحق في تعديل الشروط والأحكام في أي وقت دون إشعار مسبق. يرجى مراجعة هذه الشروط بانتظام لضمان اطلاعك على أي تغييرات قد تطرأ.',
   ];
 }

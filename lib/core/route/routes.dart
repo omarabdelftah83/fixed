@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_in/sign_in_page.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/widget/coditions_page.dart';
-import 'package:webbing_fixed/feature_admin/auth/sign_up/widget/sign_up_services.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_up/widget/sign_up_services_body.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up.dart';
 import 'package:webbing_fixed/feature_admin/home/widget/finish_service.dart';
 import 'package:webbing_fixed/feature_admin/home/widget/notification.dart';
@@ -78,7 +78,7 @@ class RouteGenarator {
       case Routes.conditionsPage:
         return MaterialPageRoute(builder: (_) =>  ConditionsPage());
       case Routes.signUpService:
-        return MaterialPageRoute(builder: (_) =>  SignUpService());
+        return MaterialPageRoute(builder: (_) =>  SignUpServiceBody());
       case Routes.singInPageAdmin:
         return MaterialPageRoute(builder: (_) =>  SignInPageAdmin());
       case Routes.countryPage:

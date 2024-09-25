@@ -4,19 +4,29 @@ abstract class SignUpState {}
 
 class SignUpInitial extends SignUpState {}
 
-class SingUpLoading extends SignUpState {}
-class ServicesLoaded extends SignUpState {
-  final List<GetAllServicesModel> services; // Adjust based on actual type
+class SignUpLoading extends SignUpState {}
 
+class ImageUploadingState extends SignUpState {
+  final String imageType;
+  ImageUploadingState(this.imageType);
+}
+
+class ImageUploadCompletedState extends SignUpState {
+  final String imageType;
+  ImageUploadCompletedState(this.imageType);
+}
+
+class ServicesLoaded extends SignUpState {
+  final List<GetAllServicesModel> services;
   ServicesLoaded(this.services);
 }
-class SingUpLoaded extends SignUpState {}
+
+class SignUpLoaded extends SignUpState {}
 
 class FieldChangedState extends SignUpState {}
 
 class LoginErrorState extends SignUpState {
   final String errorMessage;
-
   LoginErrorState(this.errorMessage);
 }
 
@@ -29,6 +39,11 @@ class ValidationErrorState extends SignUpState {
   final String confirmPasswordError;
   final String phoneNumberError;
 
-  ValidationErrorState(this.emailError, this.passError, this.nameError,
-      this.confirmPasswordError, this.phoneNumberError);
+  ValidationErrorState(
+      this.emailError,
+      this.passError,
+      this.nameError,
+      this.confirmPasswordError,
+      this.phoneNumberError
+      );
 }

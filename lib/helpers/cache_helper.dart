@@ -76,13 +76,7 @@ class CacheHelper {
     return _sharedPreferences!.getBool('isSuperAdmin');
   }
 
-  static Future<void> loginUser(
-      String userId, String email, String token, bool isSuperAdmin) async {
-    await saveUserId(userId);
-    await saveEmail(email);
-    await saveToken(token);
-    await saveUserRole(isSuperAdmin);
-  }
+
 
 
 }
