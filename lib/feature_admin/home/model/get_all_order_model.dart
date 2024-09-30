@@ -1,28 +1,28 @@
 class GetOrderModel {
-  final int id;
-  final String serviceName;
-  final String name;
-  final String typeService;
-  final String time;
-  final String location;
-  final String file;
-  final String description;
-  final int count;
-  final int service;
-  final int user;
+  final int? id;
+  final String? serviceName;
+  final String? name;
+  final String? typeService;
+  final String? time;
+  final String? location;
+  final String? file;
+  final String? description;
+  final int? count;
+  final int? service;
+  final int? user;
 
   GetOrderModel({
-    required this.id,
-    required this.serviceName,
-    required this.name,
-    required this.typeService,
-    required this.time,
-    required this.location,
-    required this.file,
-    required this.description,
-    required this.count,
-    required this.service,
-    required this.user,
+     this.id,
+     this.serviceName,
+     this.name,
+     this.typeService,
+     this.time,
+     this.location,
+     this.file,
+     this.description,
+     this.count,
+     this.service,
+     this.user,
   });
 
   factory GetOrderModel.fromJson(Map<String, dynamic> json) {

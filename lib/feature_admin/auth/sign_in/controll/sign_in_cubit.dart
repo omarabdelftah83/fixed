@@ -27,8 +27,7 @@ class SignInCubit extends Cubit<SignInState> {
     }
 
     try {
-      final signInRequest = await SignInRequest(
-          emailAddressController.text, passwordController.text);
+      final signInRequest = await SignInRequest(emailAddressController.text, passwordController.text);
       final res = await apiService.signIn(signInRequest);
       res.fold(
         (error) {

@@ -1,8 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:webbing_fixed/core/widget/custom_appar.dart';
-import 'package:webbing_fixed/feature_admin/orders/widget/order_tab_admin.dart';
-import '../../core/app_text/AppText.dart';
+import 'order_export.dart';
 
 class OrdersPageAdmin extends StatefulWidget {
   const OrdersPageAdmin({super.key});
@@ -19,6 +16,10 @@ class _OrdersPageAdminState extends State<OrdersPageAdmin>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.index == 1) {
+      }
+    });
   }
 
   @override
@@ -31,7 +32,6 @@ class _OrdersPageAdminState extends State<OrdersPageAdmin>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-
       body: Column(
         children: [
           const Center(
@@ -47,11 +47,9 @@ class _OrdersPageAdminState extends State<OrdersPageAdmin>
             labelStyle:const TextStyle(fontSize:20 ) ,
             controller: _tabController,
             tabs: const [
-
               Tab(text: 'ملغية',),
               Tab(text: 'مكتملة'),
               Tab(text: 'القادم'),
-
             ],
           ),
           Expanded(
@@ -69,4 +67,3 @@ class _OrdersPageAdminState extends State<OrdersPageAdmin>
     );
   }
 }
-

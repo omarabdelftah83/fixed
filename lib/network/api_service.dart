@@ -50,7 +50,7 @@ class ApiService {
   Future<Either<Failure, ForgetPasswordResponse>> forget(ForgetPasswordRequest forgetPasswordRequest) async {
     try {
       final response = await Dio().post(
-        ApiConfigurations.reset,
+        ApiConfigurations.resetPassword,
         data: forgetPasswordRequest.toMap(),);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = response.data;
@@ -65,7 +65,6 @@ class ApiService {
       return Left(ServerFailure(message: 'Failed to make request'));
     }
   }
-
   Future<Either<Failure, CreateNewPassResponse>> createNewPass(CreateNewPassRequest createNewPass) async {
     try {
       final response = await Dio().post(
@@ -84,7 +83,6 @@ class ApiService {
       return Left(ServerFailure(message: 'Failed to make request'));
     }
   }
-
   Future<Either<Failure, OtpResponse>> otp(OtpRequest otpRequest) async {
     try {
       print('Request Body: ${otpRequest.toMap()}');

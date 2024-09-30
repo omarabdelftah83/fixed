@@ -129,10 +129,11 @@ class NetworkHandler {
         endpoint,
         data: jsonEncode(data),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return response;
       } else {
-        throw Exception('Failed to put data: ${response.statusCode}');
+        print('Error response: ${response.data}');  // Log the error response
+        throw Exception('Failed to put data: ${response.statusCode} - ${response.data}');
       }
     } on DioException catch (e) {
       print('DioException: ${e.message}');
@@ -142,7 +143,6 @@ class NetworkHandler {
       rethrow;
     }
   }
-
   Future<Response> patch(String endpoint, Map<String, dynamic> data) async {
     try {
       await _addTokenToHeaders();

@@ -1,16 +1,26 @@
-class ApiConfigurations{
-  static const  String signUp = "http://194.164.77.238/sing_up/";
-  static const  String signIn = "http://194.164.77.238/sing_in";
-  static const  String reset = "http://194.164.77.238/resetPassword/";
-  static const  String otp = "http://194.164.77.238/checkCode/";
-  static const  String createPass = "http://194.164.77.238/change_passviwe/";
-  static const  String getAllServices = "http://194.164.77.238/all_service/";
-  static const  String postAllServices = "http://194.164.77.238/active_provider/";
-  static const  String getOrderHome = "http://194.164.77.238/order_service/";
+class ApiConfigurations {
+  // Base URL
+  static const String _baseUrl = "http://194.164.77.238/";
 
+  // Authentication endpoints
+  static const String signUp = "${_baseUrl}sing_up/";
+  static const String signIn = "${_baseUrl}sing_in";
+  static const String resetPassword = "${_baseUrl}resetPassword/";
+  static const String otp = "${_baseUrl}checkCode/";
+  static const String createPass = "${_baseUrl}change_passviwe/";
 
+  // Service-related endpoints
+  static const String getAllServices = "${_baseUrl}all_service/";
+  static const String postAllServices = "${_baseUrl}active_provider/";
 
+  // Order-related endpoints
+  static const String getOrderHome = "${_baseUrl}order_service/";
+  static const String getOrderComplete = "${_baseUrl}Get_compleata_for_provider/";
+  static const String getOrderAccept = "${_baseUrl}provider_accept/";
+  static const String getOrderCancel = "${_baseUrl}cancel_offer_provider/";
 
-
+  // User-related endpoints
+  static const String getUserData = "${_baseUrl}UserDetailView/";
+  static const String updateUserData = "${_baseUrl}userupdate/";
 
 }

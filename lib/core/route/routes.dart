@@ -3,6 +3,7 @@ import 'package:webbing_fixed/feature_admin/auth/sign_in/sign_in_page.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/widget/coditions_page.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/widget/sign_up_services_body.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up.dart';
+import 'package:webbing_fixed/feature_admin/home/model/get_all_order_model.dart';
 import 'package:webbing_fixed/feature_admin/home/widget/finish_service.dart';
 import 'package:webbing_fixed/feature_admin/home/widget/notification.dart';
 import 'package:webbing_fixed/feature_admin/home/widget/order_details.dart';
@@ -22,6 +23,7 @@ import 'package:webbing_fixed/features_user/onboarding/screen/In_home_page.dart'
 import 'package:webbing_fixed/features_user/onboarding/on_boarding_page.dart';
 import 'package:webbing_fixed/features_user/onboarding/screen/country_page.dart';
 import 'package:webbing_fixed/features_user/order/order_pag.dart';
+import 'package:webbing_fixed/features_user/sitting/sitting_page.dart';
 import 'package:webbing_fixed/features_user/sitting/widget/edit_profile.dart';
 import 'package:webbing_fixed/features_user/splash/splash_home_page.dart';
 import 'package:webbing_fixed/features_user/wallet/wallet.dart';
@@ -56,6 +58,7 @@ class Routes {
   static const String updateSallary = '/updateSallary';
   static const String rejectPrice = '/RejectPrice';
   static const String finishService = '/FinishService';
+  static const String settingPage = '/settingPage';
 
 
 }
@@ -63,6 +66,8 @@ class Routes {
 class RouteGenarator {
   static Route<dynamic> getRoute(RouteSettings sitting) {
     switch (sitting.name) {
+      case Routes.settingPage:
+        return MaterialPageRoute(builder: (_) =>  SettingPage());
       case Routes.finishService:
         return MaterialPageRoute(builder: (_) =>  FinishService());
       case Routes.rejectPrice:
@@ -72,7 +77,8 @@ class RouteGenarator {
       case Routes.notificationPage:
         return MaterialPageRoute(builder: (_) =>  NotificationPage());
       case Routes.orderDetails:
-        return MaterialPageRoute(builder: (_) =>  OrderDetails());
+        final order = sitting.arguments as GetOrderModel? ?? GetOrderModel();
+        return MaterialPageRoute(builder: (_) =>  OrderDetails(order: order,));
       case Routes.mainLayoutPageAdmin:
         return MaterialPageRoute(builder: (_) =>  MainLayoutPageAdmin());
       case Routes.conditionsPage:

@@ -79,8 +79,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             borderRadius: BorderRadius.circular(30.0),
           ),
           contentPadding: const EdgeInsets.symmetric(
-              vertical: 15.0, horizontal: 20.0), // Adjust padding
-          alignLabelWithHint: true,
+              vertical: 10.0, horizontal: 20.0), // Adjust padding to center the text
           errorMaxLines: 3, // Add this to handle error text height
         ),
         textAlign: TextAlign.right, // Align text and hint text to the right

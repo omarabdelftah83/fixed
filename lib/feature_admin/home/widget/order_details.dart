@@ -4,12 +4,16 @@ import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
 import 'package:webbing_fixed/core/text_failed/custom_text_failed.dart';
 import 'package:webbing_fixed/core/widget/custom_app_padding.dart';
+import 'package:webbing_fixed/feature_admin/home/model/get_all_order_model.dart'; // تأكد من استيراد النموذج المناسب
 
 class OrderDetails extends StatelessWidget {
-  const OrderDetails({super.key});
+  final GetOrderModel order;
+
+  const OrderDetails({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: CustomPaddingApp(
         child: SingleChildScrollView(
@@ -33,26 +37,26 @@ class OrderDetails extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 15),
-              const CustomText(text: 'الاسم : محمد اشرف'),
+              CustomText(text: 'الاسم : ${order.name}'),
               const SizedBox(height: 15),
-              const CustomText(text: 'الخدمة : تصليح مكيف '),
+              CustomText(text: 'الخدمة : ${order.serviceName}'),
               const SizedBox(height: 15),
-              const CustomText(text: 'نوع الوحدة : شباك '),
+              CustomText(text: 'نوع الوحدة : ${order.typeService}'),
               const SizedBox(height: 15),
-              const CustomText(text: 'عدد الوحدات : واحد فقط'),
+              CustomText(text: 'عدد الوحدات : ${order.count}'),
               const SizedBox(height: 15),
-              const CustomText(text: 'اليوم - 6 مساء '),
+              CustomText(text: 'اليوم - ${order.time}'),
               const SizedBox(height: 15),
-              const CustomText(text: 'المسافة: 100 متر'),
+              CustomText(text: 'المسافة: ${order.location}'),
               const SizedBox(height: 15),
               const CustomText(text: ': صوره'),
               const SizedBox(height: 10),
               Container(
-                width: 300.w,
-                height: 200.h,
-                child: Image.asset('assets/image/unsplash_OGV99Jhhvro.png'),
+                width: 150.w,
+                height: 150.h,
+                child: order.file != null ? Image.network('http://194.164.77.238${order.file}') : Container(), // Empty container if no file is provided
               ),
-              const CustomText(text: 'وصف الخدمة\nالمكيف لايعمل'),
+              CustomText(text: 'وصف الخدمة\n${order.description}'),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,7 +76,7 @@ class OrderDetails extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       textColor: Colors.white,
-                      onPressed: () => _showOrderDialog(context),
+                      onPressed: () => showOrderDialog(context),
                       text: 'قبول وتحديد سعر',
                       width: 160.w,
                       height: 40.h,
@@ -87,7 +91,7 @@ class OrderDetails extends StatelessWidget {
     );
   }
 
-  void _showOrderDialog(BuildContext context) {
+  void showOrderDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
