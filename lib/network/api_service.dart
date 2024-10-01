@@ -33,11 +33,12 @@ class ApiService {
     try {
       final response = await Dio().post(
         ApiConfigurations.signIn,
-        data: signInRequest.toMap(),);
+        data: signInRequest.toMap(),
+      );
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = response.data;
-        final signInRequest = SignInResponse.fromJson(data);
-        return Right(signInRequest);
+        final signInResponse = SignInResponse.fromJson(data);
+        return Right(signInResponse);
       } else {
         print('Response Data: ${response.data}');
         return Left(ServerFailure(message: 'Server returned an error: ${response.statusCode}'));
@@ -120,9 +121,5 @@ class ApiService {
       return Left(ServerFailure(message: 'Failed to make request'));
     }
   }
-
-
-
-
 
 }

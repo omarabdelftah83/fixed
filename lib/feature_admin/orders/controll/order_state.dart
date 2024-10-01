@@ -11,6 +11,7 @@ class OrderLoadedComplete extends OrderState {
   OrderLoadedComplete(this.getAllOrderComplete);
 
 }
+
 class OrderLoadedAccept extends OrderState {
   final List<GetAllOrderAccept> getAllOrderAccept;
   OrderLoadedAccept(this.getAllOrderAccept);

@@ -93,7 +93,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   height: 50.h,
                   onPressed: () {
                     if (_currentPage == 1) {
-                      Navigator.pushNamed(context, Routes.countryPage);
+                      Navigator.pushNamed(context, Routes.inHomePage);
                     } else {
                       _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),

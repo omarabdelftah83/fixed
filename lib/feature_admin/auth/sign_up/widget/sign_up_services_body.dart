@@ -24,8 +24,7 @@ class _SignUpServiceBodyState extends State<SignUpServiceBody> {
           List<String> serviceItems = [];
 
           if (state is ServicesLoaded) {
-            serviceItems =
-                state.services.map((service) => service.name).toList();
+            serviceItems = state.services.map((service) => service.name).toList();
           }
 
           return SingleChildScrollView(

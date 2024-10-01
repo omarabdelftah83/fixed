@@ -18,39 +18,42 @@ class ServiceCard extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            CustomText(
-              text: 'الاسم : ${service.name}',
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-            SizedBox(height: 10.h),
-            CustomText(
-              text: 'الخدمة : ${service.serviceName}',
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-            SizedBox(height: 10.h),
-            CustomText(
-              textColor: Colors.blue,
-              text: 'اليوم - ${service.time}',
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-            SizedBox(height: 30.h),
-            CustomButton(
-              onPressed: () {
-                Navigator.pushNamed(
-                    context, Routes.orderDetails,
-                    arguments: service);
-              },
-              text: 'المزيد',
-              width: 160.w,
-              height: 30.h,
-            ),
-          ],
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(
+                text: 'الاسم : ${service.name}',
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+              SizedBox(height: 10.h),
+              CustomText(
+                text: 'الخدمة : ${service.serviceName}',
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+              SizedBox(height: 10.h),
+              CustomText(
+                textColor: Colors.blue,
+                text: 'اليوم - ${service.time}',
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+              SizedBox(height: 30.h),
+              CustomButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, Routes.orderDetails,
+                      arguments: service);
+                },
+                text: 'المزيد',
+                width: 160.w,
+                height: 30.h,
+              ),
+            ],
+          ),
         ),
       ),
     );

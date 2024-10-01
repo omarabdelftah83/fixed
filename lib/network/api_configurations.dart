@@ -4,7 +4,7 @@ class ApiConfigurations {
 
   // Authentication endpoints
   static const String signUp = "${_baseUrl}sing_up/";
-  static const String signIn = "${_baseUrl}sing_in";
+  static const String signIn = "http://194.164.77.238/sign_in/";
   static const String resetPassword = "${_baseUrl}resetPassword/";
   static const String otp = "${_baseUrl}checkCode/";
   static const String createPass = "${_baseUrl}change_passviwe/";
@@ -22,5 +22,13 @@ class ApiConfigurations {
   // User-related endpoints
   static const String getUserData = "${_baseUrl}UserDetailView/";
   static const String updateUserData = "${_baseUrl}userupdate/";
+  static const String postPriceOrder = "${_baseUrl}order/26/offers/";
+
+// OrderUser-related endpoints
+  static const String getOrderCompleteUser = "${_baseUrl}Get_compleata_for_client/";
+  static const String getOrderAcceptUser = "${_baseUrl}accepted_offers/";
+  static const String getOrderCancelUser = "${_baseUrl}cancel_offer/";
+
+
 
 }

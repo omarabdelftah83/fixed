@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webbing_fixed/feature_admin/mainlayout/controll/mainlayoutadmin_cubit.dart';
 import 'package:webbing_fixed/feature_admin/mainlayout/controll/mainlayoutadmin_state.dart';
 import 'package:webbing_fixed/feature_admin/mainlayout/widget/custom_bottom_appar.dart';
-import 'package:webbing_fixed/features_user/main_layout/presentaion/widget/custom_bottom_appar.dart';
 
 class MainLayoutPageAdmin extends StatelessWidget {
   const MainLayoutPageAdmin({super.key});

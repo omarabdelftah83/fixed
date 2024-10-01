@@ -1,4 +1,8 @@
 {
+  "reject_price": "Rejected Price",
+  "set_location": "Set Location",
+  "status_ready": "Ready",
+  "offered_services": "Offered Services",
   "signIn": "Login",
   "emailOrPhone": "Email or Phone",
   "password": "Password",

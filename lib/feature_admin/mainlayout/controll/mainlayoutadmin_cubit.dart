@@ -7,26 +7,30 @@ import 'package:webbing_fixed/feature_admin/orders/oders_page_admin.dart';
 import 'package:webbing_fixed/features_user/sitting/sitting_page.dart';
 
 class MainLayOutAdminCubit extends Cubit<MainLayoutAdminState> {
-  MainLayOutAdminCubit() : super(MainLayoutAdminState(0));
+  MainLayOutAdminCubit() : super(MainLayoutAdminState(2));
   final List<String> labels = [
-    'الرئيسيه',
-    'الطلبات',
     'الاعدادات',
+    'الطلبات',
+    'الرئيسيه',
+
+
 
   ];
   List<Widget> pages = [
-    const HomePageAdmin(),
-    const OrdersPageAdmin(),
     const SettingPage(),
+    const OrdersPageAdmin(),
+    const HomePageAdmin(),
+
 
 
   ];
 
   // Define your icons
   List<String> icons = [
-    AssetsManager.iconHome,
-    AssetsManager.iconOrder,
     AssetsManager.iconSetting,
+    AssetsManager.iconOrder,
+    AssetsManager.iconHome,
+
 
   ];
 

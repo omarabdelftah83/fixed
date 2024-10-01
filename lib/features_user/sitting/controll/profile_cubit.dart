@@ -2,7 +2,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:webbing_fixed/features_user/sitting/setting_export.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  final UpdateUserProfile userProfile;
+  final UpdateAdminProfile userProfile;
 
   final TextEditingController emailAddressController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
@@ -53,7 +53,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       phone: newPhone ?? oldPhone,
     );
 
-    final response = await userProfile.updateUser(updateUserRequest);
+    final response = await userProfile.updateAdmin(updateUserRequest);
     response.fold(
           (failure) {
         emit(ProfileError(failure.message));

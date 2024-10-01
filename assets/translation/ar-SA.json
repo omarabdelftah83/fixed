@@ -1,4 +1,8 @@
 {
+  "reject_price": "رفض السعر من العميل",
+  "set_location": "تعيين الموقع",
+  "status_ready": "جاهز ",
+  "offered_services": "الخدمات المقدمة",
   "signIn": "تسجيل الدخول",
   "emailOrPhone": "البريد الاكتروني او رقم الهاتف",
   "password": "كلمة المرور",

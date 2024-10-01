@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webbing_fixed/core/App_assets/app_assets.dart';
+import 'package:webbing_fixed/features_user/order/widget/accept_order_tab_user.dart';
+import 'package:webbing_fixed/features_user/order/widget/cancel_order_tab_user.dart';
+import 'package:webbing_fixed/features_user/order/widget/complete_order_tab_user.dart';
 import 'package:webbing_fixed/features_user/order/widget/ordercard.dart';
 
 class OrdersTab extends StatelessWidget {
@@ -9,16 +12,14 @@ class OrdersTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        OrderCard(
-          name: 'احمد السالم',
-          service: 'تصليح مكيفات',
-          date: 'اليوم - 6 مساء',
-          imagePath: AppAssets.thePerson,
-          status: orderStatus,
-        ),
-      ],
-    );
+    if (orderStatus == 'مكتملة') {
+      return const CompletedOrdersTabUser();
+    } else if (orderStatus == 'القادم') {
+      return const AcceptOrdersTabUser();
+    } else if (orderStatus == 'ملغية') {
+      return const CanceledOrdersTabUser();
+    } else {
+      return const Center(child: Text('لا توجد بيانات'));
+    }
   }
 }

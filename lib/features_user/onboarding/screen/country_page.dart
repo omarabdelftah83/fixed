@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:webbing_fixed/core/text_failed/drop_down_custom_textfailed.dart';
-import 'on_boarding_export.dart'; // Ensure all necessary exports
+import 'package:webbing_fixed/features_user/onboarding/controll/on_boarding_cubit.dart';
+import 'package:webbing_fixed/features_user/onboarding/controll/on_boarding_state.dart';
+import 'on_boarding_export.dart';
+
 
 class CountryPage extends StatefulWidget {
   @override
@@ -10,12 +14,20 @@ class CountryPage extends StatefulWidget {
 }
 
 class _CountryPageState extends State<CountryPage> {
-  String _selectedLanguage = 'english'; // Default language
+  String _selectedLanguage = 'A';
+  String _selectedCountry = 'الكويت';
 
   void _changeLanguage(String? selectedItem) {
     if (selectedItem != null) {
       setState(() {
-        _selectedLanguage = selectedItem;
+        _selectedLanguage = selectedItem == 'العربيه' ? 'A' : 'E';
+      });
+    }
+  }
+  void _changeCountry(String? selectedItem) {
+    if (selectedItem != null) {
+      setState(() {
+        _selectedCountry = selectedItem;
       });
     }
   }
@@ -23,17 +35,19 @@ class _CountryPageState extends State<CountryPage> {
   void _applyLanguage() {
     Locale locale;
     switch (_selectedLanguage) {
-      case 'العربيه':
+      case 'A': // Arabic
         locale = Locale('ar', 'SA');
         break;
-      case 'english':
+      case 'E': // English
         locale = Locale('en', 'US');
         break;
       default:
         locale = Locale('en', 'US');
     }
+
     EasyLocalization.of(context)?.setLocale(locale);
-    Navigator.pushNamed(context, Routes.inHomePage);  // Ensure this route is defined
+    context.read<OnBoardingCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
+    Navigator.pushNamed(context, Routes.mainLayoutPageAdmin);
   }
 
   @override
@@ -43,7 +57,7 @@ class _CountryPageState extends State<CountryPage> {
         child: Column(
           children: [
             SizedBox(height: 95.h),
-            Image.asset(AppAssets.inHomeImage),  // Ensure the image asset exists
+            Image.asset(AppAssets.inHomeImage),
             SizedBox(height: 10.h),
             Stack(
               children: [
@@ -77,53 +91,55 @@ class _CountryPageState extends State<CountryPage> {
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 50),
-                            const Align(
-                              alignment: Alignment.topRight,
-                              child: CustomText(
-                                text: 'الدوله',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            DropDownCustomTextfailed(
-                              prefixIcon: const Icon(Icons.arrow_drop_down),
-                              hintText: 'اختر الدوله',
-                              dropdownItems: ['الكويت', 'مصر'],
-                              onDropdownChanged: (selectedItem) {
-                                // Handle country selection if needed
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                            const Align(
-                              alignment: Alignment.topRight,
-                              child: CustomText(
-                                text: 'اللغه',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            DropDownCustomTextfailed(
-                              prefixIcon: const Icon(Icons.arrow_drop_down),
-                              hintText: 'اختر اللغه',
-                              dropdownItems: ['english', 'العربيه'],
-                              onDropdownChanged: (selectedItem) {
-                                if (selectedItem != null) {
-                                  _changeLanguage(selectedItem);
-                                }
-                              },
-                            ),
-                            const SizedBox(height: 80),
-                            CustomButton(
-                              width: 343.w,
-                              onPressed: _applyLanguage,
-                              text: 'حفظ',
-                            ),
-                          ],
+                        child: BlocBuilder<OnBoardingCubit, OnBoardingState>(
+                          builder: (context, state) {
+                            return Column(
+                              children: [
+                                const SizedBox(height: 50),
+                                const Align(
+                                  alignment: Alignment.topRight,
+                                  child: CustomText(
+                                    text: 'الدوله',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                DropDownCustomTextfailed(
+                                  prefixIcon: const Icon(Icons.arrow_drop_down),
+                                  hintText: 'اختر الدوله',
+                                  dropdownItems: ['الكويت', 'مصر'],
+                                  onDropdownChanged: (selectedItem) {
+                                    _changeCountry(selectedItem);
+                                  },
+                                ),
+                                const SizedBox(height: 10),
+                                const Align(
+                                  alignment: Alignment.topRight,
+                                  child: CustomText(
+                                    text: 'اللغه',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                DropDownCustomTextfailed(
+                                  prefixIcon: const Icon(Icons.arrow_drop_down),
+                                  hintText: 'اختر اللغه',
+                                  dropdownItems: ['العربيه', 'english'],
+                                  onDropdownChanged: (selectedItem) {
+                                    _changeLanguage(selectedItem);
+                                  },
+                                ),
+                                const SizedBox(height: 80),
+                                CustomButton(
+                                  width: 343.w,
+                                  onPressed: _applyLanguage,
+                                  text: 'حفظ',
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ),
                     ),

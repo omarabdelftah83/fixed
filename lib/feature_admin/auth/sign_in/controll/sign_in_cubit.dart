@@ -4,7 +4,7 @@ import 'package:webbing_fixed/core/resource/app_string.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_in/controll/sign_in_state.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_in/model/sign_in_model.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/widget/sign_up_services_body.dart';
-import 'package:webbing_fixed/feature_admin/mainlayout/main_layout_admin_page.dart';
+import 'package:webbing_fixed/features_user/main_layout/presentaion/mainlayout_page.dart';
 import 'package:webbing_fixed/helpers/cache_helper.dart';
 import 'package:webbing_fixed/network/api_service.dart';
 
@@ -27,14 +27,14 @@ class SignInCubit extends Cubit<SignInState> {
     }
 
     try {
-      final signInRequest = await SignInRequest(emailAddressController.text, passwordController.text);
+      final signInRequest = SignInRequest(emailAddressController.text, passwordController.text);
       final res = await apiService.signIn(signInRequest);
       res.fold(
-        (error) {
+            (error) {
           emit(LoginErrorState(AppString.invalidCredentialsError));
           showSnackbar(context, AppString.invalidCredentialsError, Colors.red);
         },
-        (success) async {
+            (success) async {
           if (success.accessToken != null) {
             await CacheHelper.saveToken(success.accessToken!);
           }
@@ -44,7 +44,7 @@ class SignInCubit extends Cubit<SignInState> {
 
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) =>  MainLayoutPageAdmin()),
+                builder: (context) => MainLayoutPage()),
           );
         },
       );

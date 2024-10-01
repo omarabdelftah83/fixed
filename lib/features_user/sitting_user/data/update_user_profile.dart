@@ -1,10 +1,12 @@
 import 'package:dartz/dartz.dart';
-import '../setting_export.dart';
+import 'package:webbing_fixed/features_user/sitting/model/update_user_profile.dart';
+import 'package:webbing_fixed/network/api_configurations.dart';
+import 'package:webbing_fixed/network/faliar.dart';
+import 'package:webbing_fixed/network/network_handler.dart';
 
-class UpdateAdminProfile {
+class UpdateUserProfile {
   final NetworkHandler networkHandler = NetworkHandler();
-
-  Future<Either<Failure, UpdateUserResponse>> updateAdmin(UpdateUserRequest updateUserRequest) async {
+  Future<Either<Failure, UpdateUserResponse>> updateUser(UpdateUserRequest updateUserRequest) async {
     try {
       final response = await networkHandler.put(
         ApiConfigurations.updateUserData,

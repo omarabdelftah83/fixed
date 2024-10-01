@@ -5,19 +5,19 @@ import 'package:webbing_fixed/core/route/routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OrderCard extends StatelessWidget {
-  final String name;
-  final String service;
-  final String date;
-  final String imagePath;
-  final String status;
+  final String? name;
+  final String? service;
+  final String? date;
+  final String? imagePath;
+  final String? status;
 
   const OrderCard({
     super.key,
-    required this.name,
-    required this.service,
-    required this.date,
-    required this.imagePath,
-    required this.status,
+    this.name,
+    this.service,
+    this.date,
+    this.imagePath,
+    this.status,
   });
 
   @override
@@ -55,16 +55,16 @@ class OrderCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('الاسم: $name',
+                  Text('الاسم: ${name ?? 'غير متوفر'}',
                       style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold)),
-                  Text('الخدمة: $service',
+                  Text('الخدمة: ${service ?? 'غير متوفر'}',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.grey,
                       )),
-                  Text(date,
+                  Text(date ?? 'غير متوفر',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.grey,
@@ -99,7 +99,7 @@ class OrderCard extends StatelessWidget {
               color: Colors.grey.shade400,
             ),
             CircleAvatar(
-              backgroundImage: AssetImage(imagePath),
+              backgroundImage: AssetImage(imagePath ?? 'assets/default_image.png'),
               radius: 30.w,
             ),
           ],

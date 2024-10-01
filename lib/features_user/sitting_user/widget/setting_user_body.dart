@@ -5,18 +5,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/route/routes.dart';
 import 'package:webbing_fixed/core/text_failed/drop_down_custom_textfailed.dart';
-import 'package:webbing_fixed/features_user/onboarding/controll/on_boarding_cubit.dart';
 import 'package:webbing_fixed/features_user/sitting/widget/custom_listtile.dart';
 import 'package:webbing_fixed/features_user/sitting/widget/custom_switch.dart';
+import 'package:webbing_fixed/features_user/sitting_user/controll/lang_user_cubit.dart';
 
-class Settingbody extends StatefulWidget {
-  const Settingbody({super.key});
+class SettingUserbody extends StatefulWidget {
+  const SettingUserbody({super.key});
 
   @override
-  State<Settingbody> createState() => _SettingbodyState();
+  State<SettingUserbody> createState() => _SettingUserbodyState();
 }
 
-class _SettingbodyState extends State<Settingbody> {
+class _SettingUserbodyState extends State<SettingUserbody> {
   String _selectedLanguage = 'A';
   String _selectedCountry = 'الكويت';
 
@@ -36,7 +36,7 @@ class _SettingbodyState extends State<Settingbody> {
       });
       print('Selected Country: $_selectedCountry'); // تحقق من الدولة المحددة
 
-      context.read<OnBoardingCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
+      context.read<LangUserCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
     }
   }
 
@@ -55,7 +55,7 @@ class _SettingbodyState extends State<Settingbody> {
     }
 
     EasyLocalization.of(context)?.setLocale(locale);
-    context.read<OnBoardingCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
+    context.read<LangUserCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
     Navigator.pushNamed(context, Routes.mainLayoutPageAdmin);
   }
 

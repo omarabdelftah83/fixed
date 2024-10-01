@@ -7,11 +7,14 @@ import 'package:webbing_fixed/core/services/service_locator.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up.dart';
 import 'package:webbing_fixed/feature_admin/home/controll/home_cubit.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_cubit.dart';
+import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
 import 'package:webbing_fixed/features_user/sitting/controll/profile_cubit.dart';
 import 'core/route/routes.dart';
 import 'feature_admin/auth/sign_up/controll/sign_up_cubit.dart';
 import 'feature_admin/mainlayout/controll/mainlayoutadmin_cubit.dart';
 import 'features_user/main_layout/presentaion/main_layout_cubit.dart';
+import 'features_user/onboarding/controll/on_boarding_cubit.dart';
+import 'features_user/sitting_user/controll/lang_user_cubit.dart';
 import 'helpers/cache_helper.dart';
 
 void main() async {
@@ -27,9 +30,10 @@ void main() async {
         Locale('ar', 'SA'),
       ],
       path: 'assets/translation',
-      fallbackLocale: const Locale('en', 'US'),
-      startLocale: const Locale('en', 'US'),
-      child: MyApp(),
+      //fallbackLocale: const Locale('en', 'US'),
+    startLocale: const Locale('en', 'US'),
+
+      child: const MyApp(),
     ),
   );
 }
@@ -41,6 +45,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+
+        BlocProvider<LangUserCubit>(
+          create: (context) => serLoc<LangUserCubit>(),
+        ),
+        BlocProvider<OrdersUserCubit>(
+          create: (context) => serLoc<OrdersUserCubit>(),
+        ),
+        BlocProvider<OnBoardingCubit>(
+          create: (context) => serLoc<OnBoardingCubit>(),
+        ),
         BlocProvider<ProfileCubit>(
           create: (context) => serLoc<ProfileCubit>(),
         ),
