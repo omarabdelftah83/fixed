@@ -68,7 +68,7 @@ class InHomePage extends StatelessWidget {
                             ),
                             CustomButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, Routes.signInBodyUser);
+                                Navigator.pushNamed(context, Routes.home);
                               },
                               text: AppStrings.serviceRecipient,
                               height: 48,

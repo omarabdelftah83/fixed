@@ -1,4 +1,7 @@
 {
+  "appbareSetingString": "Settings",
+  "appbareOrderString": "Orders",
+  "set_location": "Set Location",
   "reject_price": "Rejected Price",
   "set_location": "Set Location",
   "status_ready": "Ready",

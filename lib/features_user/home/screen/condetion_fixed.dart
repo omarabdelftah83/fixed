@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:webbing_fixed/core/app_text/AppText.dart';
-import 'package:webbing_fixed/core/text_failed/custom_text_failed.dart';
-import 'package:webbing_fixed/core/text_failed/drop_down_custom_textfailed.dart';
-import 'package:webbing_fixed/core/widget/custom_app_padding.dart';
+import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
+
+import '../home_export.dart';
 
 class ConditionFixed extends StatefulWidget {
-  const ConditionFixed({Key? key}) : super(key: key);
+  final int serviceId;
+
+  const ConditionFixed({Key? key, required this.serviceId}) : super(key: key);
 
   @override
   _ConditionFixedState createState() => _ConditionFixedState();
 }
 
 class _ConditionFixedState extends State<ConditionFixed> {
+
+  @override
+  void initState() {
+    super.initState();
+    final cubit = BlocProvider.of<HomeUserCubit>(context);
+    cubit.fetchServiceId(widget.serviceId);
+  }
+  final ImagePicker _picker = ImagePicker();
+  XFile? _selectedImage;
+  TextEditingController imageController = TextEditingController();
+  double _containerHeight = 50.0;
+
   int _unitCount = 0;
+  String? selectedServiceId;
 
   void _increment() {
     setState(() {
@@ -26,6 +40,26 @@ class _ConditionFixedState extends State<ConditionFixed> {
         _unitCount--;
       });
     }
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = pickedFile;
+        imageController.text = pickedFile.path;
+        _containerHeight = 150.0;
+      });
+      print("Image path: ${pickedFile.path}");
+    } else {
+      print("No image selected.");
+    }
+  }
+
+  @override
+  void dispose() {
+    imageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,13 +87,27 @@ class _ConditionFixedState extends State<ConditionFixed> {
                 ),
               ),
               const SizedBox(height: 10),
-              DropDownCustomTextfailed(
-                prefixIcon: const Icon(Icons.arrow_drop_down),
-                hintText: 'اختر الخدمة',
-                dropdownItems: [' نقل او تركيب مكيف', ' تعبئة غاز وتنظيف مكيف','تصليح مكيف','اخرى'],
-                onDropdownChanged: (selectedItem) {
-                },
+              BlocBuilder<HomeUserCubit, HomeUserState>(
+                builder: (context, state) {
+                  if (state is ServiceIdLoaded) {
+                    final service = state.service;
 
+                    return DropDownCustomTextfailed(
+                      prefixIcon: const Icon(Icons.arrow_drop_down),
+                      hintText: 'اختر الخدمة',
+                      dropdownItems: [service.name],
+                      onDropdownChanged: (selectedItem) {
+                        setState(() {
+                          selectedServiceId = service.id.toString();
+                        });
+                      },
+                    );
+                  } else if (state is HomeUserLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    return const Center(child: Text('لا توجد خدمات متاحة.'));
+                  }
+                },
               ),
               const SizedBox(height: 10),
               const Align(
@@ -74,9 +122,8 @@ class _ConditionFixedState extends State<ConditionFixed> {
               DropDownCustomTextfailed(
                 prefixIcon: const Icon(Icons.arrow_drop_down),
                 hintText: 'اختر الوقت المناسب للتنفيذ',
-                dropdownItems: ['في اقرب وقت', ' اليوم','غدا','خلال اسبوع','الاسبوع القادم'],
-                onDropdownChanged: (selectedItem) {
-                },
+                dropdownItems: ['في اقرب وقت', ' اليوم', 'غدا', 'خلال اسبوع', 'الاسبوع القادم'],
+                onDropdownChanged: (selectedItem) {},
               ),
               const SizedBox(height: 10),
               const Align(
@@ -103,11 +150,49 @@ class _ConditionFixedState extends State<ConditionFixed> {
                 ),
               ),
               const SizedBox(height: 10),
-              const CustomTextField(
-                prefixIcon: Icon(Icons.camera_alt_outlined),
-                hintText: 'التقاط',
-                keyboardType: TextInputType.emailAddress,
+              GestureDetector(
+                onTap: _pickImage,
+                child: Container(
+                  height: _containerHeight,
+                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(30.0),
+                    color: Colors.white,
+                    image: _selectedImage != null
+                        ? DecorationImage(
+                      image: FileImage(File(_selectedImage!.path)),
+                      fit: BoxFit.cover,
+                    )
+                        : null,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      if (_selectedImage == null) ...[
+                        const Icon(Icons.camera_alt_outlined, color: Colors.grey),
+                        const SizedBox(width: 10),
+                      ],
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 6.0),
+                          child: TextField(
+                            controller: imageController,
+                            readOnly: true,
+                            decoration: const InputDecoration(
+                              hintText: 'التقاط',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none,
+                            ),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
+
               const SizedBox(height: 10),
               const Align(
                 alignment: Alignment.topRight,
@@ -151,6 +236,11 @@ class _ConditionFixedState extends State<ConditionFixed> {
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
+
+              Center(child: CustomButton(
+                  color: Colors.grey[200],
+                  onPressed: (){}, text: 'تخطي',textColor: Colors.black54,))
             ],
           ),
         ),

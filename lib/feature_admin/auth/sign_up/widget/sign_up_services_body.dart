@@ -92,8 +92,7 @@ class _SignUpServiceBodyState extends State<SignUpServiceBody> {
                                       final selectedService = state.services
                                           .firstWhere((service) =>
                                               service.name == selectedItem);
-                                      cubit.selectedServiceID = selectedService
-                                          .id
+                                      cubit.selectedServiceID = selectedService.id
                                           .toString(); // Convert int to String                                      cubit.onServiceChanged(selectedServiceID); // Pass the ID instead of the name
                                     }
                                   },

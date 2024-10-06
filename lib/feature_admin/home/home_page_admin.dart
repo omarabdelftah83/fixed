@@ -87,7 +87,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                     mainAxisAlignment: MainAxisAlignment.start, // تعديل الاتجاه
                     children: [
                       CustomText(text: 'set_location'.tr()),
-                      SvgIconWidget(iconPath: AssetsManager.iconLocation)
+                      const SvgIconWidget(iconPath: AssetsManager.iconLocation)
                     ],
                   ),
 

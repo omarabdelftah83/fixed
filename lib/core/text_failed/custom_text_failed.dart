@@ -13,6 +13,7 @@ class CustomTextField extends StatefulWidget {
     this.errorText,
     this.controller,
     this.suffixIcon,
+    this.readOnly = false, // إضافة خاصية readOnly
     this.minLines = 1, // Minimum lines
     this.maxLines = 5, // Maximum lines
     this.height = 50.0, // Default height for the TextField
@@ -31,7 +32,7 @@ class CustomTextField extends StatefulWidget {
   final int minLines;
   final int maxLines;
   final double height; // New height property
-
+  final bool readOnly; // إضافة الخاصية هنا
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
@@ -50,6 +51,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return SizedBox(
       height: widget.height + (widget.errorText != null ? 30 : 0), // Adjust height based on errorText presence
       child: TextField(
+        readOnly: widget.readOnly, // إضافة هذه السطر
         controller: widget.controller,
         keyboardType: widget.keyboardType,
         obscureText: widget.isPassword ? _obscureText : widget.obscureText,

@@ -31,7 +31,7 @@ import 'package:webbing_fixed/features_user/wallet/wallet.dart';
 import '../../features_user/home/screen/home_page.dart';
 
 class Routes {
-  static const String home = '/';
+  static const String home = '/home';
   static const String newPasswordPage = '/NewPasswordPage';
   static const String VerificationBody = '/VerificationBody';
   static const String singUpBody = '/SingUpBody';
@@ -117,8 +117,8 @@ class RouteGenarator {
         return MaterialPageRoute(builder: (_) => const ForgetPasswordPage());
       case Routes.mainLayoutPage:
         return MaterialPageRoute(builder: (_) => const MainLayoutPage());
-      case Routes.conditionFixed:
-        return MaterialPageRoute(builder: (_) => const ConditionFixed());
+      // case Routes.conditionFixed:
+      //   return MaterialPageRoute(builder: (_) =>  ConditionFixed());
       case Routes.reviewPage:
         return MaterialPageRoute(builder: (_) => const ReviewPage());
       case Routes.ordersScreen:

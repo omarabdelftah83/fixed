@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webbing_fixed/core/resource/assets_manager.dart';
@@ -9,11 +10,11 @@ import 'package:webbing_fixed/features_user/sitting_user/sitting_user_page.dart'
 class MainScreenCubit extends Cubit<MainScreenState> {
   MainScreenCubit() : super(MainScreenState(0));
   final List<String> labels = [
-    'الرئيسيه',
-    'الطلبات',
-    'الاعدادات',
-
+    'appbareSetingString'.tr(), // الإعدادات
+    'appbareOrderString'.tr(),   // الطلبات
+    'set_location'.tr(),         // تعيين الموقع
   ];
+
   List<Widget> pages = [
     const HomePage(),
     const OrdersPage(),

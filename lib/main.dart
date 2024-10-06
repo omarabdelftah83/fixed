@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:easy_localization/easy_localization.dart';  // Import EasyLocalization
+import 'package:easy_localization/easy_localization.dart';
 import 'package:webbing_fixed/core/services/service_locator.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up.dart';
 import 'package:webbing_fixed/feature_admin/home/controll/home_cubit.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_cubit.dart';
+import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
 import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
 import 'package:webbing_fixed/features_user/sitting/controll/profile_cubit.dart';
 import 'core/route/routes.dart';
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
 
+        BlocProvider<HomeUserCubit>(
+          create: (context) => serLoc<HomeUserCubit>(),
+        ),
         BlocProvider<LangUserCubit>(
           create: (context) => serLoc<LangUserCubit>(),
         ),

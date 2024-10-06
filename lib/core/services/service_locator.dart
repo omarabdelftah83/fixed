@@ -14,6 +14,8 @@ import 'package:webbing_fixed/features_user/auth/create_new_passwored/cotroll/cr
 import 'package:webbing_fixed/features_user/auth/forget_passwored/controll/reset_password_cubit.dart';
 import 'package:webbing_fixed/features_user/auth/sing_up/controll/sign_up_user_cubit.dart';
 import 'package:webbing_fixed/features_user/auth/verification/controll/otp_cubit.dart';
+import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
+import 'package:webbing_fixed/features_user/home/data/order_service.dart';
 import 'package:webbing_fixed/features_user/onboarding/controll/on_boarding_cubit.dart';
 import 'package:webbing_fixed/features_user/onboarding/data/country_repository.dart';
 import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
@@ -43,6 +45,7 @@ class ServiesLcator{
     serLoc.registerLazySingleton(() => GetAllOrderCompleteUserRepository());
     serLoc.registerLazySingleton(() => GetAllOrderAcceptUserRepository());
     serLoc.registerLazySingleton(() => GetAllOrderCancelUserRepository());
+    serLoc.registerLazySingleton(() => GetOrderServiceId());
 
 
 
@@ -60,6 +63,7 @@ class ServiesLcator{
     serLoc.registerFactory(() => OnBoardingCubit(serLoc(),));
     serLoc.registerFactory(() => OrdersUserCubit(serLoc(),serLoc(),serLoc()));
     serLoc.registerFactory(() => LangUserCubit(serLoc(),));
+    serLoc.registerFactory(() => HomeUserCubit(serLoc(),serLoc()));
 
 
 

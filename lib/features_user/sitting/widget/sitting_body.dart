@@ -23,7 +23,7 @@ class _SettingbodyState extends State<Settingbody> {
   void _changeLanguage(String? selectedItem) {
     if (selectedItem != null) {
       setState(() {
-        _selectedLanguage = selectedItem == 'العربية' ? 'E' : 'A';
+        _selectedLanguage = selectedItem == 'العربية' ? 'A' : 'E';
       });
       _applyLanguage(); // استدعاء _applyLanguage هنا
     }
@@ -104,7 +104,7 @@ class _SettingbodyState extends State<Settingbody> {
               ),
               prefixIcon: const Icon(Icons.arrow_drop_down),
               hintText: ' اللغه',
-              dropdownItems: ['English', 'العربية'],
+              dropdownItems: ['العربية', 'english'],
               onDropdownChanged: (selectedItem) {
                 _changeLanguage(selectedItem);
               },

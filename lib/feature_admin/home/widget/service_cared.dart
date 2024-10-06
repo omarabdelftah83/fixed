@@ -10,6 +10,11 @@ class ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextDirection textDirection =
+    Localizations.localeOf(context).languageCode == 'ar'
+        ? TextDirection.rtl
+        : TextDirection.ltr;
+
     return Card(
       margin: EdgeInsets.symmetric(vertical: 10.h),
       elevation: 5,
@@ -19,7 +24,7 @@ class ServiceCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(16.w),
         child: Directionality(
-          textDirection: TextDirection.rtl,
+          textDirection: textDirection, // تغيير الاتجاه بناءً على اللغة
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -44,8 +49,7 @@ class ServiceCard extends StatelessWidget {
               SizedBox(height: 30.h),
               CustomButton(
                 onPressed: () {
-                  Navigator.pushNamed(
-                      context, Routes.orderDetails,
+                  Navigator.pushNamed(context, Routes.orderDetails,
                       arguments: service);
                 },
                 text: 'المزيد',
