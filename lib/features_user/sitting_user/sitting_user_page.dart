@@ -11,7 +11,7 @@ class SittingUserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-     // body:  const SettingUserbody(),
+       body:  const SettingUserbody(),
     );
   }
 }

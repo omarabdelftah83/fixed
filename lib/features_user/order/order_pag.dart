@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:webbing_fixed/core/widget/custom_appar.dart';
 import 'package:webbing_fixed/features_user/order/widget/ordersTab.dart';
@@ -33,9 +34,9 @@ class _OrdersPageState extends State<OrdersPage>
 
       body: Column(
         children: [
-          const Center(
+          Center(
             child: CustomText(
-              text: 'الطلبيات',
+              text: 'appbareOrderString1'.tr(),  // تم استخدام الترجمة هنا
               fontSize: 24,
               fontWeight: FontWeight.w600,
             ),
@@ -43,20 +44,18 @@ class _OrdersPageState extends State<OrdersPage>
           TabBar(
             unselectedLabelColor: Colors.black,
             labelColor: Colors.blue,
-            labelStyle:const TextStyle(fontSize:20 ) ,
+            labelStyle: const TextStyle(fontSize: 20),
             controller: _tabController,
-            tabs: const [
-
-              Tab(text: 'ملغية',),
-              Tab(text: 'مكتملة'),
-              Tab(text: 'القادم'),
-
+            tabs: [
+              Tab(text: 'cancelled_orders1'.tr()),  // الترجمة هنا
+              Tab(text: 'completed_orders1'.tr()),  // الترجمة هنا
+              Tab(text: 'upcoming_orders1'.tr()),  // الترجمة هنا
             ],
           ),
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: const [
+              children: [
                 OrdersTab(orderStatus: 'ملغية'),
                 OrdersTab(orderStatus: 'مكتملة'),
                 OrdersTab(orderStatus: 'القادم'),
@@ -68,4 +67,3 @@ class _OrdersPageState extends State<OrdersPage>
     );
   }
 }
-

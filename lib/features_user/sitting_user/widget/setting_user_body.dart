@@ -56,7 +56,7 @@ class _SettingUserbodyState extends State<SettingUserbody> {
 
     EasyLocalization.of(context)?.setLocale(locale);
     context.read<LangUserCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
-    Navigator.pushNamed(context, Routes.mainLayoutPageAdmin);
+    Navigator.pushNamed(context, Routes.mainLayoutPage);
   }
 
   @override

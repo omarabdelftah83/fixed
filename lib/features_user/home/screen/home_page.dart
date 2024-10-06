@@ -1,16 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/resource/assets_manager.dart';
 import 'package:webbing_fixed/core/route/routes.dart';
+import 'package:webbing_fixed/core/text_failed/custom_textfailed%20_search.dart';
 import 'package:webbing_fixed/core/widget/custom_app_padding.dart';
 import 'package:webbing_fixed/features_user/home/widget/custom_row_header.dart';
-import 'package:webbing_fixed/core/text_failed/custom_textfailed%20_search.dart';
 import 'package:webbing_fixed/features_user/home/widget/offer_list_view.dart';
 import 'package:webbing_fixed/features_user/home/widget/serviec_grid_view.dart';
-
 import '../home_export.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,7 +21,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late SpeechToText speech;
   bool isListening = false;
-  String _searchText = "بحث";
+  String _searchText = "search_hint".tr();
   String recognizedText = '';
   TextEditingController searchController = TextEditingController();
 
@@ -33,7 +32,6 @@ class _HomePageState extends State<HomePage> {
     speech = SpeechToText();
     listen();
     cubit.fetchServices();
-
   }
 
   Future<void> listen() async {
@@ -44,7 +42,6 @@ class _HomePageState extends State<HomePage> {
       });
     }
   }
-
   void startListening() {
     speech.listen(onResult: (voice) {
       setState(() {
@@ -56,7 +53,6 @@ class _HomePageState extends State<HomePage> {
       isListening = true;
     });
   }
-
   void stopListening() {
     if (isListening) {
       speech.stop();
@@ -73,17 +69,17 @@ class _HomePageState extends State<HomePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const CustomRow(
+              CustomRow(
                 leftIconPath1: AssetsManager.iconWallet,
                 leftIconPath2: AssetsManager.notification,
                 rightIconPath: AssetsManager.iconLocation,
-                text: 'حدد موقعك',
+                text: 'location'.tr(),
               ),
               const SizedBox(height: 45),
-              const Align(
+              Align(
                 alignment: Alignment.topRight,
                 child: CustomText(
-                  text: 'هل تحتاج مساعدة ؟',
+                  text: 'need_help'.tr(),
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
                 ),
@@ -106,35 +102,35 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.pushNamed(context, Routes.splashPage);
                     },
-                    child: const CustomText(
-                      text: 'عرض الكل ',
+                    child: CustomText(
+                      text: 'show_all'.tr(),
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const CustomText(
-                    text: 'العروض ',
+                  CustomText(
+                    text: 'offers'.tr(),
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
                 ],
               ),
               const SizedBox(height: 18),
-              const OffersListView(), // استدعاء Widget العروض
+              const OffersListView(),
               const SizedBox(height: 18),
-              const Align(
+              Align(
                 alignment: Alignment.topRight,
                 child: CustomText(
-                  text: 'اختار خدمة الصيانة ',
+                  text: 'choose_service'.tr(),
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 18),
-              const Align(
+              Align(
                 alignment: Alignment.topRight,
                 child: CustomText(
-                  text: 'ثم احصل على افضل العروض وافضل خدمة ',
+                  text: 'best_offers'.tr(),
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                 ),

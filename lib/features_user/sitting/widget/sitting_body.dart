@@ -34,8 +34,7 @@ class _SettingbodyState extends State<Settingbody> {
       setState(() {
         _selectedCountry = selectedItem;
       });
-      print('Selected Country: $_selectedCountry'); // تحقق من الدولة المحددة
-
+      print('Selected Country: $_selectedCountry');
       context.read<OnBoardingCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
     }
   }
@@ -55,7 +54,7 @@ class _SettingbodyState extends State<Settingbody> {
     }
 
     EasyLocalization.of(context)?.setLocale(locale);
-    context.read<OnBoardingCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
+     context.read<OnBoardingCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
     Navigator.pushNamed(context, Routes.mainLayoutPageAdmin);
   }
 
