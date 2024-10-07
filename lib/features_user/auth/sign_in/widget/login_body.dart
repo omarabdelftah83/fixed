@@ -100,7 +100,7 @@ class LoginBody extends StatelessWidget {
                           const SizedBox(height: 30),
                           InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, Routes.singUpBody);
+                              Navigator.pushNamed(context, Routes.singUpPageUser);
                             },
                             child: RichText(
                               textAlign: TextAlign.center,

@@ -15,6 +15,7 @@ import 'package:webbing_fixed/features_user/auth/forget_passwored/controll/reset
 import 'package:webbing_fixed/features_user/auth/sing_up/controll/sign_up_user_cubit.dart';
 import 'package:webbing_fixed/features_user/auth/verification/controll/otp_cubit.dart';
 import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
+import 'package:webbing_fixed/features_user/home/data/create_order_user.dart';
 import 'package:webbing_fixed/features_user/home/data/order_service.dart';
 import 'package:webbing_fixed/features_user/onboarding/controll/on_boarding_cubit.dart';
 import 'package:webbing_fixed/features_user/onboarding/data/country_repository.dart';
@@ -22,6 +23,7 @@ import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
 import 'package:webbing_fixed/features_user/order/data/get_order_accept.dart';
 import 'package:webbing_fixed/features_user/order/data/get_order_cancel.dart';
 import 'package:webbing_fixed/features_user/order/data/get_order_complete.dart';
+import 'package:webbing_fixed/features_user/order/data/review_data.dart';
 import 'package:webbing_fixed/features_user/sitting/controll/profile_cubit.dart';
 import 'package:webbing_fixed/features_user/sitting/data/update_user_profile.dart';
 import 'package:webbing_fixed/features_user/sitting_user/controll/lang_user_cubit.dart';
@@ -46,6 +48,8 @@ class ServiesLcator{
     serLoc.registerLazySingleton(() => GetAllOrderAcceptUserRepository());
     serLoc.registerLazySingleton(() => GetAllOrderCancelUserRepository());
     serLoc.registerLazySingleton(() => GetOrderServiceId());
+    serLoc.registerLazySingleton(() => CreateOrderService());
+    serLoc.registerLazySingleton(() => ReviewService());
 
 
 
@@ -61,9 +65,9 @@ class ServiesLcator{
     serLoc.registerLazySingleton(() => OrderCubit(serLoc(),serLoc(),serLoc()));
     serLoc.registerFactory(() => ProfileCubit(serLoc(),));
     serLoc.registerFactory(() => OnBoardingCubit(serLoc(),));
-    serLoc.registerFactory(() => OrdersUserCubit(serLoc(),serLoc(),serLoc()));
+    serLoc.registerFactory(() => OrdersUserCubit(serLoc(),serLoc(),serLoc(),serLoc()));
     serLoc.registerFactory(() => LangUserCubit(serLoc(),));
-    serLoc.registerFactory(() => HomeUserCubit(serLoc(),serLoc()));
+    serLoc.registerFactory(() => HomeUserCubit(serLoc(),serLoc(),serLoc()));
 
 
 

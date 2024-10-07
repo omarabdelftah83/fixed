@@ -43,7 +43,7 @@ class OrderCard extends StatelessWidget {
             if (status == 'مكتملة' || status == 'ملغية')
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.reviewPage);
+                  Navigator.pushNamed(context, Routes.reviewPage,);
                 },
                 child: CustomText(
                   text: '(قيم الفني)',

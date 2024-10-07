@@ -14,6 +14,7 @@ import '../home_export.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> {
     speech = SpeechToText();
     listen();
     cubit.fetchServices();
+
   }
 
   Future<void> listen() async {

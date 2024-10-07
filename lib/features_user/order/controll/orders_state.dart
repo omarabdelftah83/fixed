@@ -2,6 +2,7 @@
 import 'package:webbing_fixed/features_user/order/%20model/get_all_order_accept.dart';
 import 'package:webbing_fixed/features_user/order/%20model/get_all_order_cancel.dart';
 import 'package:webbing_fixed/features_user/order/%20model/get_all_order_complete.dart';
+import 'package:webbing_fixed/features_user/order/%20model/review_model_user.dart';
 
 abstract class OrdersUserState {}
 
@@ -30,4 +31,12 @@ class OrderLoadedCompleteUser extends OrdersUserState {
 class OrderErrorStateUser extends OrdersUserState {
   final String errorMessage;
   OrderErrorStateUser(this.errorMessage);
+}
+class ServiceIdLoaded extends OrdersUserState {
+  final ReviewResponse reviewResponse;
+
+  ServiceIdLoaded(this.reviewResponse);
+
+  @override
+  List<Object?> get props => [reviewResponse];
 }

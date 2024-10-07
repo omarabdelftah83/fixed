@@ -49,13 +49,17 @@ class NetworkHandler {
   Future<Response> post(String endpoint, Map<String, dynamic> data) async {
     try {
       await _addTokenToHeaders();
+
+      print('Sending data to $endpoint: $data'); // Print the data being sent
       Response response = await _dio.post(
         endpoint,
         data: jsonEncode(data),
       );
+
       if (response.statusCode == 200) {
         return response;
       } else {
+        print('Failed to post data: ${response.statusCode} - ${response.data}'); // Print the response data
         throw Exception('Failed to post data: ${response.statusCode}');
       }
     } on DioException catch (e) {
@@ -67,6 +71,30 @@ class NetworkHandler {
     }
   }
 
+  Future<Response> postOrder(String endpoint, FormData data) async {
+    try {
+      await _addTokenToHeaders();
+
+      print('Sending data to $endpoint: $data'); // Print the data being sent
+      Response response = await _dio.post(
+        endpoint,
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        print('Failed to post data: ${response.statusCode} - ${response.data}'); // Print the response data
+        throw Exception('Failed to post data: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      print('DioException: ${e.message}');
+      throw Exception('Failed to post data: ${e.message}');
+    } catch (e) {
+      print('General Exception: $e');
+      rethrow;
+    }
+  }
 
   Future<Response> postFavorite(String endpoint) async {
     try {

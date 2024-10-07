@@ -1,52 +1,68 @@
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/data/get_all_service.dart';
+import 'package:webbing_fixed/features_user/home/data/create_order_user.dart';
 import 'package:webbing_fixed/features_user/home/data/order_service.dart';
+import 'package:webbing_fixed/features_user/home/model/create_order_model.dart';
+import 'package:webbing_fixed/features_user/main_layout/presentaion/mainlayout_page.dart';
 import 'home_user_state.dart';
 
 class HomeUserCubit extends Cubit<HomeUserState> {
   final GetAllService getAllService;
   final GetOrderServiceId getOrderServiceId;
-  final ImagePicker _picker = ImagePicker();
-  XFile? _selectedImage;
-  TextEditingController imageController = TextEditingController();
-  double _containerHeight = 50.0; // ارتفاع الـ Container الافتراضي
-  HomeUserCubit(this.getAllService, this.getOrderServiceId) : super(HomeUserInitial());
+  final CreateOrderService _createOrderService;
 
-  int _unitCount = 0;
+  TextEditingController imageController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+  final ImagePicker picker = ImagePicker();
+  XFile? selectedImage;
+  double containerHeight = 50.0;
+
+  int unitCount = 0;
   String? selectedServiceId;
+  String? selectedTime; // متغير لوقت الخدمة
+  String imageType = "defaultType"; // تأكد من إعطائه قيمة صحيحة
+
+  HomeUserCubit(
+      this.getAllService,
+      this.getOrderServiceId,
+      this._createOrderService,
+      ) : super(HomeUserInitial());
 
   void increment() {
-    _unitCount++;
-    emit(UnitCountChanged(_unitCount)); // Emit a new state with the updated count
+    unitCount++;
+    emit(UnitCountChanged(unitCount));
   }
 
   void decrement() {
-    if (_unitCount > 0) {
-      _unitCount--;
-      emit(UnitCountChanged(_unitCount)); // Emit a new state with the updated count
+    if (unitCount > 0) {
+      unitCount--;
+      emit(UnitCountChanged(unitCount));
     }
   }
 
   Future<void> pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      _selectedImage = pickedFile;
-      imageController.text = pickedFile.path;
-      _containerHeight = 150.0;
-      emit(ImagePicked(_selectedImage!.path, _containerHeight)); // Emit a new state with the selected image
+      selectedImage = pickedFile; // عيّن القيمة مباشرة إلى selectedImage
+      containerHeight = 150.0;
+      emit(ImageUploadingState(imageType)); // استخدام imageType
+      await _uploadImage(pickedFile.path, imageType);
     } else {
       print("No image selected.");
     }
   }
 
-  @override
-  void dispose() {
-    imageController.dispose();
-    super.close(); // Close the cubit instead of disposing
+  Future<void> _uploadImage(String imagePath, String imageType) async {
+    await Future.delayed(Duration(seconds: 1));
+    emit(ImageUploadCompletedState(imageType));
   }
 
+  // جلب جميع الخدمات
   Future<void> fetchServices() async {
     try {
       emit(HomeUserLoading());
@@ -58,14 +74,58 @@ class HomeUserCubit extends Cubit<HomeUserState> {
     }
   }
 
+  // جلب خدمة معينة بواسطة ID
   Future<void> fetchServiceId(int id) async {
     try {
       emit(HomeUserLoading());
-      final services = await getOrderServiceId.getServiceId(id);
-      emit(ServiceIdLoaded(services));
+      final service = await getOrderServiceId.getServiceId(id);
+      emit(ServiceIdLoaded(service));
     } catch (e) {
-      print('Error in fetchServices: $e');
+      print('Error in fetchServiceId: $e');
       emit(HomeUserErrorState(e.toString()));
     }
   }
+
+  Future<void> createOrderService(int id, BuildContext context) async {
+    try {
+      emit(HomeUserLoading());
+      final servicesRequest = CreateOrderRequest(
+        typeService: selectedServiceId,
+        time: selectedTime,
+        location: locationController.text,
+        image: selectedImage != null ? File(selectedImage!.path) : null,
+        description: descriptionController.text,
+        count: unitCount,
+      );
+
+      final result = await _createOrderService.createOrderServices(servicesRequest, id);
+
+      result.fold(
+            (failure) {
+          emit(HomeUserErrorState(failure.message));
+       //   showSnackbar(context, failure.message, Colors.red);
+        },
+            (services) {
+          emit(OrderCreatedSuccess(services));
+          },
+      );
+    } catch (e) {
+      print('Error in createOrderService: $e');
+      emit(HomeUserErrorState(e.toString()));
+    }
+  }
+
+  void clearImage() {
+    selectedImage = null;
+    containerHeight = 50.0;
+    emit(ImageUploadCompletedState(imageType));
+  }
+
+  @override
+  Future<void> close() {
+    locationController.dispose();
+    descriptionController.dispose();
+    return super.close();
+  }
+
 }

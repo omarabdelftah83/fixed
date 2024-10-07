@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:webbing_fixed/core/App_string/app_string.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
-import 'package:webbing_fixed/core/route/routes.dart';
 import 'package:webbing_fixed/core/widget/custom_app_padding.dart';
+import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
 
-class ReviewPage extends StatelessWidget {
-  const ReviewPage({super.key});
+class ReviewPageUser extends StatelessWidget {
+  const ReviewPageUser({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +42,15 @@ class ReviewPage extends StatelessWidget {
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
-                itemPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.001),
                 itemBuilder: (context, _) => const Icon(
                   Icons.star_rounded,
                   color: Colors.amber,
                 ),
                 onRatingUpdate: (rating) {
-                  print(rating);
+                 // context.read<OrdersUserCubit>().reviewServices(serviceId, rating.toInt());
                 },
               ),
+
               SizedBox(height: screenHeight * 0.05),
               Card(
                 shape: RoundedRectangleBorder(

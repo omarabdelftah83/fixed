@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
-
 import '../home_export.dart';
 
 class ConditionFixed extends StatefulWidget {
@@ -13,57 +11,16 @@ class ConditionFixed extends StatefulWidget {
 }
 
 class _ConditionFixedState extends State<ConditionFixed> {
-
   @override
   void initState() {
     super.initState();
     final cubit = BlocProvider.of<HomeUserCubit>(context);
     cubit.fetchServiceId(widget.serviceId);
   }
-  final ImagePicker _picker = ImagePicker();
-  XFile? _selectedImage;
-  TextEditingController imageController = TextEditingController();
-  double _containerHeight = 50.0;
-
-  int _unitCount = 0;
-  String? selectedServiceId;
-
-  void _increment() {
-    setState(() {
-      _unitCount++;
-    });
-  }
-
-  void _decrement() {
-    if (_unitCount > 0) {
-      setState(() {
-        _unitCount--;
-      });
-    }
-  }
-
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImage = pickedFile;
-        imageController.text = pickedFile.path;
-        _containerHeight = 150.0;
-      });
-      print("Image path: ${pickedFile.path}");
-    } else {
-      print("No image selected.");
-    }
-  }
-
-  @override
-  void dispose() {
-    imageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<HomeUserCubit>(context);
     return Scaffold(
       body: CustomPaddingApp(
         child: SingleChildScrollView(
@@ -88,22 +45,26 @@ class _ConditionFixedState extends State<ConditionFixed> {
               ),
               const SizedBox(height: 10),
               BlocBuilder<HomeUserCubit, HomeUserState>(
+                buildWhen: (previous, current) {
+                  return current is ServiceIdLoaded || current is ServicesLoaded;
+                },
                 builder: (context, state) {
-                  if (state is ServiceIdLoaded) {
+                  if (state is HomeUserLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is ServiceIdLoaded) {
                     final service = state.service;
-
                     return DropDownCustomTextfailed(
                       prefixIcon: const Icon(Icons.arrow_drop_down),
                       hintText: 'اختر الخدمة',
                       dropdownItems: [service.name],
                       onDropdownChanged: (selectedItem) {
-                        setState(() {
-                          selectedServiceId = service.id.toString();
-                        });
+                        cubit.selectedServiceId = selectedItem;
                       },
                     );
-                  } else if (state is HomeUserLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is HomeUserErrorState) {
+                    return Center(child: Text(state.errorMessage));
+                  } else if (state is ServicesLoaded && state.services.isEmpty) {
+                    return const Center(child: Text('لا توجد خدمات متاحة.'));
                   } else {
                     return const Center(child: Text('لا توجد خدمات متاحة.'));
                   }
@@ -122,8 +83,12 @@ class _ConditionFixedState extends State<ConditionFixed> {
               DropDownCustomTextfailed(
                 prefixIcon: const Icon(Icons.arrow_drop_down),
                 hintText: 'اختر الوقت المناسب للتنفيذ',
-                dropdownItems: ['في اقرب وقت', ' اليوم', 'غدا', 'خلال اسبوع', 'الاسبوع القادم'],
-                onDropdownChanged: (selectedItem) {},
+                dropdownItems: ['في اقرب وقت', 'اليوم', 'غدا', 'خلال اسبوع', 'الاسبوع القادم'],
+                onDropdownChanged: (selectedItem) {
+                  setState(() {
+                    cubit.selectedTime = selectedItem;
+                  });
+                },
               ),
               const SizedBox(height: 10),
               const Align(
@@ -135,8 +100,9 @@ class _ConditionFixedState extends State<ConditionFixed> {
                 ),
               ),
               const SizedBox(height: 10),
-              const CustomTextField(
-                prefixIcon: Icon(Icons.check),
+              CustomTextField(
+                controller: cubit.locationController,
+                prefixIcon: const Icon(Icons.check),
                 hintText: 'تم التحديد',
                 keyboardType: TextInputType.emailAddress,
               ),
@@ -151,17 +117,20 @@ class _ConditionFixedState extends State<ConditionFixed> {
               ),
               const SizedBox(height: 10),
               GestureDetector(
-                onTap: _pickImage,
+                onTap: () async {
+                  await cubit.pickImage();
+                  setState(() {});
+                },
                 child: Container(
-                  height: _containerHeight,
+                  height: cubit.containerHeight,
                   padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(30.0),
                     color: Colors.white,
-                    image: _selectedImage != null
+                    image: cubit.selectedImage != null
                         ? DecorationImage(
-                      image: FileImage(File(_selectedImage!.path)),
+                      image: FileImage(File(cubit.selectedImage!.path)),
                       fit: BoxFit.cover,
                     )
                         : null,
@@ -169,7 +138,7 @@ class _ConditionFixedState extends State<ConditionFixed> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      if (_selectedImage == null) ...[
+                      if (cubit.selectedImage == null) ...[
                         const Icon(Icons.camera_alt_outlined, color: Colors.grey),
                         const SizedBox(width: 10),
                       ],
@@ -177,7 +146,7 @@ class _ConditionFixedState extends State<ConditionFixed> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 6.0),
                           child: TextField(
-                            controller: imageController,
+                            controller: cubit.imageController,
                             readOnly: true,
                             decoration: const InputDecoration(
                               hintText: 'التقاط',
@@ -192,7 +161,6 @@ class _ConditionFixedState extends State<ConditionFixed> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 10),
               const Align(
                 alignment: Alignment.topRight,
@@ -203,7 +171,8 @@ class _ConditionFixedState extends State<ConditionFixed> {
                 ),
               ),
               const SizedBox(height: 10),
-              const CustomTextField(
+              CustomTextField(
+                controller: cubit.descriptionController,
                 minLines: 2,
                 maxLines: 11,
                 hintText: 'يرجى كتابة المشكلة بدقة...',
@@ -219,32 +188,84 @@ class _ConditionFixedState extends State<ConditionFixed> {
                 ),
               ),
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.remove),
-                    onPressed: _decrement,
-                  ),
-                  Text(
-                    '$_unitCount',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: _increment,
-                  ),
-                ],
+              BlocBuilder<HomeUserCubit, HomeUserState>(
+                builder: (context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: cubit.decrement,
+                      ),
+                      Text(
+                        '${cubit.unitCount}',
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: cubit.increment,
+                      ),
+                    ],
+                  );
+                },
               ),
-              const SizedBox(height: 10),
 
-              Center(child: CustomButton(
+              const SizedBox(height: 10),
+              Center(
+                child: CustomButton(
                   color: Colors.grey[200],
-                  onPressed: (){}, text: 'تخطي',textColor: Colors.black54,))
+                  onPressed: () async {
+                    String? token = CacheHelper.getToken();
+
+                    if (cubit.selectedServiceId == null ||
+                        cubit.selectedTime == null ||
+                        cubit.locationController.text.isEmpty ||
+                        cubit.descriptionController.text.isEmpty ||
+                        cubit.unitCount <= 0) {
+                      showSnackbar(context, 'يرجى ملء جميع الحقول المطلوبة.', Colors.red);
+                      return;
+                    }
+
+                    if (token == null) {
+                      final result = await Navigator.pushNamed(context, Routes.singUpPageUser);
+                    } else {
+                      await cubit.createOrderService(widget.serviceId, context);
+                    }
+
+                    showSnackbar(context, 'Order created successfully', Colors.green);
+                    cubit.selectedServiceId = null;
+                    cubit.selectedTime = null;
+                    cubit.locationController.clear();
+                    cubit.imageController.clear();
+                    cubit.descriptionController.clear();
+                    cubit.unitCount = 0;
+                    cubit.clearImage(); // Call the clear image method
+
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const MainLayoutPage(),
+                      ),
+                    );
+                  },
+                  text: 'تخطي',
+                  textColor: Colors.black54,
+                ),
+              ),
+
+
             ],
           ),
         ),
       ),
     );
   }
+  void showSnackbar(BuildContext context, String message, Color? color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+      ),
+    );
+  }
+
 }

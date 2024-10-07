@@ -18,7 +18,6 @@ class _ServicesGridViewState extends State<ServicesGridView> with AutomaticKeepA
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // حفظ المرجع إلى cubit هنا بدلاً من الاعتماد على context أثناء البناء أو التخلص
     homeUserCubit = BlocProvider.of<HomeUserCubit>(context);
   }
 
@@ -35,7 +34,6 @@ class _ServicesGridViewState extends State<ServicesGridView> with AutomaticKeepA
           return const Center(child: CircularProgressIndicator());
         } else if (state is ServicesLoaded) {
           final services = state.services;
-
           return GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
