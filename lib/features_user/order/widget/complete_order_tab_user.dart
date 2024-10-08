@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:webbing_fixed/core/shimmer/shimmer_loading.dart';
 import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
 import 'package:webbing_fixed/features_user/order/controll/orders_state.dart';
 import 'package:webbing_fixed/features_user/order/widget/ordercard.dart';
@@ -16,7 +17,7 @@ class CompletedOrdersTabUser extends StatelessWidget {
     return BlocBuilder<OrdersUserCubit, OrdersUserState>(
       builder: (context, state) {
         if (state is OrderLoadingUser) {
-          return const Center(child: CircularProgressIndicator());
+          return ShimmerLoading();
         } else if (state is OrderLoadedCompleteUser) {
           final canceledOrders = state.getAllOrderComplete;
           if (canceledOrders.isEmpty) {
@@ -31,10 +32,12 @@ class CompletedOrdersTabUser extends StatelessWidget {
                 formattedDate = DateFormat('yyyy-MM-dd').format(order.createdAt!);
               }
               return OrderCard(
+              //  idProvider: order.idProvider, // Pass idProvider here
                 name: order.name,
                 service: order.service,
                 date: formattedDate, // Use the local formattedDate variable
                 status: 'ملغية',
+
               );
             },
           );

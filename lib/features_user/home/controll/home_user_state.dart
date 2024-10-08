@@ -1,6 +1,8 @@
 import 'package:webbing_fixed/feature_admin/auth/sign_up/model/get_all_services_model.dart';
+import 'package:webbing_fixed/features_user/home/model/best_offer_model.dart';
 import 'package:webbing_fixed/features_user/home/model/create_order_model.dart';
 import 'package:webbing_fixed/features_user/home/model/order_service.dart';
+import 'package:webbing_fixed/features_user/home/model/reject_and_accept.dart';
 
 // الحالة المجردة الأساسية
 abstract class HomeUserState {}
@@ -40,7 +42,14 @@ class ServicesLoaded extends HomeUserState {
   final List<GetAllServicesModel> services;
   ServicesLoaded(this.services);
 }
-
+class BestOfferLoaded extends HomeUserState {
+  final List<BestOfferModel> services;
+  BestOfferLoaded(this.services);
+}
+class RejectAndAcceptLoaded extends HomeUserState {
+  final  RejectAndAcceptResponse services;
+  RejectAndAcceptLoaded(this.services);
+}
 // حالة تحميل خدمة معينة بنجاح
 class ServiceIdLoaded extends HomeUserState {
   final OrderServiceModel service;

@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/data/post_services.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/model/post_provide_model.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up_export.dart';
+import 'package:webbing_fixed/feature_admin/auth/sign_up/widget/sign_up_services_body.dart';
 import 'package:webbing_fixed/feature_admin/mainlayout/main_layout_admin_page.dart';
 import 'package:webbing_fixed/helpers/cache_helper.dart';
 
@@ -129,7 +130,7 @@ class SignUpCubit extends Cubit<SignUpState> {
           emit(SignUpLoaded());
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) => const MainLayoutPageAdmin()),
+                builder: (context) => const SignInPageAdmin()),
           );
         },
       );
@@ -212,7 +213,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         print('Success: ${success.message}');
         emit(SignUpLoaded());
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const SignInPageAdmin()),
+          MaterialPageRoute(builder: (context) =>  SignUpServiceBody()),
         );
       },
     );

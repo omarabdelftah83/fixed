@@ -6,9 +6,19 @@ import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
 import 'package:webbing_fixed/core/widget/custom_app_padding.dart';
 import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
+import 'package:webbing_fixed/features_user/order/controll/orders_state.dart';
 
-class ReviewPageUser extends StatelessWidget {
-  const ReviewPageUser({super.key});
+class ReviewPageUser extends StatefulWidget {
+  const ReviewPageUser({super.key, required this.idProvider});
+  final int idProvider; // تعريف idProvider
+
+  @override
+  State<ReviewPageUser> createState() => _ReviewPageUserState();
+}
+
+class _ReviewPageUserState extends State<ReviewPageUser> {
+  double _currentRating = 0.0; // Variable to hold the rating value
+  final TextEditingController _commentController = TextEditingController(); // Controller for the comment
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +44,7 @@ class ReviewPageUser extends StatelessWidget {
                 backgroundColor: const Color(0xFFD9D9D9),
                 radius: screenWidth * 0.15, // CircleAvatar size responsive
               ),
-              const CustomText(text: 'omar mohamed ',fontSize: 16,fontWeight: FontWeight.w400,),
+              const CustomText(text: 'Omar Mohamed', fontSize: 16, fontWeight: FontWeight.w400),
               SizedBox(height: screenHeight * 0.05),
               RatingBar.builder(
                 initialRating: 0,
@@ -47,10 +57,11 @@ class ReviewPageUser extends StatelessWidget {
                   color: Colors.amber,
                 ),
                 onRatingUpdate: (rating) {
-                 // context.read<OrdersUserCubit>().reviewServices(serviceId, rating.toInt());
+                  setState(() {
+                    _currentRating = rating; // Store the rating value
+                  });
                 },
               ),
-
               SizedBox(height: screenHeight * 0.05),
               Card(
                 shape: RoundedRectangleBorder(
@@ -58,10 +69,11 @@ class ReviewPageUser extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(screenWidth * 0.02),
-                  child: const TextField(
+                  child: TextField(
+                    controller: _commentController, // Attach the controller
                     textAlign: TextAlign.start,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: '.....أضف تعليقك',
                       hintTextDirection: TextDirection.rtl,
                       border: InputBorder.none,
@@ -70,11 +82,36 @@ class ReviewPageUser extends StatelessWidget {
                 ),
               ),
               SizedBox(height: screenHeight * 0.07),
-              CustomButton(
-                onPressed: () {
-                 //  Navigator.pushNamed(context, Routes.splashPage);
+              BlocConsumer<OrdersUserCubit, OrdersUserState>(
+                listener: (context, state) {
+                  if (state is ServiceIdLoaded) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('تم إرسال التقييم بنجاح')),
+                    );
+                  } else if (state is OrderErrorStateUser) {
+                    // Handle error
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('لقد قمت بالفعل بتقييم هذا مقدم الخدمة')),
+                    );
+                  }
                 },
-                text: AppStrings.review,
+                builder: (context, state) {
+                  return CustomButton(
+                    onPressed: () {
+                      if (_currentRating > 0) {
+                        context.read<OrdersUserCubit>().reviewServices(
+                          _currentRating.toInt(),
+                          widget.idProvider,
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('يرجى إضافة تقييم قبل الإرسال')),
+                        );
+                      }
+                    },
+                    text: AppStrings.review,
+                  );
+                },
               ),
               SizedBox(height: screenHeight * 0.03),
             ],
@@ -82,5 +119,11 @@ class ReviewPageUser extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose(); // Dispose of the controller when not needed
+    super.dispose();
   }
 }

@@ -45,6 +45,27 @@ class NetworkHandler {
       rethrow;
     }
   }
+  Future<Response> postWithoutBody(String endpoint) async {
+    try {
+      await _addTokenToHeaders();
+      Response response = await _dio.post(endpoint);
+      print('Response status code: ${response.statusCode}');
+      print('Response data: ${response.data}');
+
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        print('Failed to post data: ${response.statusCode} - ${response.statusMessage}');
+        throw Exception('Failed to post data: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      print('DioException: ${e.message}');
+      throw Exception('Failed to post data: ${e.message}');
+    } catch (e) {
+      print('General Exception: $e');
+      rethrow;
+    }
+  }
 
   Future<Response> post(String endpoint, Map<String, dynamic> data) async {
     try {

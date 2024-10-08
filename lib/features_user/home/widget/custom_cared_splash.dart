@@ -3,14 +3,33 @@ import 'package:webbing_fixed/core/SvgIcon/custom_svg_icon.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
 import 'package:webbing_fixed/core/resource/assets_manager.dart';
+import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
+
+import '../home_export.dart';
 
 class CustomCardSplash extends StatelessWidget {
-  const CustomCardSplash({Key? key}) : super(key: key);
+  final String? price;
+  final String? providerName;
+  final String? timeArrive;
+  final String? rating;
+  final String? image;
+  final int offerId; // أضف معرف العرض
+
+  const CustomCardSplash({
+    Key? key,
+    this.price,
+    this.providerName,
+    this.timeArrive,
+    this.rating,
+    this.image,
+    required this.offerId, // التأكد من وجود معرف العرض
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final cubit = BlocProvider.of<HomeUserCubit>(context);
 
     return Stack(
       children: [
@@ -39,12 +58,12 @@ class CustomCardSplash extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               CustomText(
-                                text: '250 ج.م',
+                                text: '$price ج.م',
                                 fontSize: screenWidth * 0.06,
                                 fontWeight: FontWeight.w600,
                               ),
                               CustomText(
-                                text: 'الاحد 14 يوليو, 09:00',
+                                text: timeArrive ?? 'N/A',
                                 fontSize: screenWidth * 0.04,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -53,23 +72,27 @@ class CustomCardSplash extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   CustomText(
-                                    text: 'احمد السالم',
+                                    text: providerName ?? 'Unknown Provider',
                                     fontSize: screenWidth * 0.035,
                                     fontWeight: FontWeight.w500,
                                   ),
                                   SizedBox(width: screenWidth * 0.02),
                                   CircleAvatar(
+                                    backgroundImage: image != null
+                                        ? NetworkImage('http://194.164.77.238$image')
+                                        : AssetImage('AssetsManager.defaultAvatar') as ImageProvider,
                                     radius: screenWidth * 0.05,
                                   ),
                                 ],
                               ),
                               Padding(
-                                padding: EdgeInsets.only(right: screenWidth * 0.15),
+                                padding:
+                                EdgeInsets.only(right: screenWidth * 0.15),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     CustomText(
-                                      text: '4.5',
+                                      text: rating ?? 'No rating',
                                       fontSize: screenWidth * 0.035,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -82,7 +105,6 @@ class CustomCardSplash extends StatelessWidget {
                                   ],
                                 ),
                               ),
-
                             ],
                           ),
                         ),
@@ -97,7 +119,10 @@ class CustomCardSplash extends StatelessWidget {
                             borderColor: Colors.blue,
                             textColor: Colors.blue,
                             color: Colors.white,
-                            onPressed: () {},
+                            onPressed: () {
+                              // طلب رفض
+                              cubit.postRejectAndService(offerId, 'reject');
+                            },
                             text: 'رفض',
                             width: screenWidth * 0.05,
                             height: screenHeight * 0.05,
@@ -107,7 +132,10 @@ class CustomCardSplash extends StatelessWidget {
                         Expanded(
                           child: CustomButton(
                             textColor: Colors.white,
-                            onPressed: () {},
+                            onPressed: () {
+                              // طلب قبول
+                              cubit.postRejectAndService(offerId, 'accept');
+                            },
                             text: 'قبول',
                             width: screenWidth * 0.05,
                             height: screenHeight * 0.05,

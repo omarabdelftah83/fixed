@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
-import 'package:webbing_fixed/core/route/routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
+import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
+import 'package:webbing_fixed/features_user/order/widget/review_page.dart';
 
 class OrderCard extends StatelessWidget {
   final String? name;
@@ -10,7 +13,8 @@ class OrderCard extends StatelessWidget {
   final String? date;
   final String? imagePath;
   final String? status;
-
+  final int? idProvider; // Add idProvider field
+final int? id ;
   const OrderCard({
     super.key,
     this.name,
@@ -18,10 +22,15 @@ class OrderCard extends StatelessWidget {
     this.date,
     this.imagePath,
     this.status,
+    this.idProvider,
+    this.id
+    // Make idProvider required
   });
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<OrdersUserCubit>(context); // Initialize cubit here
+
     return Card(
       color: Colors.white,
       margin: EdgeInsets.all(10.w),
@@ -32,7 +41,7 @@ class OrderCard extends StatelessWidget {
             if (status == 'القادم')
               GestureDetector(
                 onTap: () {
-                  _showAlertDialog(context);
+                  _showAlertDialog(context, cubit); // Pass cubit as parameter
                 },
                 child: CustomText(
                   text: '(الغاء)',
@@ -43,7 +52,11 @@ class OrderCard extends StatelessWidget {
             if (status == 'مكتملة' || status == 'ملغية')
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.reviewPage,);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ReviewPageUser(idProvider: idProvider ?? 0),
+                    ),
+                  );
                 },
                 child: CustomText(
                   text: '(قيم الفني)',
@@ -108,7 +121,7 @@ class OrderCard extends StatelessWidget {
     );
   }
 
-  void _showAlertDialog(BuildContext context) {
+  void _showAlertDialog(BuildContext context, OrdersUserCubit cubit) { // Add cubit parameter
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -138,6 +151,9 @@ class OrderCard extends StatelessWidget {
                 textColor: Colors.red,
                 color: Colors.white,
                 onPressed: () {
+                  if (id != null) { // Check if idProvider is not null
+                    cubit.cancelOrder(id!); // Use idProvider
+                  }
                   Navigator.of(context).pop();
                 },
                 text: 'الغاء',

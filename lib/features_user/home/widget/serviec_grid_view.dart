@@ -1,37 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:webbing_fixed/feature_admin/home/controll/home_cubit.dart';
-import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
-import 'package:webbing_fixed/features_user/home/controll/home_user_state.dart';
-import 'package:webbing_fixed/features_user/home/screen/condetion_fixed.dart';
+import 'package:webbing_fixed/core/shimmer/shimmer_loading.dart';
+import '../home_export.dart';
 
-class ServicesGridView extends StatefulWidget {
-  const ServicesGridView({Key? key}) : super(key: key);
-
-  @override
-  _ServicesGridViewState createState() => _ServicesGridViewState();
-}
-
-class _ServicesGridViewState extends State<ServicesGridView> with AutomaticKeepAliveClientMixin {
-  late HomeUserCubit homeUserCubit;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    homeUserCubit = BlocProvider.of<HomeUserCubit>(context);
-  }
-
-  @override
-  bool get wantKeepAlive => true;
+class ServicesGrid extends StatelessWidget {
+  const ServicesGrid({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); // استدعاء super.build
+    final cubit = BlocProvider.of<HomeUserCubit>(context);
 
     return BlocBuilder<HomeUserCubit, HomeUserState>(
+      buildWhen: (previous, current) {
+        return current is HomeUserLoading ||
+            current is ServicesLoaded ||
+            current is HomeUserErrorState;
+      },
       builder: (context, state) {
         if (state is HomeUserLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const ShimmerLoading();
         } else if (state is ServicesLoaded) {
           final services = state.services;
           return GridView.builder(
@@ -53,7 +39,8 @@ class _ServicesGridViewState extends State<ServicesGridView> with AutomaticKeepA
                       builder: (context) => ConditionFixed(serviceId: service.id),
                     ),
                   ).then((value) {
-                    homeUserCubit.fetchServices();
+                    cubit.fetchServices();
+                    cubit.fetchBestOffer();
                   });
                 },
                 child: Container(
@@ -98,9 +85,10 @@ class _ServicesGridViewState extends State<ServicesGridView> with AutomaticKeepA
         } else if (state is HomeUserErrorState) {
           return Center(child: Text('Error: ${state.errorMessage}'));
         } else {
-          return const Center(child: Text('No services available.'));
+          return const Center(child: Text(''));
         }
       },
     );
   }
+
 }

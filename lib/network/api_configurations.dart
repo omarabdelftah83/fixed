@@ -28,7 +28,7 @@ class ApiConfigurations {
   static const String getOrderCompleteUser = "${_baseUrl}Get_compleata_for_client/";
   static const String getOrderAcceptUser = "${_baseUrl}accepted_offers/";
   static const String getOrderCancelUser = "${_baseUrl}cancel_offer/";
-  //static const String getOrderCancelUser = "${_baseUrl}cancel_offer/";
+  static const String getBestOffer = "${_baseUrl}beast_offer/";
 
 
 

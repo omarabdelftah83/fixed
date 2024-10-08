@@ -3,17 +3,20 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/data/get_all_service.dart';
+import 'package:webbing_fixed/features_user/home/data/best_offer.dart';
 import 'package:webbing_fixed/features_user/home/data/create_order_user.dart';
 import 'package:webbing_fixed/features_user/home/data/order_service.dart';
+import 'package:webbing_fixed/features_user/home/data/reject_and_accept.dart';
 import 'package:webbing_fixed/features_user/home/model/create_order_model.dart';
-import 'package:webbing_fixed/features_user/main_layout/presentaion/mainlayout_page.dart';
+import 'package:webbing_fixed/features_user/home/model/reject_and_accept.dart';
 import 'home_user_state.dart';
 
 class HomeUserCubit extends Cubit<HomeUserState> {
   final GetAllService getAllService;
   final GetOrderServiceId getOrderServiceId;
   final CreateOrderService _createOrderService;
-
+  final GetBestOffer getBestOffer;
+  final RejectAndAcceptService rejectAndAcceptService;
   TextEditingController imageController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -30,7 +33,7 @@ class HomeUserCubit extends Cubit<HomeUserState> {
   HomeUserCubit(
       this.getAllService,
       this.getOrderServiceId,
-      this._createOrderService,
+      this._createOrderService, this.getBestOffer, this.rejectAndAcceptService,
       ) : super(HomeUserInitial());
 
   void increment() {
@@ -62,7 +65,6 @@ class HomeUserCubit extends Cubit<HomeUserState> {
     emit(ImageUploadCompletedState(imageType));
   }
 
-  // جلب جميع الخدمات
   Future<void> fetchServices() async {
     try {
       emit(HomeUserLoading());
@@ -74,7 +76,18 @@ class HomeUserCubit extends Cubit<HomeUserState> {
     }
   }
 
-  // جلب خدمة معينة بواسطة ID
+  Future<void> postRejectAndService(int id ,String decision ) async {
+    try {
+      emit(HomeUserLoading());
+      final servicesRequest =  RejectAndAcceptRequest(decision: decision);
+      final services = await rejectAndAcceptService.rejectAndAccept(servicesRequest, id);
+      emit(RejectAndAcceptLoaded(services));
+    } catch (e) {
+      print('Error in fetchServices: $e');
+      emit(HomeUserErrorState(e.toString()));
+    }
+  }
+
   Future<void> fetchServiceId(int id) async {
     try {
       emit(HomeUserLoading());
@@ -114,7 +127,16 @@ class HomeUserCubit extends Cubit<HomeUserState> {
       emit(HomeUserErrorState(e.toString()));
     }
   }
-
+  Future<void> fetchBestOffer() async {
+    try {
+      emit(HomeUserLoading());
+      final services = await getBestOffer.getBestOffer();
+      emit(BestOfferLoaded(services));
+    } catch (e) {
+      print('Error in fetchServices: $e');
+      emit(HomeUserErrorState(e.toString()));
+    }
+  }
   void clearImage() {
     selectedImage = null;
     containerHeight = 50.0;

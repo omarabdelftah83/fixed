@@ -17,7 +17,7 @@ import 'package:webbing_fixed/features_user/auth/sing_up/sing_up_page.dart';
 import 'package:webbing_fixed/features_user/auth/verification/verification_page.dart';
 import 'package:webbing_fixed/features_user/home/screen/condetion_fixed.dart';
 import 'package:webbing_fixed/features_user/order/widget/review_page.dart';
-import 'package:webbing_fixed/features_user/home/screen/splash_page.dart';
+import 'package:webbing_fixed/features_user/home/screen/offer_best.dart';
 import 'package:webbing_fixed/features_user/main_layout/presentaion/mainlayout_page.dart';
 import 'package:webbing_fixed/features_user/onboarding/screen/In_home_page.dart';
 import 'package:webbing_fixed/features_user/onboarding/on_boarding_page.dart';
@@ -40,7 +40,7 @@ class Routes {
   static const String conditionFixed = '/ConditionFixed';
   static const String signInBodyUser = '/SingInpBody';
   static const String reviewPage = '/reviewPage';
-  static const String splashPage = '/SplashPage';
+  static const String best_offer = '/SplashPage';
   static const String singUpAdminPage = '/SingUpAdminPage';
   static const String editProfile = '/EditProfile';
   static const String walletPage = '/WalletPage';
@@ -102,8 +102,8 @@ class RouteGenarator {
         return MaterialPageRoute(builder: (_) => const EditProfile());
       case Routes.singUpAdminPage:
         return MaterialPageRoute(builder: (_) => const SingUpAdminPage());
-      case Routes.splashPage:
-        return MaterialPageRoute(builder: (_) => const SplashPage());
+      case Routes.best_offer:
+        return MaterialPageRoute(builder: (_) => const OfferBestPage());
       case Routes.signInBodyUser:
         return MaterialPageRoute(builder: (_) => const SingInPage());
       case Routes.newPasswordPage:
@@ -120,8 +120,8 @@ class RouteGenarator {
         return MaterialPageRoute(builder: (_) => const MainLayoutPage());
       // case Routes.conditionFixed:
       //   return MaterialPageRoute(builder: (_) =>  ConditionFixed());
-      case Routes.reviewPage:
-        return MaterialPageRoute(builder: (_) => const ReviewPageUser());
+      // case Routes.reviewPage:
+      //   return MaterialPageRoute(builder: (_) => const ReviewPageUser());
       case Routes.ordersScreen:
         return MaterialPageRoute(builder: (_) => const OrdersPage());
       default:

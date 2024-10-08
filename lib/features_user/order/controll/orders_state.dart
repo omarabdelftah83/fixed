@@ -1,4 +1,5 @@
 
+import 'package:webbing_fixed/features_user/order/%20model/cancel_order.dart';
 import 'package:webbing_fixed/features_user/order/%20model/get_all_order_accept.dart';
 import 'package:webbing_fixed/features_user/order/%20model/get_all_order_cancel.dart';
 import 'package:webbing_fixed/features_user/order/%20model/get_all_order_complete.dart';
@@ -26,6 +27,11 @@ class OrderLoadedCancelUser extends OrdersUserState {
 class OrderLoadedCompleteUser extends OrdersUserState {
   final List<GetAllOrderCompleteUser> getAllOrderComplete;
   OrderLoadedCompleteUser(this.getAllOrderComplete);
+
+}
+class CancelOrderLoaded extends OrdersUserState {
+  final CancelOfferResponse cancelOfferResponse;
+  CancelOrderLoaded(this.cancelOfferResponse);
 
 }
 class OrderErrorStateUser extends OrdersUserState {
