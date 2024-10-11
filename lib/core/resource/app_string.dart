@@ -5,7 +5,7 @@ class AppString {
   static const String emailLabel = 'رقم الهاتف';
   static const String emailLabelRe = 'البريد الالكتروني';
   static const String invalidSuccess = 'تم التسجيل بنجاح';
-
+  static const String keyPassword = 'keyPassword'; // إضافة keyPassword
   static const String invalidCredentialsError = "بيانات الاعتماد غير صحيحة. الرجاء المحاولة مرة أخرى.";
   static const String unexpectedError = "حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى لاحقًا.";
   static const String loginSuccess = "تم تسجيل الدخول بنجاح!";

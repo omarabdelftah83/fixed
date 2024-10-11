@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
+import 'package:webbing_fixed/core/contact_utiles/contact_utiles.dart';
+import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
 import 'package:webbing_fixed/core/route/routes.dart';
+import 'package:webbing_fixed/feature_admin/orders/controll/order_cubit.dart';
 import 'package:webbing_fixed/feature_admin/orders/widget/dialog.dart';
 
 class OrderCardAdmin extends StatelessWidget {
@@ -14,7 +18,10 @@ class OrderCardAdmin extends StatelessWidget {
   final double? price;
   final String? data;
   final String? dataTime;
+  final int? id;
 
+  final String? phoneNumber;
+  final String? email;
 
   const OrderCardAdmin({
     super.key,
@@ -25,11 +32,17 @@ class OrderCardAdmin extends StatelessWidget {
     this.status,
     this.location,
     this.data,
-    this.price, this.dataTime,
+    this.price,
+    this.dataTime,
+    this.id,
+    this.phoneNumber,
+    this.email,
   });
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<OrderCubit>(context); // Initialize cubit here
+
     return Card(
       color: Colors.white,
       margin: EdgeInsets.all(20.w),
@@ -62,25 +75,26 @@ class OrderCardAdmin extends StatelessWidget {
                             color: Colors.grey,
                           )),
                       if (status == 'القادم')
-                        Text('  ${count}: العدد  ',
+                        Text(
+                          '  ${count}: العدد  ',
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: Colors.grey,
                           ),
                         ),
-                      if ( status == 'القادم'|| status == 'ملغية' )
+                      if (status == 'القادم' || status == 'ملغية')
                         Text(data ?? 'غير متاح',
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: Colors.blue,
                             )),
-                      if ( status == 'مكتملة' )
+                      if (status == 'مكتملة')
                         Text(dataTime ?? 'غير متاح',
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: Colors.grey,
                             )),
-                      if (status == 'مكتملة' )
+                      if (status == 'مكتملة')
                         Text('تم تحصيل :$price',
                             style: TextStyle(
                               fontSize: 14.sp,
@@ -103,14 +117,22 @@ class OrderCardAdmin extends StatelessWidget {
                                   color: Colors.blue,
                                   size: 20.w,
                                 ),
-                                onPressed: () {}),
+                                onPressed: () {
+                                  if (phoneNumber != null) {
+                                    ContactUtils.makePhoneCall(phoneNumber!);
+                                  }
+                                }),
                             IconButton(
                                 icon: Icon(
                                   Icons.mail_outline,
                                   color: Colors.blue,
                                   size: 20.w,
                                 ),
-                                onPressed: () {}),
+                                onPressed: () {
+                                  if (email != null) {
+                                    ContactUtils.sendEmail(email!);
+                                  }
+                                }),
                           ],
                         ),
                     ],
@@ -137,7 +159,7 @@ class OrderCardAdmin extends StatelessWidget {
             if (status == 'القادم')
               GestureDetector(
                 onTap: () {
-                  showAlertDialog(context);
+                  showAlertDialog(context, cubit);
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10.0, right: 250),
@@ -164,6 +186,71 @@ class OrderCardAdmin extends StatelessWidget {
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  void showAlertDialog(BuildContext context, OrderCubit cubit) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32.0.r),
+            side: const BorderSide(width: 0),
+          ),
+          title: Center(
+            child: CustomText(
+              text: 'الغاء',
+              fontSize: 30.sp,
+            ),
+          ),
+          content: Container(
+            width: 400.w,
+            height: 120.h,
+            padding: EdgeInsets.all(10.w),
+            child: contentText(),
+          ),
+          actions: <Widget>[
+            Center(
+              child: CustomButton(
+                height: 30.h,
+                width: 160.w,
+                borderColor: Colors.red,
+                textColor: Colors.red,
+                color: Colors.white,
+                onPressed: () {
+                  if (id != null) {
+                    // Check if idProvider is not null
+                    cubit.CancelOrderWithAdmin(id!); // Use idProvider
+                  }
+                  Navigator.of(context).pop();
+                },
+                text: 'الغاء',
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget contentText() {
+    return const SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          CustomText(
+            text: 'هل تريد الغاء الموعد ؟',
+            fontSize: 25,
+          ),
+          CustomText(
+            text:
+                'اذا حذفت الموعد قبلها ب ساعه سيتم\n تطبيق غرامة قدرها 50 جنيه مصري ',
+            fontSize: 15,
+            textColor: Colors.grey,
+          ),
+        ],
       ),
     );
   }

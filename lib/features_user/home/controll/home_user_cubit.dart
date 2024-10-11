@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/data/get_all_service.dart';
 import 'package:webbing_fixed/features_user/home/data/best_offer.dart';
 import 'package:webbing_fixed/features_user/home/data/create_order_user.dart';
+import 'package:webbing_fixed/features_user/home/data/delete_notification_user.dart';
+import 'package:webbing_fixed/features_user/home/data/notification_user_data.dart';
 import 'package:webbing_fixed/features_user/home/data/order_service.dart';
 import 'package:webbing_fixed/features_user/home/data/reject_and_accept.dart';
 import 'package:webbing_fixed/features_user/home/model/create_order_model.dart';
@@ -17,6 +19,8 @@ class HomeUserCubit extends Cubit<HomeUserState> {
   final CreateOrderService _createOrderService;
   final GetBestOffer getBestOffer;
   final RejectAndAcceptService rejectAndAcceptService;
+  final DeleteNotificationUser _deleteNotificationUser;
+  final GetNotificationUserService getNotificationUserService;
   TextEditingController imageController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -31,10 +35,14 @@ class HomeUserCubit extends Cubit<HomeUserState> {
   String imageType = "defaultType"; // تأكد من إعطائه قيمة صحيحة
 
   HomeUserCubit(
-      this.getAllService,
-      this.getOrderServiceId,
-      this._createOrderService, this.getBestOffer, this.rejectAndAcceptService,
-      ) : super(HomeUserInitial());
+    this.getAllService,
+    this.getOrderServiceId,
+    this._createOrderService,
+    this.getBestOffer,
+    this.rejectAndAcceptService,
+    this.getNotificationUserService,
+    this._deleteNotificationUser,
+  ) : super(HomeUserInitial());
 
   void increment() {
     unitCount++;
@@ -76,17 +84,40 @@ class HomeUserCubit extends Cubit<HomeUserState> {
     }
   }
 
-  Future<void> postRejectAndService(int id ,String decision ) async {
+  Future<void> postRejectAndService(int id, String decision) async {
     try {
       emit(HomeUserLoading());
-      final servicesRequest =  RejectAndAcceptRequest(decision: decision);
-      final services = await rejectAndAcceptService.rejectAndAccept(servicesRequest, id);
+      final servicesRequest = RejectAndAcceptRequest(decision: decision);
+      final services =
+          await rejectAndAcceptService.rejectAndAccept(servicesRequest, id);
       emit(RejectAndAcceptLoaded(services));
     } catch (e) {
       print('Error in fetchServices: $e');
       emit(HomeUserErrorState(e.toString()));
     }
   }
+
+  Future<void> getNotificationUser() async {
+    try {
+      emit(HomeUserLoading());
+      final service = await getNotificationUserService.getNotificationUser();
+      emit(NotificationUserLoaded(service));
+    } catch (e) {
+      print('Error in fetchServiceId: $e');
+      emit(HomeUserErrorState(e.toString()));
+    }
+  }
+  Future<void> deleteNotificationUser(int id ) async {
+    try {
+      emit(HomeUserLoading());
+      final service = await _deleteNotificationUser.deleteNotificationUser(id);
+    await  getNotificationUser();
+    } catch (e) {
+      print('Error in fetchServiceId: $e');
+      emit(HomeUserErrorState(e.toString()));
+    }
+  }
+
 
   Future<void> fetchServiceId(int id) async {
     try {
@@ -111,22 +142,24 @@ class HomeUserCubit extends Cubit<HomeUserState> {
         count: unitCount,
       );
 
-      final result = await _createOrderService.createOrderServices(servicesRequest, id);
+      final result =
+          await _createOrderService.createOrderServices(servicesRequest, id);
 
       result.fold(
-            (failure) {
+        (failure) {
           emit(HomeUserErrorState(failure.message));
-       //   showSnackbar(context, failure.message, Colors.red);
+          //   showSnackbar(context, failure.message, Colors.red);
         },
-            (services) {
+        (services) {
           emit(OrderCreatedSuccess(services));
-          },
+        },
       );
     } catch (e) {
       print('Error in createOrderService: $e');
       emit(HomeUserErrorState(e.toString()));
     }
   }
+
   Future<void> fetchBestOffer() async {
     try {
       emit(HomeUserLoading());
@@ -137,6 +170,7 @@ class HomeUserCubit extends Cubit<HomeUserState> {
       emit(HomeUserErrorState(e.toString()));
     }
   }
+
   void clearImage() {
     selectedImage = null;
     containerHeight = 50.0;
@@ -149,5 +183,4 @@ class HomeUserCubit extends Cubit<HomeUserState> {
     descriptionController.dispose();
     return super.close();
   }
-
 }

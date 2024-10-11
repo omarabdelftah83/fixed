@@ -31,24 +31,23 @@ class GetAllOrderCancelUser {
     required this.idProvider,
   });
 
-  // Factory method to create an instance from JSON
+  // Updated factory method with null safety
   factory GetAllOrderCancelUser.fromJson(Map<String, dynamic> json) {
     return GetAllOrderCancelUser(
       id: json['id'],
-      providerName: json['provider_name'],
-      providerPic: json['provider_pic'],
-      timeArrive: json['time_arrive'],
-      price: json['price'],
-      comment: json['comment'],
+      providerName: json['provider_name'] ?? '',   // Default to empty string if null
+      providerPic: json['provider_pic'] ?? '',     // Default to empty string if null
+      timeArrive: json['time_arrive'] ?? '',       // Default to empty string if null
+      price: json['price'] ?? '0.00',              // Default to '0.00' if null
+      comment: json['comment'] ?? '',              // Default to empty string if null
       createdAt: DateTime.parse(json['created_at']),
-      status: json['status'],
+      status: json['status'] ?? 'Unknown',         // Default to 'Unknown' if null
       order: json['order'],
       provider: json['provider'],
-      serviceName: json['service_name'],
-      email: json['email'],
-      phone: json['phone'],
+      serviceName: json['service_name'] ?? '',     // Default to empty string if null
+      email: json['email'] ?? '',                  // Default to empty string if null
+      phone: json['phone'] ?? '',                  // Default to empty string if null
       idProvider: json['id_provider'],
     );
   }
-
 }

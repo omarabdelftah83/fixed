@@ -10,27 +10,30 @@ class MainLayoutPageAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainLayOutAdminCubit, MainLayoutAdminState>(
-      builder: (context, state) {
-        final cubit = context.read<MainLayOutAdminCubit>();
-        return Scaffold(
-          body: cubit.pages[state.selectedIndex],
-          bottomNavigationBar: ClipRRect(
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(20.0),
-              bottom: Radius.circular(20.0),
-            ),
-            child: Container(
-              height: 70.0.h, // Adjust the height as needed
-              child: BottomAppBar(
-                color: Colors.white70,
-                elevation: 10,
-                child: CustomBottomAppBarAdmin(),
+    return BlocProvider(
+      create: (context) => MainLayOutAdminCubit(),
+      child: BlocBuilder<MainLayOutAdminCubit, MainLayoutAdminState>(
+        builder: (context, state) {
+          final cubit = context.read<MainLayOutAdminCubit>();
+          return Scaffold(
+            body: cubit.pages[state.selectedIndex],
+            bottomNavigationBar: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20.0),
+                bottom: Radius.circular(20.0),
+              ),
+              child: Container(
+                height: 70.0.h, // Adjust the height as needed
+                child: BottomAppBar(
+                  color: Colors.white70,
+                  elevation: 10,
+                  child: CustomBottomAppBarAdmin(),
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

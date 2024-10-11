@@ -34,18 +34,18 @@ class GetAllOrderAcceptUser {
   factory GetAllOrderAcceptUser.fromJson(Map<String, dynamic> json) {
     return GetAllOrderAcceptUser(
       id: json['id'],
-      providerName: json['provider_name'],
-      providerPic: json['provider_pic'],
-      timeArrive: json['time_arrive'],
-      price: json['price'],
-      comment: json['comment'],
+      providerName: json['provider_name'] ?? '',  // Provide a default empty string if null
+      providerPic: json['provider_pic'] ?? '',    // Handle null for providerPic
+      timeArrive: json['time_arrive'] ?? '',      // Handle null for timeArrive
+      price: json['price'] ?? '0.00',             // Handle null for price
+      comment: json['comment'] ?? '',             // Handle null for comment
       createdAt: DateTime.parse(json['created_at']),
-      status: json['status'],
+      status: json['status'] ?? 'N/A',            // Provide a default value for status
       order: json['order'],
       provider: json['provider'],
-      serviceName: json['service_name'],
-      email: json['email'],
-      phone: json['phone'],
+      serviceName: json['service_name'] ?? '',    // Handle null for serviceName
+      email: json['email'] ?? '',                 // Handle null for email
+      phone: json['phone'] ?? '',                 // Handle null for phone
       idProvider: json['id_provider'],
     );
   }

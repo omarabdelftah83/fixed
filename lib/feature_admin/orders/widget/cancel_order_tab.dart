@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:webbing_fixed/core/shimmer/shimmer_loading.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_cubit.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_state.dart';
 import 'package:webbing_fixed/feature_admin/orders/widget/order_cared.dart';
@@ -16,7 +17,7 @@ class CanceledOrdersTab extends StatelessWidget {
     return BlocBuilder<OrderCubit, OrderState>(
       builder: (context, state) {
         if (state is OrderLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return ShimmerLoading();
         } else if (state is OrderLoadedCancel) {
           final canceledOrders = state.getAllOrderCancel;
           if (canceledOrders.isEmpty) {

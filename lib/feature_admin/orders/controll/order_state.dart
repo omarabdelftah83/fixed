@@ -2,6 +2,7 @@
 import 'package:webbing_fixed/feature_admin/orders/model/gell_all_order_complate.dart';
 import 'package:webbing_fixed/feature_admin/orders/model/get_all_order_accept.dart';
 import 'package:webbing_fixed/feature_admin/orders/model/get_all_order_cancel.dart';
+import 'package:webbing_fixed/features_user/order/%20model/cancel_order.dart';
 
 abstract class OrderState {}
 final class OrderInitial extends OrderState {}
@@ -9,6 +10,11 @@ class OrderLoading extends OrderState {}
 class OrderLoadedComplete extends OrderState {
   final List<GetAllOrderComplete> getAllOrderComplete;
   OrderLoadedComplete(this.getAllOrderComplete);
+
+}
+class CancelOrderAdminLoaded extends OrderState {
+  final CancelOfferResponse cancelOfferResponse;
+  CancelOrderAdminLoaded(this.cancelOfferResponse);
 
 }
 

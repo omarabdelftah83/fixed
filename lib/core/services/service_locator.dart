@@ -3,10 +3,13 @@ import 'package:webbing_fixed/feature_admin/auth/sign_up/controll/sign_up_cubit.
 import 'package:webbing_fixed/feature_admin/auth/sign_up/data/get_all_service.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/data/post_services.dart';
 import 'package:webbing_fixed/feature_admin/home/controll/home_cubit.dart';
+import 'package:webbing_fixed/feature_admin/home/data/delete_notification_admin.dart';
 import 'package:webbing_fixed/feature_admin/home/data/get_all_order.dart';
 import 'package:webbing_fixed/feature_admin/home/data/get_user_data.dart';
+import 'package:webbing_fixed/feature_admin/home/data/notification_admin_data.dart';
 import 'package:webbing_fixed/feature_admin/home/data/post_price_data.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_cubit.dart';
+import 'package:webbing_fixed/feature_admin/orders/data/cancel_order_admin.dart';
 import 'package:webbing_fixed/feature_admin/orders/data/get_all_order_accept.dart';
 import 'package:webbing_fixed/feature_admin/orders/data/get_all_order_cancel.dart';
 import 'package:webbing_fixed/feature_admin/orders/data/get_all_order_complete.dart';
@@ -17,6 +20,8 @@ import 'package:webbing_fixed/features_user/auth/verification/controll/otp_cubit
 import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
 import 'package:webbing_fixed/features_user/home/data/best_offer.dart';
 import 'package:webbing_fixed/features_user/home/data/create_order_user.dart';
+import 'package:webbing_fixed/features_user/home/data/delete_notification_user.dart';
+import 'package:webbing_fixed/features_user/home/data/notification_user_data.dart';
 import 'package:webbing_fixed/features_user/home/data/order_service.dart';
 import 'package:webbing_fixed/features_user/home/data/reject_and_accept.dart';
 import 'package:webbing_fixed/features_user/onboarding/controll/on_boarding_cubit.dart';
@@ -56,6 +61,11 @@ class ServiesLcator{
     serLoc.registerLazySingleton(() => GetBestOffer());
     serLoc.registerLazySingleton(() => RejectAndAcceptService());
     serLoc.registerLazySingleton(() => CancelOrderService());
+    serLoc.registerLazySingleton(() => GetNotificationUserService());
+    serLoc.registerLazySingleton(() => DeleteNotificationUser());
+    serLoc.registerLazySingleton(() => GetNotificationAdminService());
+    serLoc.registerLazySingleton(() => DeleteNotificationAdmin());
+    serLoc.registerLazySingleton(() => CancelOrderAdmin());
 
 
 
@@ -67,14 +77,14 @@ class ServiesLcator{
     serLoc.registerFactory(() => SignUpUserCubit(serLoc(),));
     serLoc.registerFactory(() => ForgetPasswordCubit(serLoc(),));
     serLoc.registerFactory(() => CreateNewPasswordCubit(serLoc(),));
-    serLoc.registerLazySingleton(() => HomeCubit(serLoc(),serLoc(),serLoc()));
+    serLoc.registerLazySingleton(() => HomeCubit(serLoc(),serLoc(),serLoc(),serLoc(),serLoc()));
     serLoc.registerFactory(() => OtpCubit(serLoc(),));
-    serLoc.registerLazySingleton(() => OrderCubit(serLoc(),serLoc(),serLoc()));
+    serLoc.registerLazySingleton(() => OrderCubit(serLoc(),serLoc(),serLoc(),serLoc()));
     serLoc.registerFactory(() => ProfileCubit(serLoc(),));
     serLoc.registerFactory(() => OnBoardingCubit(serLoc(),));
     serLoc.registerFactory(() => OrdersUserCubit(serLoc(),serLoc(),serLoc(),serLoc(),serLoc()));
     serLoc.registerFactory(() => LangUserCubit(serLoc(),));
-    serLoc.registerFactory(() => HomeUserCubit(serLoc(),serLoc(),serLoc(),serLoc(),serLoc()));
+    serLoc.registerFactory(() => HomeUserCubit(serLoc(),serLoc(),serLoc(),serLoc(),serLoc(),serLoc(),serLoc()));
 
 
 

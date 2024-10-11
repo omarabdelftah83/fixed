@@ -8,6 +8,7 @@ import 'package:webbing_fixed/core/text_failed/drop_down_custom_textfailed.dart'
 import 'package:webbing_fixed/features_user/sitting/widget/custom_listtile.dart';
 import 'package:webbing_fixed/features_user/sitting/widget/custom_switch.dart';
 import 'package:webbing_fixed/features_user/sitting_user/controll/lang_user_cubit.dart';
+import 'package:webbing_fixed/helpers/cache_helper.dart';
 
 class SettingUserbody extends StatefulWidget {
   const SettingUserbody({super.key});
@@ -19,6 +20,7 @@ class SettingUserbody extends StatefulWidget {
 class _SettingUserbodyState extends State<SettingUserbody> {
   String _selectedLanguage = 'A';
   String _selectedCountry = 'الكويت';
+  bool _savePassword = false; // Track the state of the save password option
 
   void _changeLanguage(String? selectedItem) {
     if (selectedItem != null) {
@@ -57,6 +59,14 @@ class _SettingUserbodyState extends State<SettingUserbody> {
     EasyLocalization.of(context)?.setLocale(locale);
     context.read<LangUserCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
     Navigator.pushNamed(context, Routes.mainLayoutPage);
+  }
+  Future<void> _savePasswordSetting() async {
+    await CacheHelper.putBoolean(key: 'Password', value: _savePassword);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(_savePassword ? 'Password saving enabled' : 'Password saving disabled'),
+      ),
+    );
   }
 
   @override
@@ -125,24 +135,34 @@ class _SettingUserbodyState extends State<SettingUserbody> {
             SizedBox(height: 16.h),
             CustomSwitch(
               border: Border.all(color: Colors.grey, width: 1.0),
-              value: true,
+              value: _savePassword, // استخدم المتغير لتتبع حالة المفتاح
               text: 'حفظ كلمة المرور',
               icon: Icons.lock,
-              onChanged: (value) {},
+              onChanged: (value) async {
+                setState(() {
+                  _savePassword = value;
+                });
+
+                if (_savePassword) {
+                  String password = 'yourPassword';
+                  await CacheHelper.savePassword(password);
+                } else {
+
+                  await CacheHelper.clearPassword();
+                }
+                _savePasswordSetting();
+              },
             ),
+
             SizedBox(height: 16.h),
-            CustomSwitch(
-              border: Border.all(color: Colors.grey, width: 1.0),
-              value: true,
-              text: 'حفظ البصة',
-              icon: Icons.fingerprint,
-              onChanged: (value) {},
-            ),
+
             SizedBox(height: 16.h),
             CustomListtile(
               text: 'الشروط والاحكام',
               icon: Icons.document_scanner,
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, Routes.conditionsPage);
+              },
             ),
             SizedBox(height: 16.h),
             CustomListtile(

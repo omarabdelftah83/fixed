@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_cubit.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_state.dart';
 import 'package:webbing_fixed/feature_admin/orders/widget/order_cared.dart';
-import 'package:intl/intl.dart'; // Add this import
+import 'package:intl/intl.dart';
+
+import '../../../core/shimmer/shimmer_loading.dart'; // Add this import
 
 class CompletedOrdersTab extends StatelessWidget {
   const CompletedOrdersTab({Key? key}) : super(key: key);
@@ -16,7 +18,7 @@ class CompletedOrdersTab extends StatelessWidget {
     return BlocBuilder<OrderCubit, OrderState>(
       builder: (context, state) {
         if (state is OrderLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return ShimmerLoading();
         } else if (state is OrderLoadedComplete) {
           final orders = state.getAllOrderComplete;
           return ListView.builder(

@@ -17,7 +17,7 @@ class CompletedOrdersTabUser extends StatelessWidget {
     return BlocBuilder<OrdersUserCubit, OrdersUserState>(
       builder: (context, state) {
         if (state is OrderLoadingUser) {
-          return ShimmerLoading();
+          return const ShimmerLoading();
         } else if (state is OrderLoadedCompleteUser) {
           final canceledOrders = state.getAllOrderComplete;
           if (canceledOrders.isEmpty) {
@@ -32,7 +32,8 @@ class CompletedOrdersTabUser extends StatelessWidget {
                 formattedDate = DateFormat('yyyy-MM-dd').format(order.createdAt!);
               }
               return OrderCard(
-              //  idProvider: order.idProvider, // Pass idProvider here
+               // idProvider: order.idProvider, // Pass idProvider here
+                imagePath: order.image,
                 name: order.name,
                 service: order.service,
                 date: formattedDate, // Use the local formattedDate variable

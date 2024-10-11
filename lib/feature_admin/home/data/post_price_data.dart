@@ -9,14 +9,12 @@ import 'package:webbing_fixed/network/network_handler.dart';
 class ApiOfferPriceService {
   NetworkHandler networkHandler = NetworkHandler();
 
-  Future<Either<Failure, ResponsePrice>> offerPriceOrder(RequestPrice requestPrice) async {
+  Future<Either<Failure, ResponsePrice>> offerPriceOrder(RequestPrice requestPrice, int id ) async {
     try {
-      final response = await networkHandler.post(
-        ApiConfigurations.postPriceOrder,
-        requestPrice.toMap(),
+      final response = await networkHandler.post('http://194.164.77.238/order/${id}/offers/', requestPrice.toMap(),
       );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if ( response.statusCode == 201) {
         final responseData = ResponsePrice.fromMap(response.data);
         print('Data posted successfully with status code ${response.statusCode}');
         return Right(responseData);

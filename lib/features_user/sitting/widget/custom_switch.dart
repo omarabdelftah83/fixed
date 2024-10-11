@@ -35,13 +35,22 @@ class CustomSwitch extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start, // Use maximum available width
+          mainAxisAlignment: MainAxisAlignment.end, // Align switch to the end
           children: [
+            Expanded(
+              child: Switch(
+                value: value,
+                onChanged: onChanged,
+                activeColor: Colors.green,
+              ),
+            ),
+            SizedBox(width: 100,),
             Expanded(
               flex: 2, // Give more space to text and icon
               child: Padding(
-                padding: const EdgeInsets.all( 15.0), // Reduced padding
+                padding: const EdgeInsets.all(15.0), // Adjust padding
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end, // Align content to the end
                   children: [
                     Flexible(
                       child: Text(
@@ -50,17 +59,12 @@ class CustomSwitch extends StatelessWidget {
                         overflow: TextOverflow.ellipsis, // Handle overflow
                       ),
                     ),
+
                     SizedBox(width: 8.0),
                     Icon(icon, color: Colors.blue),
+
                   ],
                 ),
-              ),
-            ),
-            Expanded(
-              child: Switch(
-                value: value,
-                onChanged: onChanged,
-                activeColor: Colors.green,
               ),
             ),
           ],

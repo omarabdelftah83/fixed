@@ -27,7 +27,7 @@ class OrderDetails {
   final String? location;
   final String? file;
   final int? count;
-
+  final int? idOrder;
   OrderDetails({
      this.service,
      this.user,
@@ -36,6 +36,7 @@ class OrderDetails {
      this.location,
      this.file,
      this.count,
+    this.idOrder
   });
 
   factory OrderDetails.fromJson(Map<String, dynamic> json) {
@@ -47,6 +48,7 @@ class OrderDetails {
       location: json['location'],
       file: json['file'],
       count: json['count'],
+      idOrder: json['id_order'],
     );
   }
 }

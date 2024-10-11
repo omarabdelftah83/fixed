@@ -1,6 +1,4 @@
-import 'package:dio/dio.dart';
 import 'package:webbing_fixed/features_user/home/model/best_offer_model.dart';
-import 'package:webbing_fixed/features_user/home/model/order_service.dart';
 import 'package:webbing_fixed/network/api_configurations.dart';
 import 'package:webbing_fixed/network/network_handler.dart';
 

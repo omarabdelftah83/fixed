@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
+import 'package:webbing_fixed/core/contact_utiles/contact_utiles.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
@@ -13,8 +14,11 @@ class OrderCard extends StatelessWidget {
   final String? date;
   final String? imagePath;
   final String? status;
-  final int? idProvider; // Add idProvider field
-final int? id ;
+  final int? idProvider;
+  final int? id;
+  final String? phoneNumber;
+  final String? email;
+
   const OrderCard({
     super.key,
     this.name,
@@ -23,13 +27,14 @@ final int? id ;
     this.imagePath,
     this.status,
     this.idProvider,
-    this.id
-    // Make idProvider required
+    this.id,
+    this.phoneNumber, // تمرير رقم الهاتف
+    this.email, // تمرير البريد الإلكتروني
   });
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<OrdersUserCubit>(context); // Initialize cubit here
+    final cubit = BlocProvider.of<OrdersUserCubit>(context);
 
     return Card(
       color: Colors.white,
@@ -41,7 +46,7 @@ final int? id ;
             if (status == 'القادم')
               GestureDetector(
                 onTap: () {
-                  _showAlertDialog(context, cubit); // Pass cubit as parameter
+                  _showAlertDialog(context, cubit);
                 },
                 child: CustomText(
                   text: '(الغاء)',
@@ -87,19 +92,30 @@ final int? id ;
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         IconButton(
-                            icon: Icon(
-                              Icons.call,
-                              color: Colors.blue,
-                              size: 20.w,
-                            ),
-                            onPressed: () {}),
+                          icon: Icon(
+                            Icons.call,
+                            color: Colors.blue,
+                            size: 20.w,
+                          ),
+                          onPressed: () {
+                            if (phoneNumber != null) {
+                              ContactUtils.makePhoneCall(phoneNumber!);
+                            }
+                          },
+                        ),
                         IconButton(
-                            icon: Icon(
-                              Icons.mail_outline,
-                              color: Colors.blue,
-                              size: 20.w,
-                            ),
-                            onPressed: () {}),
+                          icon: Icon(
+                            Icons.mail_outline,
+                            color: Colors.blue,
+                            size: 20.w,
+                          ),
+                          onPressed: () {
+
+                            if (email != null) {
+                              ContactUtils.sendEmail(email!);
+                            }
+                          },
+                        ),
                       ],
                     ),
                 ],
@@ -112,7 +128,9 @@ final int? id ;
               color: Colors.grey.shade400,
             ),
             CircleAvatar(
-              backgroundImage: AssetImage(imagePath ?? 'assets/default_image.png'),
+              backgroundImage: imagePath != null
+                  ? NetworkImage('http://194.164.77.238$imagePath')
+                  : AssetImage('AssetsManager.defaultAvatar') ,
               radius: 30.w,
             ),
           ],
@@ -121,7 +139,7 @@ final int? id ;
     );
   }
 
-  void _showAlertDialog(BuildContext context, OrdersUserCubit cubit) { // Add cubit parameter
+  void _showAlertDialog(BuildContext context, OrdersUserCubit cubit) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -151,8 +169,8 @@ final int? id ;
                 textColor: Colors.red,
                 color: Colors.white,
                 onPressed: () {
-                  if (id != null) { // Check if idProvider is not null
-                    cubit.cancelOrder(id!); // Use idProvider
+                  if (id != null) {
+                    cubit.cancelOrder(id!);
                   }
                   Navigator.of(context).pop();
                 },

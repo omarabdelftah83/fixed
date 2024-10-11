@@ -24,11 +24,17 @@ class ApiConfigurations {
   static const String updateUserData = "${_baseUrl}userupdate/";
   static const String postPriceOrder = "${_baseUrl}order/26/offers/";
 
-// OrderUser-related endpoints
+  // OrderUser-related endpoints//
   static const String getOrderCompleteUser = "${_baseUrl}Get_compleata_for_client/";
   static const String getOrderAcceptUser = "${_baseUrl}accepted_offers/";
   static const String getOrderCancelUser = "${_baseUrl}cancel_offer/";
+
+  /////////////////////////////
+
   static const String getBestOffer = "${_baseUrl}beast_offer/";
+  static const String getNotificationUser = "${_baseUrl}notfications_client/";
+  static const String getNotificationAdmin = "${_baseUrl}notfications_provider/";
+
 
 
 

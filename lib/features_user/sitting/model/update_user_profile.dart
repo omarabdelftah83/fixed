@@ -22,7 +22,7 @@ class UpdateUserRequest {
       data['phone'] = phone;
     }
 
-    return data;
+    return data; // إرجاع الخريطة حتى لو كانت فارغة
   }
 }
 

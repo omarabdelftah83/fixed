@@ -8,6 +8,7 @@ import 'package:webbing_fixed/core/text_failed/drop_down_custom_textfailed.dart'
 import 'package:webbing_fixed/features_user/onboarding/controll/on_boarding_cubit.dart';
 import 'package:webbing_fixed/features_user/sitting/widget/custom_listtile.dart';
 import 'package:webbing_fixed/features_user/sitting/widget/custom_switch.dart';
+import 'package:webbing_fixed/helpers/cache_helper.dart';
 
 class Settingbody extends StatefulWidget {
   const Settingbody({super.key});
@@ -19,13 +20,14 @@ class Settingbody extends StatefulWidget {
 class _SettingbodyState extends State<Settingbody> {
   String _selectedLanguage = 'A';
   String _selectedCountry = 'الكويت';
+  bool _savePassword = false; // Track the state of the save password option
 
   void _changeLanguage(String? selectedItem) {
     if (selectedItem != null) {
       setState(() {
         _selectedLanguage = selectedItem == 'العربية' ? 'A' : 'E';
       });
-      _applyLanguage(); // استدعاء _applyLanguage هنا
+      _applyLanguage(); // Call _applyLanguage here
     }
   }
 
@@ -38,7 +40,6 @@ class _SettingbodyState extends State<Settingbody> {
       context.read<OnBoardingCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
     }
   }
-
 
   void _applyLanguage() {
     Locale locale;
@@ -54,10 +55,17 @@ class _SettingbodyState extends State<Settingbody> {
     }
 
     EasyLocalization.of(context)?.setLocale(locale);
-     context.read<OnBoardingCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
+    context.read<OnBoardingCubit>().sendCountryAndLanguage(_selectedLanguage, _selectedCountry);
     Navigator.pushNamed(context, Routes.mainLayoutPageAdmin);
   }
-
+  Future<void> _savePasswordSetting() async {
+    await CacheHelper.putBoolean(key: 'Password', value: _savePassword);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(_savePassword ? 'Password saving enabled' : 'Password saving disabled'),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -124,31 +132,43 @@ class _SettingbodyState extends State<Settingbody> {
             SizedBox(height: 16.h),
             CustomSwitch(
               border: Border.all(color: Colors.grey, width: 1.0),
-              value: true,
+              value: _savePassword, // استخدم المتغير لتتبع حالة المفتاح
               text: 'حفظ كلمة المرور',
               icon: Icons.lock,
-              onChanged: (value) {},
-            ),
-            SizedBox(height: 16.h),
-            CustomSwitch(
-              border: Border.all(color: Colors.grey, width: 1.0),
-              value: true,
-              text: 'حفظ البصة',
-              icon: Icons.fingerprint,
-              onChanged: (value) {},
+              onChanged: (value) async {
+                setState(() {
+                  _savePassword = value;
+                });
+
+                if (_savePassword) {
+                  String password = 'yourPassword';
+                  await CacheHelper.savePassword(password);
+                } else {
+
+                  await CacheHelper.clearPassword();
+                }
+                _savePasswordSetting();
+              },
             ),
             SizedBox(height: 16.h),
             CustomListtile(
               text: 'الشروط والاحكام',
               icon: Icons.document_scanner,
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, Routes.conditionsPage);
+
+              },
             ),
             SizedBox(height: 16.h),
             CustomListtile(
               text: 'تسجيل الخروج',
               icon: Icons.logout,
               isLogout: true,
-              onTap: () {},
+              onTap: () async{
+                await CacheHelper.clearToken();
+                Navigator.pushNamed(context, Routes.singInPageAdmin);
+
+              },
             ),
           ],
         ),

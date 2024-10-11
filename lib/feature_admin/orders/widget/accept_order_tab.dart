@@ -4,6 +4,7 @@ import 'package:webbing_fixed/core/shimmer/shimmer_loading.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_cubit.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_state.dart';
 import 'package:webbing_fixed/feature_admin/orders/widget/order_cared.dart';
+
 class UpcomingOrdersTab extends StatelessWidget {
   const UpcomingOrdersTab({Key? key}) : super(key: key);
 
@@ -26,8 +27,11 @@ class UpcomingOrdersTab extends StatelessWidget {
             itemBuilder: (context, index) {
               final order = upcomingOrders[index];
               return OrderCardAdmin(
-                count: order.orderDetails?.count??0,
-                data: order.orderDetails?.time??'ssssssss',
+                phoneNumber:'' ,
+                email: '',
+                id: order.orderDetails!.idOrder ,
+                count: order.orderDetails?.count ?? 0,
+                data: order.orderDetails?.time ?? 'ssssssss',
                 imagePath: order.orderDetails?.file,
                 location: order.orderDetails?.location ?? 'لا يوجد موقع',
                 name: order.orderDetails?.user ?? 'لا يوجد اسم',

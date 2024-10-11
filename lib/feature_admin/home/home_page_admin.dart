@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:webbing_fixed/core/shimmer/shimmer_loading.dart';
 import 'package:webbing_fixed/feature_admin/home/controll/home_cubit.dart';
 import 'package:webbing_fixed/feature_admin/home/controll/home_state.dart';
 import 'package:webbing_fixed/feature_admin/home/home_export.dart';
+import 'package:webbing_fixed/feature_admin/home/widget/notification_page_admin.dart';
 import 'package:webbing_fixed/feature_admin/home/widget/service_cared.dart';
 
 class HomePageAdmin extends StatefulWidget {
@@ -27,7 +29,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
       body: CustomPaddingApp(
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start, // تعديل الاتجاه
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,7 +64,16 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, Routes.notificationPage);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const NotificationPageAdmin(),
+
+                            ),
+                          ).then((value) {
+                            final cubit = BlocProvider.of<HomeCubit>(context);
+                            cubit.fetchData();
+                          });
                         },
                         child: const SvgIconWidget(iconPath: AssetsManager.notification),
                       ),
@@ -123,7 +134,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
               BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
                   if (state is HomeLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const ShimmerLoading();
                   } else if (state is HomeDataLoaded) {
                     final services = state.services;
                     return ListView.builder(

@@ -27,6 +27,9 @@ class AcceptOrdersTabUser extends StatelessWidget {
             itemBuilder: (context, index) {
               final order = canceledOrders[index];
               return OrderCard(
+                imagePath: order.providerPic,
+                phoneNumber:order.phone ,
+                email: order.email,
                 id: order.id,
                 idProvider: order.idProvider, // Pass idProvider here
                 name: order.providerName ?? 'لا يوجد اسم',

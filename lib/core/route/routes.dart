@@ -5,7 +5,7 @@ import 'package:webbing_fixed/feature_admin/auth/sign_up/widget/sign_up_services
 import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up.dart';
 import 'package:webbing_fixed/feature_admin/home/model/get_all_order_model.dart';
 import 'package:webbing_fixed/feature_admin/home/widget/finish_service.dart';
-import 'package:webbing_fixed/feature_admin/home/widget/notification.dart';
+import 'package:webbing_fixed/features_user/home/screen/notification_page_user.dart';
 import 'package:webbing_fixed/feature_admin/home/widget/order_details.dart';
 import 'package:webbing_fixed/feature_admin/home/widget/reject_price.dart';
 import 'package:webbing_fixed/feature_admin/mainlayout/main_layout_admin_page.dart';
@@ -76,7 +76,7 @@ class RouteGenarator {
       case Routes.updateSallary:
         return MaterialPageRoute(builder: (_) =>  UpdateSallary());
       case Routes.notificationPage:
-        return MaterialPageRoute(builder: (_) =>  NotificationPage());
+        return MaterialPageRoute(builder: (_) =>  NotificationPageUser());
       case Routes.orderDetails:
         final order = sitting.arguments as GetOrderModel? ?? GetOrderModel();
         return MaterialPageRoute(builder: (_) =>  OrderDetails(order: order,));

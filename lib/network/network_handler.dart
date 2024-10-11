@@ -31,7 +31,7 @@ class NetworkHandler {
     try {
       await _addTokenToHeaders();
       Response response = await _dio.get(endpoint);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return response;
       } else {
         throw Exception('Failed to load data: ${response.statusCode} - ${response.statusMessage}');
@@ -77,7 +77,7 @@ class NetworkHandler {
         data: jsonEncode(data),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return response;
       } else {
         print('Failed to post data: ${response.statusCode} - ${response.data}'); // Print the response data
@@ -219,7 +219,7 @@ class NetworkHandler {
       Response response = await _dio.delete(endpoint);
       print('Response status code: ${response.statusCode}');
       print('Response data: ${response.data}');
-      if (response.statusCode == 200 || response.statusCode == 204) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return response;
       } else {
         throw Exception('Failed to delete data: ${response.statusCode}');

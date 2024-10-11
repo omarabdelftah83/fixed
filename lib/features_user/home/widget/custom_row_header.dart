@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:webbing_fixed/core/route/routes.dart';
+import 'package:webbing_fixed/features_user/home/screen/notification_page_user.dart';
+
+import '../home_export.dart';
 
 class CustomRow extends StatelessWidget {
   final String leftIconPath1;
@@ -29,13 +33,28 @@ class CustomRow extends StatelessWidget {
         // Left icon
         Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SvgPicture.asset(
-                leftIconPath2,
-                width: iconSize,
-                height: iconSize,
-                color: iconColor,
+            InkWell(
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NotificationPageUser(),
+
+                  ),
+                ).then((value) {
+                  final cubit = BlocProvider.of<HomeUserCubit>(context);
+                  cubit.fetchServices();
+                  cubit.fetchBestOffer();
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SvgPicture.asset(
+                  leftIconPath2,
+                  width: iconSize,
+                  height: iconSize,
+                  color: iconColor,
+                ),
               ),
             ),
             Padding(

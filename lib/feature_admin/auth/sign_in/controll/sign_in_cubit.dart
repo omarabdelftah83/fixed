@@ -37,6 +37,10 @@ class SignInCubit extends Cubit<SignInState> {
             (success) async {
           if (success.accessToken != null) {
             await CacheHelper.saveToken(success.accessToken!);
+            await CacheHelper.saveUserRole(success.provider!);
+            await CacheHelper.savePassword(passwordController.text);
+
+
           }
           print('Success: ${success.accessToken}');
           emit(SingInLoaded());

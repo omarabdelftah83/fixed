@@ -10,9 +10,9 @@ import 'package:webbing_fixed/features_user/sitting_user/sitting_user_page.dart'
 class MainScreenCubit extends Cubit<MainScreenState> {
   MainScreenCubit() : super(MainScreenState(0));
   final List<String> labels = [
-    'appbareSetingString'.tr(), // الإعدادات
-    'appbareOrderString'.tr(),   // الطلبات
-    'set_location'.tr(),         // تعيين الموقع
+    'appbareSetingString2'.tr(), // الإعدادات
+    'appbareOrderString2'.tr(),   // الطلبات
+    'set_location2'.tr(),         // تعيين الموقع
   ];
 
   List<Widget> pages = [

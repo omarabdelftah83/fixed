@@ -1,6 +1,8 @@
 import 'package:webbing_fixed/feature_admin/auth/sign_up/model/get_all_services_model.dart';
 import 'package:webbing_fixed/features_user/home/model/best_offer_model.dart';
 import 'package:webbing_fixed/features_user/home/model/create_order_model.dart';
+import 'package:webbing_fixed/features_user/home/model/notification_model_user.dart';
+import 'package:webbing_fixed/features_user/home/model/notification_user_delete.dart';
 import 'package:webbing_fixed/features_user/home/model/order_service.dart';
 import 'package:webbing_fixed/features_user/home/model/reject_and_accept.dart';
 
@@ -54,6 +56,14 @@ class RejectAndAcceptLoaded extends HomeUserState {
 class ServiceIdLoaded extends HomeUserState {
   final OrderServiceModel service;
   ServiceIdLoaded(this.service);
+}
+class NotificationUserLoaded extends HomeUserState {
+  final List<NotificationUser> notifications;
+  NotificationUserLoaded(this.notifications);
+}
+class DeleteNotificationUserLoaded extends HomeUserState {
+  final NotificationUserDelete notifications;
+  DeleteNotificationUserLoaded(this.notifications);
 }
 
 // حالة وجود خطأ

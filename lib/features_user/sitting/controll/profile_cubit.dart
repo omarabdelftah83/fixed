@@ -67,11 +67,9 @@ class ProfileCubit extends Cubit<ProfileState> {
       },
           (user) {
         emit(ProfileUpdated());
-
         nameController.clear();
         phoneController.clear();
         locationController.clear();
-
         Fluttertoast.showToast(
           msg: "تم التحديث بنجاح.",
           toastLength: Toast.LENGTH_SHORT,
@@ -79,7 +77,6 @@ class ProfileCubit extends Cubit<ProfileState> {
           backgroundColor: Colors.green,
           textColor: Colors.white,
         );
-
         Navigator.pop(context);
       },
     );

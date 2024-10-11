@@ -105,13 +105,12 @@ class OrderDetails extends StatelessWidget {
   }
 
   void showOrderDialog(BuildContext context) {
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            final cubit = BlocProvider.of<HomeCubit>(context); // Replace YourCubit with the actual Cubit class name
+            final cubit = BlocProvider.of<HomeCubit>(context);
             return AlertDialog(
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -135,9 +134,8 @@ class OrderDetails extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     CustomTextField(
-                        controller: cubit.priceController,
-                        height: 50
-
+                      controller: cubit.priceController,
+                      height: 50,
                     ),
                   ],
                 ),
@@ -148,10 +146,10 @@ class OrderDetails extends StatelessWidget {
                     width: 160.w,
                     height: 30.h,
                     onPressed: () {
-                      cubit.offerPrice();
+                      // Pass the order ID to the offerPrice method
+                      cubit.offerPrice(context,order.id!); // Use order.id or whatever ID you are using
                       Navigator.of(context).pop();
                       cubit.priceController.clear();
-
                     },
                     text: 'تأكيد',
                   ),

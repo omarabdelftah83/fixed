@@ -49,6 +49,7 @@ dependencies:
   get_it:
   fluttertoast:
   shimmer: ^3.0.0
+  url_launcher:
 dev_dependencies:
   flutter_test:
     sdk: flutter

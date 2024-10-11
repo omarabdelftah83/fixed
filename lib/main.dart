@@ -6,16 +6,20 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:webbing_fixed/core/services/service_locator.dart';
 import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up.dart';
 import 'package:webbing_fixed/feature_admin/home/controll/home_cubit.dart';
+import 'package:webbing_fixed/feature_admin/mainlayout/main_layout_admin_page.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_cubit.dart';
 import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
 import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
 import 'package:webbing_fixed/features_user/sitting/controll/profile_cubit.dart';
 import 'core/route/routes.dart';
+import 'feature_admin/auth/sign_in/sign_in_page.dart';
 import 'feature_admin/auth/sign_up/controll/sign_up_cubit.dart';
 import 'feature_admin/mainlayout/controll/mainlayoutadmin_cubit.dart';
 import 'features_user/main_layout/presentaion/main_layout_cubit.dart';
+import 'features_user/main_layout/presentaion/mainlayout_page.dart';
 import 'features_user/onboarding/controll/on_boarding_cubit.dart';
 import 'features_user/sitting_user/controll/lang_user_cubit.dart';
+import 'features_user/splash/splash_home_page.dart';
 import 'helpers/cache_helper.dart';
 
 void main() async {
@@ -23,6 +27,21 @@ void main() async {
   ServiesLcator().init();
   await CacheHelper.init();
   await EasyLocalization.ensureInitialized();
+
+  String? token = CacheHelper.getToken();
+  bool? provider = CacheHelper.getUserRole();
+  Widget startWidget;
+
+  if (token != null) {
+    // تحديد الصفحة بناءً على قيمة provider
+    if (provider == true) {
+      startWidget = const MainLayoutPageAdmin();
+    } else {
+      startWidget = const MainLayoutPage();
+    }
+  } else {
+    startWidget = SplashHomePage();
+  }
 
   runApp(
     EasyLocalization(
@@ -32,15 +51,13 @@ void main() async {
       ],
       path: 'assets/translation',
       startLocale: const Locale('en', 'US'),
-
-      child: const MyApp(),
+      child: MyApp(startWidget: startWidget),
     ),
   );
 }
-
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  const MyApp({super.key, required this.startWidget});
+  final Widget startWidget;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -78,18 +95,17 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: ScreenUtilInit(
-        designSize: const Size(375, 812),  // Adjust based on your design size
+        designSize: const Size(375, 812),
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          final locale = context.locale;
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
-            localizationsDelegates: context.localizationDelegates,  // Add localization delegates
-            supportedLocales: context.supportedLocales,  // Supported locales
-            locale: context.locale,  // Current locale
-            home: const SingUpAdminPage(),
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            home: startWidget,  // الشاشة التي سيتم عرضها عند بدء التطبيق
             theme: ThemeData(
               scaffoldBackgroundColor: Colors.white,
               useMaterial3: false,
@@ -109,7 +125,7 @@ class MyApp extends StatelessWidget {
                 elevation: 0,
               ),
             ),
-            initialRoute: Routes.splashHomePage,
+           // initialRoute: Routes.splashHomePage,
             onGenerateRoute: RouteGenarator.getRoute,
           );
         },

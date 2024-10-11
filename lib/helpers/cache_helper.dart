@@ -1,4 +1,3 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webbing_fixed/core/resource/app_string.dart';
 
@@ -76,7 +75,15 @@ class CacheHelper {
     return _sharedPreferences!.getBool('isSuperAdmin');
   }
 
+  static Future<bool> savePassword(String password) async {
+    return await _sharedPreferences!.setString('password', password);
+  }
 
+  static Future<void> clearPassword() async {
+    await _sharedPreferences!.remove('password');
+  }
 
-
+  static String? getPassword() {
+    return _sharedPreferences!.getString('password');
+  }
 }

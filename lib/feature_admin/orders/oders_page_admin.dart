@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'order_export.dart';
 
@@ -46,10 +47,10 @@ class _OrdersPageAdminState extends State<OrdersPageAdmin>
             labelColor: Colors.blue,
             labelStyle:const TextStyle(fontSize:20 ) ,
             controller: _tabController,
-            tabs: const [
-              Tab(text: 'ملغية',),
-              Tab(text: 'مكتملة'),
-              Tab(text: 'القادم'),
+            tabs:  [
+              Tab(text: 'cancelled_orders1'.tr()),  // الترجمة هنا
+              Tab(text: 'completed_orders1'.tr()),  // الترجمة هنا
+              Tab(text: 'upcoming_orders1'.tr()),  // الترجمة هنا
             ],
           ),
           Expanded(
