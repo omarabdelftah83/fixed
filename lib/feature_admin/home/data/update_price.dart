@@ -1,18 +1,17 @@
 import 'package:dartz/dartz.dart';
-import 'package:webbing_fixed/feature_admin/home/model/post_price.dart';
+import 'package:webbing_fixed/feature_admin/home/model/update_price.dart';
 import 'package:webbing_fixed/network/faliar.dart';
 import 'package:webbing_fixed/network/network_handler.dart';
 
-class ApiOfferPriceService {
+class UpdatePriceService {
   NetworkHandler networkHandler = NetworkHandler();
 
-  Future<Either<Failure, ResponsePrice>> offerPriceOrder(RequestPrice requestPrice, int id ) async {
+  Future<Either<Failure, UpdatePriceResponse>> updatePriceOrder(UpdatePriceRequest updatePriceRequest, int id ) async {
     try {
-      final response = await networkHandler.post('http://194.164.77.238/order/${id}/offers/', requestPrice.toMap(),
+      final response = await networkHandler.put('http://194.164.77.238/order/offers/update/${id}/', updatePriceRequest.toMap(),
       );
-
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseData = ResponsePrice.fromMap(response.data);
+        final responseData = UpdatePriceResponse.fromJson(response.data);
         print('Data posted successfully with status code ${response.statusCode}');
         return Right(responseData);
       } else {

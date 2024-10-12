@@ -1,9 +1,11 @@
 class GetAllOrderAccept {
+  final int? id;
   final int? order;
   final String? status;
   final OrderDetails? orderDetails;
 
   GetAllOrderAccept({
+    this.id,
      this.order,
      this.status,
      this.orderDetails,
@@ -11,6 +13,7 @@ class GetAllOrderAccept {
 
   factory GetAllOrderAccept.fromJson(Map<String, dynamic> json) {
     return GetAllOrderAccept(
+      id: json['id'],
       order: json['order'],
       status: json['status'],
       orderDetails: OrderDetails.fromJson(json['order_details']),

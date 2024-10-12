@@ -148,8 +148,7 @@ class OrderDetails extends StatelessWidget {
                     onPressed: () {
                       // Pass the order ID to the offerPrice method
                       cubit.offerPrice(context,order.id!); // Use order.id or whatever ID you are using
-                      Navigator.of(context).pop();
-                      cubit.priceController.clear();
+
                     },
                     text: 'تأكيد',
                   ),

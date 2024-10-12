@@ -57,7 +57,7 @@ class InHomePage extends StatelessWidget {
                             const SizedBox(
                               height: 10,
                             ),
-                            const CustomText(
+                            const CustomTextOnBoarding(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                               text: AppStrings.description,

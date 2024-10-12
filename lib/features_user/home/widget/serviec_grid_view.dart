@@ -83,7 +83,7 @@ class ServicesGrid extends StatelessWidget {
             },
           );
         } else if (state is HomeUserErrorState) {
-          return Center(child: Text('Error: ${state.errorMessage}'));
+          return Center(child: Text('لا توجد بيانات حالياً.'));
         } else {
           return const Center(child: Text(''));
         }

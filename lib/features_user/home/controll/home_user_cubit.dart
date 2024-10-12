@@ -11,6 +11,7 @@ import 'package:webbing_fixed/features_user/home/data/order_service.dart';
 import 'package:webbing_fixed/features_user/home/data/reject_and_accept.dart';
 import 'package:webbing_fixed/features_user/home/model/create_order_model.dart';
 import 'package:webbing_fixed/features_user/home/model/reject_and_accept.dart';
+import 'package:webbing_fixed/helpers/cache_helper.dart';
 import 'home_user_state.dart';
 
 class HomeUserCubit extends Cubit<HomeUserState> {
@@ -164,6 +165,16 @@ class HomeUserCubit extends Cubit<HomeUserState> {
     try {
       emit(HomeUserLoading());
       final services = await getBestOffer.getBestOffer();
+
+      // if (services.isNotEmpty) {
+      //
+      //   final offerId = services.first.id;
+      //   if (offerId != null) {
+      //     await CacheHelper.saveBestId(offerId.toString());
+      //   }
+      //
+      // }
+
       emit(BestOfferLoaded(services));
     } catch (e) {
       print('Error in fetchServices: $e');

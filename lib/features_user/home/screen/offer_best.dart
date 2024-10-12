@@ -66,7 +66,7 @@ class _OfferBestPageState extends State<OfferBestPage> {
                     );
                   } else if (state is HomeUserErrorState) {
                     return Center(
-                        child: Text('حدث خطأ: ${state.errorMessage}'));
+                        child: Text('لا توجد بيانات حالياً.'));
                   }
                   return const Center(child: Text('لا توجد بيانات حالياً.'));
                 },

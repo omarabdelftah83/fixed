@@ -69,12 +69,12 @@ class RouteGenarator {
 
       case Routes.settingPage:
         return MaterialPageRoute(builder: (_) =>  SettingPage());
-      case Routes.finishService:
-        return MaterialPageRoute(builder: (_) =>  FinishService());
-      case Routes.rejectPrice:
-        return MaterialPageRoute(builder: (_) =>  RejectPrice());
-      case Routes.updateSallary:
-        return MaterialPageRoute(builder: (_) =>  UpdateSallary());
+      // case Routes.finishService:
+      //   return MaterialPageRoute(builder: (_) =>  FinishService());
+      // case Routes.rejectPrice:
+      //   return MaterialPageRoute(builder: (_) =>  RejectPrice());
+      // case Routes.updateSallary:
+      //   return MaterialPageRoute(builder: (_) =>  UpdateSallary());
       case Routes.notificationPage:
         return MaterialPageRoute(builder: (_) =>  NotificationPageUser());
       case Routes.orderDetails:

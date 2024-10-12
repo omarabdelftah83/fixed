@@ -31,3 +31,35 @@ class CustomText extends StatelessWidget {
     );
   }
 }
+
+class CustomTextOnBoarding extends StatelessWidget {
+  final String text;
+  final double fontSize;
+  final FontWeight fontWeight;
+  final Color? textColor;
+  final TextAlign? textAlign;
+  const CustomTextOnBoarding({
+    super.key,
+    required this.text,
+    this.fontSize = 16.0,
+    this.fontWeight = FontWeight.normal,
+    this.textColor,
+    this.textAlign,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      maxLines: 5,
+      style: TextStyle(
+
+        overflow: TextOverflow.ellipsis,
+        color: textColor,
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+      ),
+      textAlign: textAlign,
+    );
+  }
+}

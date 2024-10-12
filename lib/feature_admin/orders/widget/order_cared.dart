@@ -7,6 +7,7 @@ import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
 import 'package:webbing_fixed/core/route/routes.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_cubit.dart';
 import 'package:webbing_fixed/feature_admin/orders/widget/dialog.dart';
+import 'package:webbing_fixed/feature_admin/orders/widget/review_page_admin.dart';
 
 class OrderCardAdmin extends StatelessWidget {
   final String? name;
@@ -19,10 +20,9 @@ class OrderCardAdmin extends StatelessWidget {
   final String? data;
   final String? dataTime;
   final int? id;
-
   final String? phoneNumber;
   final String? email;
-
+   final int? idUser;
   const OrderCardAdmin({
     super.key,
     this.name,
@@ -37,6 +37,7 @@ class OrderCardAdmin extends StatelessWidget {
     this.id,
     this.phoneNumber,
     this.email,
+    this.idUser
   });
 
   @override
@@ -173,7 +174,12 @@ class OrderCardAdmin extends StatelessWidget {
             if (status == 'مكتملة' || status == 'ملغية')
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.reviewPage);
+
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ReviewPageAmin(idUser: idUser ?? 0),
+                    ),
+                  );
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10.0, right: 250),

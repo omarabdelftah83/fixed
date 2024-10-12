@@ -32,7 +32,7 @@ class CompletedOrdersTabUser extends StatelessWidget {
                 formattedDate = DateFormat('yyyy-MM-dd').format(order.createdAt!);
               }
               return OrderCard(
-               // idProvider: order.idProvider, // Pass idProvider here
+                idProvider: order.idProvider, // Pass idProvider here
                 imagePath: order.image,
                 name: order.name,
                 service: order.service,

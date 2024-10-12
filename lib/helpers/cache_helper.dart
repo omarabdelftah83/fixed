@@ -46,7 +46,14 @@ class CacheHelper {
   static String? getUserId() {
     return _sharedPreferences!.getString('userId');
   }
-
+////
+  static Future<void> saveBestId(String userId) async {
+    await _sharedPreferences!.setString('saveBestId', userId);
+  }
+  static String? getBestId() {
+    return _sharedPreferences!.getString('saveBestId');
+  }
+  ///
   static Future<void> saveEmail(String email) async {
     await _sharedPreferences!.setString(AppString.keyEmail, email);
   }

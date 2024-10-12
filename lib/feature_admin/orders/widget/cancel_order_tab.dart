@@ -4,7 +4,6 @@ import 'package:webbing_fixed/core/shimmer/shimmer_loading.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_cubit.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_state.dart';
 import 'package:webbing_fixed/feature_admin/orders/widget/order_cared.dart';
-import 'package:webbing_fixed/feature_admin/orders/widget/order_tab_admin.dart';
 
 class CanceledOrdersTab extends StatelessWidget {
   const CanceledOrdersTab({Key? key}) : super(key: key);
@@ -28,6 +27,7 @@ class CanceledOrdersTab extends StatelessWidget {
             itemBuilder: (context, index) {
               final order = canceledOrders[index];
               return OrderCardAdmin(
+               idUser: order.orderDetails.idUser,
                 data:order.orderDetails.time,
                 imagePath: order.orderDetails?.file,
                 location: order.orderDetails?.location ?? 'لا يوجد موقع',

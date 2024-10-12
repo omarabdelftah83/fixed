@@ -47,7 +47,7 @@ class BestOffers extends StatelessWidget {
             ),
           );
         } else if (state is HomeUserErrorState) {
-          return Center(child: Text('حدث خطأ: ${state.errorMessage}'));
+          return Center(child: Text('لا توجد بيانات حالياً.'));
         }
         return const Center(child: Text('لا توجد بيانات حالياً.'));
       },

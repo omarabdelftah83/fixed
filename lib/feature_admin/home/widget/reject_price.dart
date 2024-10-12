@@ -3,10 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
 import 'package:webbing_fixed/core/route/routes.dart';
+import 'package:webbing_fixed/feature_admin/home/widget/update_sallary.dart';
 
 class RejectPrice extends StatelessWidget {
-  const RejectPrice({super.key});
+  final int notificationId;  // Add this to accept the notification id
 
+   RejectPrice({Key? key, required this.notificationId}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return  Scaffold(body: Stack(
@@ -54,7 +56,9 @@ class RejectPrice extends StatelessWidget {
                           borderColor: Colors.red,
                           textColor: Colors.red,
                           color: Colors.white,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           text: 'رفض',
                           width: 152.w,
                           height: 32.h,
@@ -65,8 +69,19 @@ class RejectPrice extends StatelessWidget {
                         child: CustomButton(
                           textColor: Colors.white,
                           onPressed: () {
-                            Navigator.pushNamed(
-                                context, Routes.updateSallary);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateSallary(notificationId: notificationId,),
+                              ),
+                            );
+                         //   Navigator.pushNamed(context, Routes.updateSallary);
+
+
+
+
+
+
                           },
                           text: 'عرض سعر اقل',
                           width: 150.w,

@@ -7,8 +7,10 @@ class GetAllOrderCompleteUser {
   final DateTime createdAt;
   final String provider;
   final String image;
-  final String timeArrive;
-  final String comment;
+  final int idProvider;
+  final int user;
+  final String? timeArrive;
+  final String? comment;
   final String status;
   final int order;
 
@@ -21,8 +23,10 @@ class GetAllOrderCompleteUser {
     required this.createdAt,
     required this.provider,
     required this.image,
-    required this.timeArrive,
-    required this.comment,
+    required this.idProvider,
+    required this.user,
+    this.timeArrive,
+    this.comment,
     required this.status,
     required this.order,
   });
@@ -32,17 +36,18 @@ class GetAllOrderCompleteUser {
       id: json['id'],
       name: json['name'],
       location: json['location'],
-      price: json['price'],
+      price: json['price']?.toDouble(),
       service: json['service'],
       createdAt: DateTime.parse(json['created_at']),
       provider: json['provider'],
       image: json['image'],
-      timeArrive: json['time_arrive'],
+      idProvider: json['id_provider'],
+      user: json['user'],
+      timeArrive: json['time_arrive'] ?? '',
       comment: json['comment'],
       status: json['status'],
       order: json['order'],
     );
   }
-
 
 }

@@ -77,7 +77,7 @@ class NetworkHandler {
         data: jsonEncode(data),
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return response;
       } else {
         print('Failed to post data: ${response.statusCode} - ${response.data}'); // Print the response data
@@ -171,6 +171,25 @@ class NetworkHandler {
       rethrow;
     }
   }
+  Future<Response> putWithBody(String endpoint) async {
+    try {
+      await _addTokenToHeaders();  // إضافة التوكن للترويسة
+      Response response = await _dio.put(endpoint);  // تنفيذ الطلب بدون بيانات
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return response;
+      } else {
+        print('Error response: ${response.data}');  // عرض رسالة الخطأ إذا حدث
+        throw Exception('Failed to put data: ${response.statusCode} - ${response.data}');
+      }
+    } on DioException catch (e) {
+      print('DioException: ${e.message}');
+      throw Exception('Failed to put data: ${e.message}');
+    } catch (e) {
+      print('General Exception: $e');
+      rethrow;
+    }
+  }
+
   Future<Response> put(String endpoint, Map<String, dynamic> data) async {
     try {
       await _addTokenToHeaders();

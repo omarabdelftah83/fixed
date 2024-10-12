@@ -113,7 +113,7 @@ class _NotificationPageUserState extends State<NotificationPageUser> {
                       },
                     );
                   } else if (state is HomeUserErrorState) {
-                    return Center(child: Text('Error: ${state.errorMessage}'));
+                    return Center(child: Text('لا توجد اشعارات حالياً.'));
                   }
                   return Container(); // حاوية فارغة بشكل افتراضي للحالات الأخرى
                 },

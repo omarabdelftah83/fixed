@@ -29,7 +29,7 @@ class UpcomingOrdersTab extends StatelessWidget {
               return OrderCardAdmin(
                 phoneNumber:'' ,
                 email: '',
-                id: order.orderDetails!.idOrder ,
+                id: order. id,
                 count: order.orderDetails?.count ?? 0,
                 data: order.orderDetails?.time ?? 'ssssssss',
                 imagePath: order.orderDetails?.file,

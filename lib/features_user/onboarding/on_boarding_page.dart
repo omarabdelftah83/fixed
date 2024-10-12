@@ -33,7 +33,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   context,
                   image: AppAssets.onBoardingImage1,
                   title: AppStrings.titleDescription1,
-                // description: AppStrings.description2,
+               // description: AppStrings.description2,
                   showButton: true,
                 ),
                 _buildPage(
@@ -63,22 +63,22 @@ class _OnboardingPageState extends State<OnboardingPage> {
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min, // Allow the column to take up minimum space
           children: [
-            const SizedBox(height: 10,),
+            const SizedBox(height: 10),
             Image.asset(image, height: 250, width: double.infinity),
-             SizedBox(height: 5.h),
+            SizedBox(height: 5.h),
             Container(
               width: double.infinity,
-              height: 220,
-              child: CustomText(
+              child: CustomTextOnBoarding(
                 text: title,
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
                 textAlign: TextAlign.center,
               ),
             ),
-             SizedBox(height: 10.h),
-            CustomText(
+            SizedBox(height: 10.h),
+            CustomTextOnBoarding(
               text: description ?? '',
               fontSize: 12,
               fontWeight: FontWeight.w400,
@@ -86,7 +86,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
             if (showButton)
               Padding(
-                padding: const EdgeInsets.only(top: 40.0),
+                padding: const EdgeInsets.only(top: 140.0),
                 child: CustomButton(
                   width: 340.w,
                   text: 'التالي',
@@ -108,6 +108,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       ),
     );
   }
+
 
   Widget _buildIndicator() {
     return Row(
