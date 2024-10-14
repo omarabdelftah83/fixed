@@ -5,6 +5,7 @@ import 'package:webbing_fixed/core/SvgIcon/custom_svg_icon.dart';
 import 'package:webbing_fixed/core/app_text/AppText.dart';
 import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
 import 'package:webbing_fixed/core/resource/assets_manager.dart';
+import 'package:webbing_fixed/core/route/routes.dart';
 import 'package:webbing_fixed/feature_admin/home/controll/home_cubit.dart';
 import 'package:webbing_fixed/feature_admin/home/controll/home_state.dart';
 
@@ -58,6 +59,8 @@ class FinishService extends StatelessWidget {
                               return;
                             }
                             cubit.DoneOrderAdmin(context,notificationId);
+                            Navigator.pushNamed(context,Routes.mainLayoutPageAdmin);
+
                           },
 
                           text: 'تاكيد ',

@@ -39,7 +39,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                       if (state is HomeDataLoaded) {
                         final user = state.users.isNotEmpty ? state.users[0] : null;
                         return Row(
-                          mainAxisAlignment: MainAxisAlignment.start, // تعديل الاتجاه
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             CircleAvatar(
                               radius: 20.w,
@@ -47,11 +47,10 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                             SizedBox(width: 20.w),
                             if (user != null)
                               CustomText(
-                                text: ' مرحبا ${user.username}', // تعديل النص
+                                text: ' مرحبا ${user.username}',
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                               ),
-
                           ],
                         );
                       } else if (state is HomeErrorState) {
@@ -68,7 +67,6 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => const NotificationPageAdmin(),
-
                             ),
                           ).then((value) {
                             final cubit = BlocProvider.of<HomeCubit>(context);
@@ -77,7 +75,6 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                         },
                         child: const SvgIconWidget(iconPath: AssetsManager.notification),
                       ),
-
                       SizedBox(width: 10.w),
                       GestureDetector(
                         onTap: () {
@@ -85,44 +82,30 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                         },
                         child: const SvgIconWidget(iconPath: AssetsManager.iconWallet),
                       ),
-
                     ],
                   ),
                 ],
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 40.h),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start, // تعديل الاتجاه
-                    children: [
-                      CustomText(text: 'set_location'.tr()),
-                      const SvgIconWidget(iconPath: AssetsManager.iconLocation)
-                    ],
-                  ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start, // تعديل الاتجاه
-                    children: [
-                      CustomText(
-                        text: 'reject_price'.tr(),
-                        fontSize: 12.sp,
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.rejectPrice);
-                          },
-                          icon: const Icon(Icons.arrow_forward_ios)),
-                    ],
-                  ),
+                  CustomText(text: 'set_location'.tr()),
+                  const SvgIconWidget(iconPath: AssetsManager.iconLocation)
                 ],
               ),
               SizedBox(height: 20.h),
-              CustomSwitch(
-                value: true,
-                text: 'status_ready'.tr(),
-                onChanged: (value) {},
+              BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  return CustomSwitch(
+                    value: (state is HomeDataLoaded && state.services.isNotEmpty), // الزر مفعل إذا كانت البيانات موجودة
+                    text: 'status_ready'.tr(),
+                    onChanged: (state is HomeDataLoaded && state.services.isNotEmpty)
+                        ? (value) {
+                    }
+                        : null,
+                  );
+                },
               ),
               SizedBox(height: 20.h),
               CustomText(

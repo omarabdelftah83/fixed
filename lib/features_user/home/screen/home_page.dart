@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => OfferBestPage(),
+                          builder: (context) => const OfferBestPage(),
                         ),
                       ).then((value) {
                         cubit.fetchServices();

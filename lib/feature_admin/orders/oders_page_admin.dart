@@ -35,9 +35,9 @@ class _OrdersPageAdminState extends State<OrdersPageAdmin>
       appBar: CustomAppBar(),
       body: Column(
         children: [
-          const Center(
+           Center(
             child: CustomText(
-              text: 'الطلبيات',
+              text: 'Orders'.tr(),
               fontSize: 24,
               fontWeight: FontWeight.w600,
             ),

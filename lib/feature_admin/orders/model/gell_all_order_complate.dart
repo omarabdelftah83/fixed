@@ -4,62 +4,51 @@ class GetAllOrderComplete {
   final String? location;
   final double? price;
   final String? service;
-  final DateTime? createdAt; // تغيير إلى DateTime لتسهيل التعامل مع التاريخ
+  final DateTime? createdAt;
   final String? provider;
+  final String? image;
+  final int? idProvider;
+  final int? user;
   final String? timeArrive;
   final String? comment;
   final String? status;
   final int? order;
-  final String? image; // إضافة الحقل image
 
   GetAllOrderComplete({
-    this.id,
-    this.name,
+     this.id,
+     this.name,
     this.location,
-    this.price,
-    this.service,
-    this.createdAt,
-    this.provider,
+     this.price,
+     this.service,
+     this.createdAt,
+     this.provider,
+     this.image,
+     this.idProvider,
+     this.user,
     this.timeArrive,
     this.comment,
-    this.status,
-    this.order,
-    this.image, // إضافة الحقل image إلى المُنشئ
+     this.status,
+     this.order,
   });
 
   factory GetAllOrderComplete.fromJson(Map<String, dynamic> json) {
     return GetAllOrderComplete(
       id: json['id'],
       name: json['name'],
-      location: json['location'], // يمكن أن تكون null
+      location: json['location'],
       price: json['price'],
       service: json['service'],
       createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at']) // تحويل السلسلة إلى DateTime
+          ? DateTime.parse(json['created_at'])
           : null,
       provider: json['provider'],
+      image: json['image'],
+      idProvider: json['id_provider'],
+      user: json['user'],
       timeArrive: json['time_arrive'],
       comment: json['comment'],
       status: json['status'],
       order: json['order'],
-      image: json['image'], // إضافة الحقل image من JSON
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'location': location,
-      'price': price,
-      'service': service,
-      'created_at': createdAt?.toIso8601String(), // تحويل DateTime إلى سلسلة
-      'provider': provider,
-      'time_arrive': timeArrive,
-      'comment': comment,
-      'status': status,
-      'order': order,
-      'image': image, // إضافة الحقل image إلى JSON
-    };
   }
 }

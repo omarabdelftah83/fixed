@@ -10,9 +10,9 @@ class ReviewRequest {
 }
 
 class ReviewResponse {
-  final int serviceProvider;
-  final int user;
-  final int rating;
+  final int? serviceProvider;
+  final int? user;
+  final int? rating;
   final String? comment;
   final DateTime createdAt;
 
@@ -26,9 +26,9 @@ class ReviewResponse {
 
   factory ReviewResponse.fromJson(Map<String, dynamic> json) {
     return ReviewResponse(
-      serviceProvider: json['service_provider'],
-      user: json['user'],
-      rating: json['rating'],
+      serviceProvider: json['service_provider'] as int?,
+      user: json['user'] as int?,
+      rating: json['rating'] as int?,
       comment: json['comment'],
       createdAt: DateTime.parse(json['created_at']),
     );

@@ -1,4 +1,18 @@
 {
+  "Name":"الاسم",
+  "Phone Number":"رقم الهاتف ",
+  "Address":"العنوان",
+  "Edit":"تعديل",
+  "Edit Profile": "تعديل الملف الشخصي",
+  "Sitting": "الإعدادات",
+  "edit_profile": "تعديل الملف الشخصي",
+  "wallet": "المحفظة",
+  "language": "اللغة",
+  "country": "الدولة",
+  "terms_conditions": "الشروط والأحكام",
+  "logout": "تسجيل الخروج",
+  "Orders": "الطلبات",
+
   "appbareSetingString2": "الإعدادات",
   "appbareOrderString2": "الطلبات",
   "set_location2": "تعيين الموقع",
@@ -16,6 +30,7 @@
   "offers": "العروض",
   "choose_service": "اختار خدمة الصيانة",
   "best_offers": "ثم احصل على افضل العروض وافضل خدمة",
+  "save pass": "حفظ كلمه المرور",
 
   "reject_price": "رفض السعر من العميل",
   "status_ready": "جاهز ",

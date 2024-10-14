@@ -25,6 +25,7 @@ import 'package:webbing_fixed/features_user/onboarding/screen/country_page.dart'
 import 'package:webbing_fixed/features_user/order/order_pag.dart';
 import 'package:webbing_fixed/features_user/sitting/sitting_page.dart';
 import 'package:webbing_fixed/features_user/sitting/widget/edit_profile.dart';
+import 'package:webbing_fixed/features_user/sitting/widget/home_profile.dart';
 import 'package:webbing_fixed/features_user/splash/splash_home_page.dart';
 import 'package:webbing_fixed/features_user/wallet/wallet.dart';
 
@@ -59,6 +60,7 @@ class Routes {
   static const String rejectPrice = '/RejectPrice';
   static const String finishService = '/FinishService';
   static const String settingPage = '/settingPage';
+  static const String homeProfile = '/HomeProfileee';
 
 
 }
@@ -66,7 +68,8 @@ class Routes {
 class RouteGenarator {
   static Route<dynamic> getRoute(RouteSettings sitting) {
     switch (sitting.name) {
-
+      case Routes.homeProfile:
+        return MaterialPageRoute(builder: (_) =>  HomeProfile());
       case Routes.settingPage:
         return MaterialPageRoute(builder: (_) =>  SettingPage());
       // case Routes.finishService:

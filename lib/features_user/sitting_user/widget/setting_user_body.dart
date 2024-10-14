@@ -25,7 +25,7 @@ class _SettingUserbodyState extends State<SettingUserbody> {
   void _changeLanguage(String? selectedItem) {
     if (selectedItem != null) {
       setState(() {
-        _selectedLanguage = selectedItem == 'العربية' ? 'E' : 'A';
+        _selectedLanguage = selectedItem == 'العربية' ? 'A' : 'E';
       });
       _applyLanguage(); // استدعاء _applyLanguage هنا
     }
@@ -76,13 +76,25 @@ class _SettingUserbodyState extends State<SettingUserbody> {
         padding: const EdgeInsets.only(left: 20.0, right: 20),
         child: Column(
           children: [
-            const Center(
+             Center(
               child: CustomText(
                 textColor: Color(0XFF8D8383),
-                text: 'الاعدادات',
+                text: 'Sitting'.tr(),
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
               ),
+            ),
+            SizedBox(height: 16.h),
+
+            DropDownCustomTextfailed(
+              suffixIcon: const Icon(
+                Icons.home,
+                color: Colors.blue,
+              ),
+              hintText: 'edit_profile'.tr(),
+              onTap: () {
+                Navigator.pushNamed(context, Routes.homeProfile);
+              },
             ),
             SizedBox(height: 16.h),
             DropDownCustomTextfailed(
@@ -90,7 +102,7 @@ class _SettingUserbodyState extends State<SettingUserbody> {
                 Icons.person,
                 color: Colors.blue,
               ),
-              hintText: 'تعديل الملف الشخصي',
+              hintText: 'edit_profile'.tr(),
               onTap: () {
                 Navigator.pushNamed(context, Routes.editProfile);
               },
@@ -101,7 +113,7 @@ class _SettingUserbodyState extends State<SettingUserbody> {
                 Icons.wallet_travel,
                 color: Colors.blue,
               ),
-              hintText: 'المحفظة',
+              hintText: 'wallet'.tr(),
               onTap: () {
                 Navigator.pushNamed(context, Routes.walletPage);
               },
@@ -113,8 +125,8 @@ class _SettingUserbodyState extends State<SettingUserbody> {
                 color: Colors.blue,
               ),
               prefixIcon: const Icon(Icons.arrow_drop_down),
-              hintText: ' اللغه',
-              dropdownItems: ['English', 'العربية'],
+              hintText: ' language'.tr(),
+              dropdownItems: ['العربية', 'English'],
               onDropdownChanged: (selectedItem) {
                 _changeLanguage(selectedItem);
               },
@@ -126,7 +138,7 @@ class _SettingUserbodyState extends State<SettingUserbody> {
                 color: Colors.blue,
               ),
               prefixIcon: const Icon(Icons.arrow_drop_down),
-              hintText: ' الدوله',
+              hintText: ' country'.tr(),
               dropdownItems: ["مصر", "الكويت"],
               onDropdownChanged: (selectedItem) {
                 _changeCountry(selectedItem);
@@ -136,7 +148,7 @@ class _SettingUserbodyState extends State<SettingUserbody> {
             CustomSwitch(
               border: Border.all(color: Colors.grey, width: 1.0),
               value: _savePassword, // استخدم المتغير لتتبع حالة المفتاح
-              text: 'حفظ كلمة المرور',
+              text: 'save pass'.tr(),
               icon: Icons.lock,
               onChanged: (value) async {
                 setState(() {
@@ -158,7 +170,7 @@ class _SettingUserbodyState extends State<SettingUserbody> {
 
             SizedBox(height: 16.h),
             CustomListtile(
-              text: 'الشروط والاحكام',
+              text: 'terms_conditions'.tr(),
               icon: Icons.document_scanner,
               onTap: () {
                 Navigator.pushNamed(context, Routes.conditionsPage);
@@ -166,7 +178,7 @@ class _SettingUserbodyState extends State<SettingUserbody> {
             ),
             SizedBox(height: 16.h),
             CustomListtile(
-              text: 'تسجيل الخروج',
+              text: 'logout'.tr(),
               icon: Icons.logout,
               isLogout: true,
               onTap: () {},

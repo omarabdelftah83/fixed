@@ -1,9 +1,10 @@
+
 import 'package:flutter/material.dart';
+import 'package:webbing_fixed/location/current_location.dart';
 import '../home_export.dart';
 
 class ConditionFixed extends StatefulWidget {
   final int serviceId;
-
   const ConditionFixed({Key? key, required this.serviceId}) : super(key: key);
 
   @override
@@ -11,6 +12,8 @@ class ConditionFixed extends StatefulWidget {
 }
 
 class _ConditionFixedState extends State<ConditionFixed> {
+
+
   @override
   void initState() {
     super.initState();
@@ -46,7 +49,8 @@ class _ConditionFixedState extends State<ConditionFixed> {
               const SizedBox(height: 10),
               BlocBuilder<HomeUserCubit, HomeUserState>(
                 buildWhen: (previous, current) {
-                  return current is ServiceIdLoaded || current is ServicesLoaded;
+                  return current is ServiceIdLoaded ||
+                      current is ServicesLoaded;
                 },
                 builder: (context, state) {
                   if (state is HomeUserLoading) {
@@ -63,7 +67,8 @@ class _ConditionFixedState extends State<ConditionFixed> {
                     );
                   } else if (state is HomeUserErrorState) {
                     return Center(child: Text(state.errorMessage));
-                  } else if (state is ServicesLoaded && state.services.isEmpty) {
+                  } else if (state is ServicesLoaded &&
+                      state.services.isEmpty) {
                     return const Center(child: Text('لا توجد خدمات متاحة.'));
                   } else {
                     return const Center(child: Text('لا توجد خدمات متاحة.'));
@@ -83,7 +88,13 @@ class _ConditionFixedState extends State<ConditionFixed> {
               DropDownCustomTextfailed(
                 prefixIcon: const Icon(Icons.arrow_drop_down),
                 hintText: 'اختر الوقت المناسب للتنفيذ',
-                dropdownItems: ['في اقرب وقت', 'اليوم', 'غدا', 'خلال اسبوع', 'الاسبوع القادم'],
+                dropdownItems: [
+                  'في اقرب وقت',
+                  'اليوم',
+                  'غدا',
+                  'خلال اسبوع',
+                  'الاسبوع القادم'
+                ],
                 onDropdownChanged: (selectedItem) {
                   setState(() {
                     cubit.selectedTime = selectedItem;
@@ -100,12 +111,46 @@ class _ConditionFixedState extends State<ConditionFixed> {
                 ),
               ),
               const SizedBox(height: 10),
-              CustomTextField(
-                controller: cubit.locationController,
-                prefixIcon: const Icon(Icons.check),
-                hintText: 'تم التحديد',
-                keyboardType: TextInputType.emailAddress,
+
+              InkWell(
+                onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CurrentLocationPage(),
+                      ),
+                    );
+                },
+                child: Container(
+                  height: 60, // ارتفاع الحقل
+                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(30.0),
+                    color: Colors.white,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.location_on, color: Colors.grey), // أيقونة الموقع
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: TextField(
+                          controller: cubit.locationController,
+                          readOnly: true, // لجعل الحقل غير قابل للتحرير
+                          decoration: const InputDecoration(
+                            hintText: 'حدد موقعك',
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: InputBorder.none,
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
+
               const SizedBox(height: 10),
               const Align(
                 alignment: Alignment.topRight,
@@ -123,23 +168,25 @@ class _ConditionFixedState extends State<ConditionFixed> {
                 },
                 child: Container(
                   height: cubit.containerHeight,
-                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20.0),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(30.0),
                     color: Colors.white,
                     image: cubit.selectedImage != null
                         ? DecorationImage(
-                      image: FileImage(File(cubit.selectedImage!.path)),
-                      fit: BoxFit.cover,
-                    )
+                            image: FileImage(File(cubit.selectedImage!.path)),
+                            fit: BoxFit.cover,
+                          )
                         : null,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       if (cubit.selectedImage == null) ...[
-                        const Icon(Icons.camera_alt_outlined, color: Colors.grey),
+                        const Icon(Icons.camera_alt_outlined,
+                            color: Colors.grey),
                         const SizedBox(width: 10),
                       ],
                       Expanded(
@@ -190,6 +237,10 @@ class _ConditionFixedState extends State<ConditionFixed> {
               const SizedBox(height: 10),
               BlocBuilder<HomeUserCubit, HomeUserState>(
                 builder: (context, state) {
+                  if (state is HomeUserLoading) {
+                    return const Center(
+                        child: CircularProgressIndicator()); // يظهر عند التحميل
+                  }
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -199,7 +250,8 @@ class _ConditionFixedState extends State<ConditionFixed> {
                       ),
                       Text(
                         '${cubit.unitCount}',
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w400),
                       ),
                       IconButton(
                         icon: const Icon(Icons.add),
@@ -209,7 +261,6 @@ class _ConditionFixedState extends State<ConditionFixed> {
                   );
                 },
               ),
-
               const SizedBox(height: 10),
               Center(
                 child: CustomButton(
@@ -222,17 +273,20 @@ class _ConditionFixedState extends State<ConditionFixed> {
                         cubit.locationController.text.isEmpty ||
                         cubit.descriptionController.text.isEmpty ||
                         cubit.unitCount <= 0) {
-                      showSnackbar(context, 'يرجى ملء جميع الحقول المطلوبة.', Colors.red);
+                      showSnackbar(context, 'يرجى ملء جميع الحقول المطلوبة.',
+                          Colors.red);
                       return;
                     }
 
                     if (token == null) {
-                      final result = await Navigator.pushNamed(context, Routes.singUpPageUser);
+                      final result = await Navigator.pushNamed(
+                          context, Routes.singUpPageUser);
                     } else {
                       await cubit.createOrderService(widget.serviceId, context);
                     }
 
-                    showSnackbar(context, 'Order created successfully', Colors.green);
+                    showSnackbar(
+                        context, 'Order created successfully', Colors.green);
                     cubit.selectedServiceId = null;
                     cubit.selectedTime = null;
                     cubit.locationController.clear();
@@ -241,24 +295,24 @@ class _ConditionFixedState extends State<ConditionFixed> {
                     cubit.unitCount = 0;
                     cubit.clearImage(); // Call the clear image method
 
-                    Navigator.of(context).push(
+                    Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (context) => const MainLayoutPage(),
                       ),
+                      (route) => false, // إزالة جميع الصفحات السابقة
                     );
                   },
                   text: 'تخطي',
                   textColor: Colors.black54,
                 ),
               ),
-
-
             ],
           ),
         ),
       ),
     );
   }
+
   void showSnackbar(BuildContext context, String message, Color? color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -269,3 +323,5 @@ class _ConditionFixedState extends State<ConditionFixed> {
   }
 
 }
+
+

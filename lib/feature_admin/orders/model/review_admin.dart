@@ -10,9 +10,9 @@ class ReviewAdminRequest {
 }
 
 class ReviewAdminResponse {
-  final int serviceProvider;
-  final int user;
-  final int rating;
+  final int? serviceProvider;  // Make nullable if the response could be null
+  final int? user;             // Make nullable if the response could be null
+  final int? rating;           // Make nullable if the response could be null
   final String? comment;
   final DateTime createdAt;
 
@@ -26,9 +26,9 @@ class ReviewAdminResponse {
 
   factory ReviewAdminResponse.fromJson(Map<String, dynamic> json) {
     return ReviewAdminResponse(
-      serviceProvider: json['service_provider'],
-      user: json['user'],
-      rating: json['rating'],
+      serviceProvider: json['service_provider'] as int?,
+      user: json['user'] as int?,
+      rating: json['rating'] as int?,
       comment: json['comment'],
       createdAt: DateTime.parse(json['created_at']),
     );

@@ -50,6 +50,9 @@ dependencies:
   fluttertoast:
   shimmer: ^3.0.0
   url_launcher:
+  google_maps_flutter:
+  location: ^5.0.1
+  geolocator:
 dev_dependencies:
   flutter_test:
     sdk: flutter

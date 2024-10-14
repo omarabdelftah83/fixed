@@ -1,7 +1,6 @@
 class ApiConfigurations {
   // Base URL
   static const String _baseUrl = "http://194.164.77.238/";
-
   // Authentication endpoints
   static const String signUp = "${_baseUrl}sing_up/";
   static const String signIn = "http://194.164.77.238/sign_in/";

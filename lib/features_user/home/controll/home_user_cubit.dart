@@ -89,9 +89,8 @@ class HomeUserCubit extends Cubit<HomeUserState> {
     try {
       emit(HomeUserLoading());
       final servicesRequest = RejectAndAcceptRequest(decision: decision);
-      final services =
-          await rejectAndAcceptService.rejectAndAccept(servicesRequest, id);
-      emit(RejectAndAcceptLoaded(services));
+      final services = await rejectAndAcceptService.rejectAndAccept(servicesRequest, id);
+       fetchBestOffer();
     } catch (e) {
       print('Error in fetchServices: $e');
       emit(HomeUserErrorState(e.toString()));

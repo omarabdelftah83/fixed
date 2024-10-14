@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:webbing_fixed/features_user/sitting/setting_export.dart';
 
@@ -35,7 +36,7 @@ class EditProfile extends StatelessWidget {
                       const SizedBox(width: 10),
                       Expanded(
                         child: CustomText(
-                          text: 'تعديل الملف الشخصي',
+                          text: 'Edit Profile'.tr(),
                           fontSize: 17.sp,
                           fontWeight: FontWeight.w400,
                           textColor: Colors.grey,
@@ -48,10 +49,10 @@ class EditProfile extends StatelessWidget {
                   Column(
                     children: [
                       const SizedBox(height: 10),
-                      const Align(
+                       Align(
                         alignment: Alignment.topRight,
                         child: CustomText(
-                          text: 'الاسم',
+                          text: 'Name'.tr(),
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
                         ),
@@ -62,10 +63,10 @@ class EditProfile extends StatelessWidget {
                         controller: profileCubit.nameController,
                       ),
                       const SizedBox(height: 10),
-                      const Align(
+                       Align(
                         alignment: Alignment.topRight,
                         child: CustomText(
-                          text: 'رقم الهاتف',
+                          text: 'Phone Number'.tr(),
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
                         ),
@@ -76,10 +77,10 @@ class EditProfile extends StatelessWidget {
                         controller: profileCubit.phoneController,
                       ),
                       const SizedBox(height: 10),
-                      const Align(
+                       Align(
                         alignment: Alignment.topRight,
                         child: CustomText(
-                          text: 'العنوان',
+                          text: 'Address'.tr(),
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
                         ),
@@ -94,7 +95,7 @@ class EditProfile extends StatelessWidget {
                         onPressed: () async {
                           await profileCubit.updateUser(context);
                         },
-                        text: 'تعديل',
+                        text: 'Edit'.tr(),
                       ),
                     ],
                   ),
@@ -107,5 +108,3 @@ class EditProfile extends StatelessWidget {
     );
   }
 }
-
-

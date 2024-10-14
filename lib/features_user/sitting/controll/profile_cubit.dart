@@ -1,8 +1,10 @@
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:webbing_fixed/feature_admin/home/data/get_user_data.dart';
 import 'package:webbing_fixed/features_user/sitting/setting_export.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final UpdateAdminProfile userProfile;
+  final GetUserRepository getUserRepository;
 
   final TextEditingController emailAddressController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
@@ -19,13 +21,28 @@ class ProfileCubit extends Cubit<ProfileState> {
   String oldCountry = '';
   String oldLan = '';
 
-  ProfileCubit(this.userProfile) : super(ProfileInitial());
+  ProfileCubit(this.userProfile, this.getUserRepository) : super(ProfileInitial());
 
   XFile? profilePic;
 
   void uploadProfilePic(XFile image) {
     profilePic = image;
     emit(UploadProfilePic());
+  }
+  Future<void> fetchData() async {
+    try {
+      emit(ProfileLoading());
+
+      final user = await getUserRepository.getUserData();
+
+      if (user != null) {
+        emit(ProfileDataLoaded( [user]));
+      } else {
+        emit(ProfileError('No user data found'));
+      }
+    } catch (e) {
+      emit(ProfileError('Failed to load data: $e'));
+    }
   }
 
   Future<void> updateUser(BuildContext context) async {

@@ -31,6 +31,7 @@ import 'package:webbing_fixed/features_user/onboarding/controll/on_boarding_cubi
 import 'package:webbing_fixed/features_user/onboarding/data/country_repository.dart';
 import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
 import 'package:webbing_fixed/features_user/order/data/cancel_order.dart';
+import 'package:webbing_fixed/features_user/order/data/done_complete_order_user.dart';
 import 'package:webbing_fixed/features_user/order/data/get_order_accept.dart';
 import 'package:webbing_fixed/features_user/order/data/get_order_cancel.dart';
 import 'package:webbing_fixed/features_user/order/data/get_order_complete.dart';
@@ -72,6 +73,7 @@ class ServiesLcator{
     serLoc.registerLazySingleton(() => ReviewAdminService());
     serLoc.registerLazySingleton(() => UpdatePriceService());
     serLoc.registerLazySingleton(() => DoneCompeteOrderAdmin());
+    serLoc.registerLazySingleton(() => DoneCompeteOrderUser());
 
 
 
@@ -86,9 +88,9 @@ class ServiesLcator{
     serLoc.registerLazySingleton(() => HomeCubit(serLoc(),serLoc(),serLoc(),serLoc(),serLoc(),serLoc(),serLoc()));
     serLoc.registerFactory(() => OtpCubit(serLoc(),));
     serLoc.registerLazySingleton(() => OrderCubit(serLoc(),serLoc(),serLoc(),serLoc(),serLoc()));
-    serLoc.registerFactory(() => ProfileCubit(serLoc(),));
+    serLoc.registerFactory(() => ProfileCubit(serLoc(),serLoc()));
     serLoc.registerFactory(() => OnBoardingCubit(serLoc(),));
-    serLoc.registerFactory(() => OrdersUserCubit(serLoc(),serLoc(),serLoc(),serLoc(),serLoc()));
+    serLoc.registerFactory(() => OrdersUserCubit(serLoc(),serLoc(),serLoc(),serLoc(),serLoc(),serLoc()));
     serLoc.registerFactory(() => LangUserCubit(serLoc(),));
     serLoc.registerFactory(() => HomeUserCubit(serLoc(),serLoc(),serLoc(),serLoc(),serLoc(),serLoc(),serLoc()));
 

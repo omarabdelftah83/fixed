@@ -73,13 +73,25 @@ class _SettingbodyState extends State<Settingbody> {
         padding: const EdgeInsets.only(left: 20.0, right: 20),
         child: Column(
           children: [
-            const Center(
+             Center(
               child: CustomText(
                 textColor: Color(0XFF8D8383),
-                text: 'الاعدادات',
+                text: 'Sitting'.tr(),
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
               ),
+            ),
+            SizedBox(height: 16.h),
+
+            DropDownCustomTextfailed(
+              suffixIcon: const Icon(
+                Icons.person,
+                color: Colors.blue,
+              ),
+              hintText: 'edit_profile'.tr(),
+              onTap: () {
+                Navigator.pushNamed(context, Routes.homeProfile);
+              },
             ),
             SizedBox(height: 16.h),
             DropDownCustomTextfailed(
@@ -87,7 +99,7 @@ class _SettingbodyState extends State<Settingbody> {
                 Icons.person,
                 color: Colors.blue,
               ),
-              hintText: 'تعديل الملف الشخصي',
+              hintText: 'edit_profile'.tr(),
               onTap: () {
                 Navigator.pushNamed(context, Routes.editProfile);
               },
@@ -98,7 +110,7 @@ class _SettingbodyState extends State<Settingbody> {
                 Icons.wallet_travel,
                 color: Colors.blue,
               ),
-              hintText: 'المحفظة',
+              hintText: 'wallet'.tr(),
               onTap: () {
                 Navigator.pushNamed(context, Routes.walletPage);
               },
@@ -110,7 +122,7 @@ class _SettingbodyState extends State<Settingbody> {
                 color: Colors.blue,
               ),
               prefixIcon: const Icon(Icons.arrow_drop_down),
-              hintText: ' اللغه',
+              hintText: 'language'.tr(),
               dropdownItems: ['العربية', 'english'],
               onDropdownChanged: (selectedItem) {
                 _changeLanguage(selectedItem);
@@ -123,7 +135,7 @@ class _SettingbodyState extends State<Settingbody> {
                 color: Colors.blue,
               ),
               prefixIcon: const Icon(Icons.arrow_drop_down),
-              hintText: ' الدوله',
+              hintText: 'country'.tr(),
               dropdownItems: ["مصر", "الكويت"],
               onDropdownChanged: (selectedItem) {
                 _changeCountry(selectedItem);
@@ -133,7 +145,7 @@ class _SettingbodyState extends State<Settingbody> {
             CustomSwitch(
               border: Border.all(color: Colors.grey, width: 1.0),
               value: _savePassword, // استخدم المتغير لتتبع حالة المفتاح
-              text: 'حفظ كلمة المرور',
+              text: 'save pass'.tr(),
               icon: Icons.lock,
               onChanged: (value) async {
                 setState(() {
@@ -152,7 +164,7 @@ class _SettingbodyState extends State<Settingbody> {
             ),
             SizedBox(height: 16.h),
             CustomListtile(
-              text: 'الشروط والاحكام',
+              text: 'terms_conditions'.tr(),
               icon: Icons.document_scanner,
               onTap: () {
                 Navigator.pushNamed(context, Routes.conditionsPage);
@@ -161,7 +173,7 @@ class _SettingbodyState extends State<Settingbody> {
             ),
             SizedBox(height: 16.h),
             CustomListtile(
-              text: 'تسجيل الخروج',
+              text: 'logout'.tr(),
               icon: Icons.logout,
               isLogout: true,
               onTap: () async{

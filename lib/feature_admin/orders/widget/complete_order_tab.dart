@@ -21,12 +21,14 @@ class CompletedOrdersTab extends StatelessWidget {
           return ShimmerLoading();
         } else if (state is OrderLoadedComplete) {
           final orders = state.getAllOrderComplete;
+          if (orders.isEmpty) {
+            return const Center(child: Text('لا توجد طلبات مكتمله'));
+          }
           return ListView.builder(
             itemCount: orders.length,
             itemBuilder: (context, index) {
               final order = orders[index];
 
-              // Format the DateTime to a string
               String? formattedDate;
               if (order.createdAt != null) {
                 formattedDate =
@@ -35,7 +37,7 @@ class CompletedOrdersTab extends StatelessWidget {
 
               return OrderCardAdmin(
                 dataTime: formattedDate,
-                // Pass the formatted date here
+                 idUser: order.user,
                 imagePath: order.image,
                 price: order.price,
                 location: order.location ?? 'لا يوجد موقع',

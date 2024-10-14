@@ -172,6 +172,9 @@ class OrderCardAdmin extends StatelessWidget {
                 ),
               ),
             if (status == 'مكتملة' || status == 'ملغية')
+
+         //   if ( status == 'ملغية')
+
               GestureDetector(
                 onTap: () {
 

@@ -6,6 +6,7 @@ import 'package:webbing_fixed/core/custom_button/custom_buttom.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
 import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
+import 'package:webbing_fixed/features_user/order/controll/orders_state.dart';
 import 'package:webbing_fixed/features_user/order/widget/review_page.dart';
 
 class OrderCard extends StatelessWidget {
@@ -18,19 +19,22 @@ class OrderCard extends StatelessWidget {
   final int? id;
   final String? phoneNumber;
   final String? email;
+  final int? idUserComplete;
 
-  const OrderCard({
-    super.key,
-    this.name,
-    this.service,
-    this.date,
-    this.imagePath,
-    this.status,
-    this.idProvider,
-    this.id,
-    this.phoneNumber, // تمرير رقم الهاتف
-    this.email, // تمرير البريد الإلكتروني
-  });
+  const OrderCard(
+      {super.key,
+      this.name,
+      this.service,
+      this.date,
+      this.imagePath,
+      this.status,
+      this.idProvider,
+      this.id,
+      this.phoneNumber, // تمرير رقم الهاتف
+      this.email,
+      this.idUserComplete
+      // تمرير البريد الإلكتروني
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +63,8 @@ class OrderCard extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => ReviewPageUser(idProvider: idProvider ?? 0),
+                      builder: (context) =>
+                          ReviewPageUser(idProvider: idProvider ?? 0),
                     ),
                   );
                 },
@@ -75,8 +80,7 @@ class OrderCard extends StatelessWidget {
                 children: [
                   Text('الاسم: ${name ?? 'غير متوفر'}',
                       style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold)),
+                          fontSize: 16.sp, fontWeight: FontWeight.bold)),
                   Text('الخدمة: ${service ?? 'غير متوفر'}',
                       style: TextStyle(
                         fontSize: 14.sp,
@@ -89,32 +93,58 @@ class OrderCard extends StatelessWidget {
                       )),
                   if (status == 'القادم')
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.call,
-                            color: Colors.blue,
-                            size: 20.w,
-                          ),
-                          onPressed: () {
-                            if (phoneNumber != null) {
-                              ContactUtils.makePhoneCall(phoneNumber!);
-                            }
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.mail_outline,
-                            color: Colors.blue,
-                            size: 20.w,
-                          ),
-                          onPressed: () {
 
-                            if (email != null) {
-                              ContactUtils.sendEmail(email!);
-                            }
-                          },
+                         Row(
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      if (idUserComplete != null) {
+                                        print(
+                                            'ID User Complete: $idUserComplete');
+                                        cubit.doneOrderUser(context, idUserComplete!);
+                                      } else {
+                                        print('ID User Complete is null');
+                                      }
+                                    },
+                                    child: const CustomText(
+                                      text: '(اكمال الخدمه)',
+                                      textColor: Colors.green,
+                                    )),
+                              ],
+                            ),
+
+                        const SizedBox(
+                          width: 30,
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.call,
+                                color: Colors.blue,
+                                size: 20.w,
+                              ),
+                              onPressed: () {
+                                if (phoneNumber != null) {
+                                  ContactUtils.makePhoneCall(phoneNumber!);
+                                }
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.mail_outline,
+                                color: Colors.blue,
+                                size: 20.w,
+                              ),
+                              onPressed: () {
+                                if (email != null) {
+                                  ContactUtils.sendEmail(email!);
+                                }
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -130,7 +160,7 @@ class OrderCard extends StatelessWidget {
             CircleAvatar(
               backgroundImage: imagePath != null
                   ? NetworkImage('http://194.164.77.238$imagePath')
-                  : AssetImage('AssetsManager.defaultAvatar') ,
+                  : const AssetImage('AssetsManager.defaultAvatar'),
               radius: 30.w,
             ),
           ],
@@ -194,7 +224,7 @@ class OrderCard extends StatelessWidget {
           ),
           CustomText(
             text:
-            'اذا حذفت الموعد قبلها ب ساعه سيتم\n تطبيق غرامة قدرها 50 جنيه مصري ',
+                'اذا حذفت الموعد قبلها ب ساعه سيتم\n تطبيق غرامة قدرها 50 جنيه مصري ',
             fontSize: 15,
             textColor: Colors.grey,
           ),

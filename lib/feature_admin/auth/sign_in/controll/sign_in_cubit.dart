@@ -47,16 +47,18 @@ class SignInCubit extends Cubit<SignInState> {
           showSnackbar(context, AppString.invalidSuccess, Colors.green);
 
           if (success.provider == true) {
-            Navigator.of(context).push(
+            Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) => const MainLayoutPageAdmin(),
               ),
+                  (route) => false, // حذف جميع الصفحات السابقة
             );
           } else {
-            Navigator.of(context).push(
+            Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) => const MainLayoutPage(),
               ),
+                  (route) => false, // حذف جميع الصفحات السابقة
             );
           }
         },
