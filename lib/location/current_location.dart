@@ -1,7 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
 import 'package:webbing_fixed/location/helper_location.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -16,7 +17,7 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
   static Position? position;
   Completer<GoogleMapController> googleMapController = Completer();
   CameraPosition? cameraPosition;
-
+  String _currentAddress = ''; // لعرض العنوان
   @override
   void initState() {
     super.initState();
@@ -26,8 +27,15 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
   Future<void> getMyLocation() async {
     await LocationService().checkEnabledServices();
     await LocationService().checkPermission();
+    ///****get current location ****///
     position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     if (position != null) {
+      final cubit = context.read<HomeUserCubit>();
+      cubit.setCurrentLocation(position!.latitude, position!.longitude);
+   ///****  convert current location to address ****////
+      final locationService = LocationService();
+      _currentAddress = await locationService.getAddressFromLatLng(
+          position!.latitude, position!.longitude);
       setState(() {
         cameraPosition = CameraPosition(
           target: LatLng(position!.latitude, position!.longitude),
@@ -45,6 +53,7 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
       controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition!));
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,29 +61,36 @@ class _CurrentLocationPageState extends State<CurrentLocationPage> {
         title: const Text('موقعي الحالي'),
       ),
       body: cameraPosition == null
-          ? const Center(child: CircularProgressIndicator()) // Loading state
+          ? const Center(child: CircularProgressIndicator()) // حالة التحميل
           : GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: cameraPosition!,
-        onMapCreated: (GoogleMapController controller) {
-          googleMapController.complete(controller);
-        },
-        markers: {
-          Marker(
-            markerId: const MarkerId('currentLocation'),
-            position: LatLng(position!.latitude, position!.longitude),
+              mapType: MapType.normal,
+              initialCameraPosition: cameraPosition!,
+              onMapCreated: (GoogleMapController controller) {
+                googleMapController.complete(controller);
+              },
+              markers: {
+                Marker(
+                  markerId: const MarkerId('currentLocation'),
+                  position: LatLng(position!.latitude, position!.longitude),
+                ),
+              },
+            ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context, _currentAddress); // إعادة العنوان عند الرجوع
+            },
+            child: const Text('تأكيد الموقع'),
           ),
-        },
-      ),
-      floatingActionButton: Container(
-        margin: const EdgeInsets.fromLTRB(0, 0, 8, 30),
-        child: FloatingActionButton(
-          backgroundColor: Colors.blue,
-          onPressed: goToMyCurrentLocation,
-          child: const Icon(Icons.place, color: Colors.white),
-        ),
+          FloatingActionButton(
+            backgroundColor: Colors.blue,
+            onPressed: goToMyCurrentLocation,
+            child: const Icon(Icons.place, color: Colors.white),
+          ),
+        ],
       ),
     );
   }
 }
-

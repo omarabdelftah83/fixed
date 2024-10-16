@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:webbing_fixed/core/services/service_locator.dart';
-import 'package:webbing_fixed/feature_admin/auth/sign_up/sign_up.dart';
 import 'package:webbing_fixed/feature_admin/home/controll/home_cubit.dart';
 import 'package:webbing_fixed/feature_admin/mainlayout/main_layout_admin_page.dart';
 import 'package:webbing_fixed/feature_admin/orders/controll/order_cubit.dart';
@@ -12,7 +11,6 @@ import 'package:webbing_fixed/features_user/home/controll/home_user_cubit.dart';
 import 'package:webbing_fixed/features_user/order/controll/orders_cubit.dart';
 import 'package:webbing_fixed/features_user/sitting/controll/profile_cubit.dart';
 import 'core/route/routes.dart';
-import 'feature_admin/auth/sign_in/sign_in_page.dart';
 import 'feature_admin/auth/sign_up/controll/sign_up_cubit.dart';
 import 'feature_admin/mainlayout/controll/mainlayoutadmin_cubit.dart';
 import 'features_user/main_layout/presentaion/main_layout_cubit.dart';
@@ -33,7 +31,7 @@ void main() async {
   Widget startWidget;
 
   if (token != null) {
-    // تحديد الصفحة بناءً على قيمة provider
+
     if (provider == true) {
       startWidget = const MainLayoutPageAdmin();
     } else {

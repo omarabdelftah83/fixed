@@ -21,20 +21,19 @@ class OrderCard extends StatelessWidget {
   final String? email;
   final int? idUserComplete;
 
-  const OrderCard(
-      {super.key,
-      this.name,
-      this.service,
-      this.date,
-      this.imagePath,
-      this.status,
-      this.idProvider,
-      this.id,
-      this.phoneNumber, // تمرير رقم الهاتف
-      this.email,
-      this.idUserComplete
-      // تمرير البريد الإلكتروني
-      });
+  const OrderCard({
+    super.key,
+    this.name,
+    this.service,
+    this.date,
+    this.imagePath,
+    this.status,
+    this.idProvider,
+    this.id,
+    this.phoneNumber, // تمرير رقم الهاتف
+    this.email,
+    this.idUserComplete, // تمرير البريد الإلكتروني
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -78,81 +77,82 @@ class OrderCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('الاسم: ${name ?? 'غير متوفر'}',
-                      style: TextStyle(
-                          fontSize: 16.sp, fontWeight: FontWeight.bold)),
-                  Text('الخدمة: ${service ?? 'غير متوفر'}',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey,
-                      )),
-                  Text(date ?? 'غير متوفر',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey,
-                      )),
+                  Text(
+                    'الاسم: ${name ?? 'غير متوفر'}',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'الخدمة: ${service ?? 'غير متوفر'}',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Text(
+                    date ?? 'غير متوفر',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey,
+                    ),
+                  ),
                   if (status == 'القادم')
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-
-                         Row(
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      if (idUserComplete != null) {
-                                        print(
-                                            'ID User Complete: $idUserComplete');
-                                        cubit.doneOrderUser(context, idUserComplete!);
-                                      } else {
-                                        print('ID User Complete is null');
-                                      }
-                                    },
-                                    child: const CustomText(
-                                      text: '(اكمال الخدمه)',
-                                      textColor: Colors.green,
-                                    )),
-                              ],
+                        Flexible(
+                          child: InkWell(
+                            onTap: () {
+                              if (idUserComplete != null) {
+                                cubit.doneOrderUser(context, idUserComplete!);
+                              }
+                            },
+                            child: const CustomText(
+                              text: '(اكمال الخدمه)',
+                              textColor: Colors.green,
                             ),
-
-                        const SizedBox(
-                          width: 30,
+                          ),
                         ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.call,
-                                color: Colors.blue,
-                                size: 20.w,
+                        const SizedBox(width: 30),
+                        Flexible(
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.call,
+                                  color: Colors.blue,
+                                  size: 20.w,
+                                ),
+                                onPressed: () {
+                                  if (phoneNumber != null) {
+                                    ContactUtils.makePhoneCall(phoneNumber!);
+                                  }
+                                },
                               ),
-                              onPressed: () {
-                                if (phoneNumber != null) {
-                                  ContactUtils.makePhoneCall(phoneNumber!);
-                                }
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.mail_outline,
-                                color: Colors.blue,
-                                size: 20.w,
+                              IconButton(
+                                icon: Icon(
+                                  Icons.mail_outline,
+                                  color: Colors.blue,
+                                  size: 20.w,
+                                ),
+                                onPressed: () {
+                                  if (email != null) {
+                                    ContactUtils.sendEmail(email!);
+                                  }
+                                },
                               ),
-                              onPressed: () {
-                                if (email != null) {
-                                  ContactUtils.sendEmail(email!);
-                                }
-                              },
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
                 ],
               ),
             ),
+            SizedBox(width: 10.w), // Added space
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 10.w),
               width: 1.w,
               height: 90.h,
               color: Colors.grey.shade400,
@@ -224,7 +224,7 @@ class OrderCard extends StatelessWidget {
           ),
           CustomText(
             text:
-                'اذا حذفت الموعد قبلها ب ساعه سيتم\n تطبيق غرامة قدرها 50 جنيه مصري ',
+            'اذا حذفت الموعد قبلها ب ساعه سيتم\n تطبيق غرامة قدرها 50 جنيه مصري ',
             fontSize: 15,
             textColor: Colors.grey,
           ),

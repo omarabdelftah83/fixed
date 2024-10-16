@@ -41,6 +41,7 @@ class CustomCard extends StatelessWidget {
                     child: Column(
                       //  crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
+                        const SizedBox(height: 20,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -48,7 +49,7 @@ class CustomCard extends StatelessWidget {
                               text: '(${iconPath})' ?? '',
                               fontSize: 15,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             CustomText(
@@ -72,7 +73,7 @@ class CustomCard extends StatelessWidget {
                               backgroundImage: imagePath != null
                                   ? NetworkImage(
                                       'http://194.164.77.238$imagePath')
-                                  : AssetImage('AssetsManager.defaultAvatar'),
+                                  : const AssetImage('AssetsManager.defaultAvatar'),
                               radius: 20,
                             ),
                           ],
@@ -88,7 +89,7 @@ class CustomCard extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                               ),
                               const SizedBox(width: 10),
-                              SvgIconWidget(
+                              const SvgIconWidget(
                                 iconPath: AssetsManager.iconStart ?? '',
                                 width: 20,
                                 height: 20,

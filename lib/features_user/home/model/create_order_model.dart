@@ -2,6 +2,10 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
+
 class CreateOrderRequest {
   String? typeService;
   String? time;
@@ -9,6 +13,8 @@ class CreateOrderRequest {
   File? image;
   String? description;
   int? count;
+  double? lat;  // إضافة خط العرض
+  double? lon;  // إضافة خط الطول
 
   CreateOrderRequest({
     this.typeService,
@@ -17,18 +23,19 @@ class CreateOrderRequest {
     this.image,
     this.description,
     this.count,
+    this.lat,  // الحقل الجديد
+    this.lon,  // الحقل الجديد
   });
 
   Future<FormData> toMap() async {
-
     final Map<String, dynamic> map = {};
+
     if (typeService != null) {
       map['type_service'] = typeService;
     }
     if (time != null) {
       map['time'] = time;
     }
-
     if (location != null) {
       map['location'] = location;
     }
@@ -38,6 +45,12 @@ class CreateOrderRequest {
     if (count != null) {
       map['count'] = count.toString();
     }
+    if (lat != null) {
+      map['latitude'] = lat.toString();  // تحويل القيم إلى نص
+    }
+    if (lon != null) {
+      map['longitude'] = lon.toString();  // تحويل القيم إلى نص
+    }
     if (image != null) {
       map['file'] = await MultipartFile.fromFile(
         image!.path,
@@ -45,11 +58,10 @@ class CreateOrderRequest {
         contentType: MediaType('file', 'png'),
       );
     }
+
     final formData = FormData.fromMap(map);
     return formData;
-
   }
-
 }
 
 class CreateOrderResponse {

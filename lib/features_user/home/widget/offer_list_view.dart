@@ -25,7 +25,7 @@ class BestOffers extends StatelessWidget {
         } else if (state is BestOfferLoaded) {
           final offers = state.services;
           return Container(
-            height: 185.h,
+            height: 210.h,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: offers.length,

@@ -1,10 +1,11 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webbing_fixed/location/current_location.dart';
 import '../home_export.dart';
 
 class ConditionFixed extends StatefulWidget {
   final int serviceId;
+
   const ConditionFixed({Key? key, required this.serviceId}) : super(key: key);
 
   @override
@@ -12,8 +13,6 @@ class ConditionFixed extends StatefulWidget {
 }
 
 class _ConditionFixedState extends State<ConditionFixed> {
-
-
   @override
   void initState() {
     super.initState();
@@ -111,18 +110,20 @@ class _ConditionFixedState extends State<ConditionFixed> {
                 ),
               ),
               const SizedBox(height: 10),
-
               InkWell(
-                onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CurrentLocationPage(),
-                      ),
-                    );
+                onTap: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CurrentLocationPage(),
+                    ),
+                  );
+                  if (result != null && result is String) {
+                    cubit.locationController.text = result; // تعيين العنوان في الـ TextField
+                  }
                 },
                 child: Container(
-                  height: 60, // ارتفاع الحقل
+                  height: 60,
                   padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
@@ -132,15 +133,15 @@ class _ConditionFixedState extends State<ConditionFixed> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Icon(Icons.location_on, color: Colors.grey), // أيقونة الموقع
+                      const Icon(Icons.location_on, color: Colors.grey),
                       const SizedBox(width: 10),
                       Expanded(
                         child: TextField(
                           controller: cubit.locationController,
-                          readOnly: true, // لجعل الحقل غير قابل للتحرير
-                          decoration: const InputDecoration(
-                            hintText: 'حدد موقعك',
-                            hintStyle: TextStyle(color: Colors.grey),
+                          decoration: InputDecoration(
+                            hintText: cubit.locationController.text.isEmpty
+                                ? 'أدخل الموقع'
+                                : cubit.locationController.text,
                             border: InputBorder.none,
                           ),
                           textAlign: TextAlign.right,
@@ -150,7 +151,6 @@ class _ConditionFixedState extends State<ConditionFixed> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 10),
               const Align(
                 alignment: Alignment.topRight,
@@ -176,9 +176,9 @@ class _ConditionFixedState extends State<ConditionFixed> {
                     color: Colors.white,
                     image: cubit.selectedImage != null
                         ? DecorationImage(
-                            image: FileImage(File(cubit.selectedImage!.path)),
-                            fit: BoxFit.cover,
-                          )
+                      image: FileImage(File(cubit.selectedImage!.path)),
+                      fit: BoxFit.cover,
+                    )
                         : null,
                   ),
                   child: Row(
@@ -294,34 +294,30 @@ class _ConditionFixedState extends State<ConditionFixed> {
                     cubit.descriptionController.clear();
                     cubit.unitCount = 0;
                     cubit.clearImage(); // Call the clear image method
-
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (context) => const MainLayoutPage(),
                       ),
-                      (route) => false, // إزالة جميع الصفحات السابقة
+                          (route) => false, // Remove all previous routes
                     );
                   },
-                  text: 'تخطي',
-                  textColor: Colors.black54,
+                  text: 'تأكيد الطلب',
                 ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
       ),
     );
   }
-
-  void showSnackbar(BuildContext context, String message, Color? color) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: color,
-      ),
-    );
-  }
-
 }
 
-
+void showSnackbar(BuildContext context, String message, Color? color) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: color,
+    ),
+  );
+}

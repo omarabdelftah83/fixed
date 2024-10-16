@@ -36,7 +36,7 @@ class CustomCardSplash extends StatelessWidget {
         InkWell(
           onTap: () {},
           child: SizedBox(
-            height: screenHeight * 0.39,
+            height: screenHeight * 0.44,
             width: screenWidth * 2.2,
             child: Card(
               color: Colors.white,
@@ -49,6 +49,7 @@ class CustomCardSplash extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -57,6 +58,8 @@ class CustomCardSplash extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
+                              SizedBox(height: screenHeight * 0.05),
+
                               CustomText(
                                 text: '$price ج.م',
                                 fontSize: screenWidth * 0.06,

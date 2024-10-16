@@ -11,7 +11,6 @@ import 'package:webbing_fixed/features_user/home/data/order_service.dart';
 import 'package:webbing_fixed/features_user/home/data/reject_and_accept.dart';
 import 'package:webbing_fixed/features_user/home/model/create_order_model.dart';
 import 'package:webbing_fixed/features_user/home/model/reject_and_accept.dart';
-import 'package:webbing_fixed/helpers/cache_helper.dart';
 import 'home_user_state.dart';
 
 class HomeUserCubit extends Cubit<HomeUserState> {
@@ -34,16 +33,17 @@ class HomeUserCubit extends Cubit<HomeUserState> {
   String? selectedServiceId;
   String? selectedTime; // متغير لوقت الخدمة
   String imageType = "defaultType"; // تأكد من إعطائه قيمة صحيحة
-
+  double? currentLatitude;
+  double? currentLongitude;
   HomeUserCubit(
-    this.getAllService,
-    this.getOrderServiceId,
-    this._createOrderService,
-    this.getBestOffer,
-    this.rejectAndAcceptService,
-    this.getNotificationUserService,
-    this._deleteNotificationUser,
-  ) : super(HomeUserInitial());
+      this.getAllService,
+      this.getOrderServiceId,
+      this._createOrderService,
+      this.getBestOffer,
+      this.rejectAndAcceptService,
+      this.getNotificationUserService,
+      this._deleteNotificationUser,
+      ) : super(HomeUserInitial());
 
   void increment() {
     unitCount++;
@@ -90,7 +90,7 @@ class HomeUserCubit extends Cubit<HomeUserState> {
       emit(HomeUserLoading());
       final servicesRequest = RejectAndAcceptRequest(decision: decision);
       final services = await rejectAndAcceptService.rejectAndAccept(servicesRequest, id);
-       fetchBestOffer();
+      fetchBestOffer();
     } catch (e) {
       print('Error in fetchServices: $e');
       emit(HomeUserErrorState(e.toString()));
@@ -111,7 +111,7 @@ class HomeUserCubit extends Cubit<HomeUserState> {
     try {
       emit(HomeUserLoading());
       final service = await _deleteNotificationUser.deleteNotificationUser(id);
-    await  getNotificationUser();
+      await  getNotificationUser();
     } catch (e) {
       print('Error in fetchServiceId: $e');
       emit(HomeUserErrorState(e.toString()));
@@ -130,9 +130,20 @@ class HomeUserCubit extends Cubit<HomeUserState> {
     }
   }
 
+  void setCurrentLocation(double lat, double lon) {
+    currentLatitude = lat;
+    currentLongitude = lon;
+    print("Current Location: Latitude===: $currentLatitude, Longitude====: $currentLongitude");
+  }
+
   Future<void> createOrderService(int id, BuildContext context) async {
     try {
       emit(HomeUserLoading());
+
+      if (currentLatitude == null || currentLongitude == null) {
+        return;
+      }
+
       final servicesRequest = CreateOrderRequest(
         typeService: selectedServiceId,
         time: selectedTime,
@@ -140,17 +151,19 @@ class HomeUserCubit extends Cubit<HomeUserState> {
         image: selectedImage != null ? File(selectedImage!.path) : null,
         description: descriptionController.text,
         count: unitCount,
+        lat: currentLatitude,
+        lon: currentLongitude,
       );
 
-      final result =
-          await _createOrderService.createOrderServices(servicesRequest, id);
+      // استدعاء خدمة إنشاء الطلب
+      final result = await _createOrderService.createOrderServices(servicesRequest, id);
 
+      // التعامل مع النتيجة
       result.fold(
-        (failure) {
+            (failure) {
           emit(HomeUserErrorState(failure.message));
-          //   showSnackbar(context, failure.message, Colors.red);
         },
-        (services) {
+            (services) {
           emit(OrderCreatedSuccess(services));
         },
       );
@@ -164,16 +177,6 @@ class HomeUserCubit extends Cubit<HomeUserState> {
     try {
       emit(HomeUserLoading());
       final services = await getBestOffer.getBestOffer();
-
-      // if (services.isNotEmpty) {
-      //
-      //   final offerId = services.first.id;
-      //   if (offerId != null) {
-      //     await CacheHelper.saveBestId(offerId.toString());
-      //   }
-      //
-      // }
-
       emit(BestOfferLoaded(services));
     } catch (e) {
       print('Error in fetchServices: $e');

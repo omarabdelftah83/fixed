@@ -38,7 +38,11 @@ class HomeUserInitial extends HomeUserState {}
 
 // حالة تحميل البيانات
 class HomeUserLoading extends HomeUserState {}
+class LocationHintUpdated extends HomeUserState {
+  final String? locationHint;
 
+  LocationHintUpdated(this.locationHint);
+}
 // حالة تحميل الخدمات بنجاح
 class ServicesLoaded extends HomeUserState {
   final List<GetAllServicesModel> services;
